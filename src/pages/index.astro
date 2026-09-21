@@ -1,0 +1,43 @@
+---
+// Phase 1 preview of the homepage: hero + services. The full homepage is built in Phase 3.
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import site from '../content/site.json';
+---
+
+<Base
+  title="Personal Trainer Abu Dhabi"
+  description="Personal training in Abu Dhabi at your home, outdoors or in the gym. Cross fit, body building, strength and mobility coaching. Book a free trial."
+>
+  <section class="relative isolate overflow-hidden">
+    <div class="absolute inset-0 -z-10 bg-radial-[at_80%_10%] from-green/20 via-transparent to-transparent"></div>
+    <div class="mx-auto max-w-7xl px-4 pt-20 pb-24 sm:px-6 sm:pt-28 lg:pb-32">
+      <p class="text-sm font-semibold uppercase tracking-[0.2em] text-green">Personal training · {site.city}</p>
+      <h1 class="display mt-5 max-w-5xl text-5xl sm:text-7xl lg:text-8xl">
+        <span class="block">Be strong.</span> <span class="block">Be fit.</span> <span class="block text-green">Be healthy.</span>
+      </h1>
+      <p class="mt-6 max-w-xl text-lg text-muted">{site.tagline}</p>
+      <div class="mt-10 flex flex-wrap gap-3">
+        <a href="/book-a-trial" class="btn bg-green text-black hover:bg-fg">Book a free trial <Icon name="arrow" /></a>
+        <a href={site.whatsappUrl} class="btn ring-1 ring-line hover:bg-white/5"><Icon name="chat" /> WhatsApp us</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="services" class="mx-auto max-w-7xl px-4 pb-24 sm:px-6">
+    <h2 class="display text-3xl sm:text-5xl">Our services</h2>
+    <ul class="mt-10 grid gap-px overflow-hidden rounded-3xl border border-line bg-line sm:grid-cols-2 lg:grid-cols-3">
+      {site.services.map((s, i) => (
+        <li>
+          <a href={`/services/${s.slug}`} class="group flex h-full min-h-44 flex-col justify-between gap-8 bg-ink p-6 transition duration-300 hover:bg-surface">
+            <span class="text-sm text-muted">0{i + 1}</span>
+            <span class="flex items-end justify-between gap-4 text-xl font-bold">
+              {s.name}
+              <Icon name="arrow" class="size-5 shrink-0 text-green transition duration-300 group-hover:translate-x-1" />
+            </span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </section>
+</Base>

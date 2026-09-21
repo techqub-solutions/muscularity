@@ -1,0 +1,64 @@
+---
+import { Image } from 'astro:assets';
+import Icon from './Icon.astro';
+import logo from '../assets/brand/logo-light.png';
+import site from '../content/site.json';
+
+const company = [
+  ['About us', '/about-us'],
+  ['Our founder', '/about-founder'],
+  ['Careers', '/careers'],
+  ['Blog', '/blog'],
+  ['Contact', '/contact-us'],
+];
+const heading = 'text-xs font-semibold uppercase tracking-widest text-muted';
+---
+
+<footer class="border-t border-line bg-surface">
+  <div class="mx-auto grid max-w-7xl gap-10 px-4 py-16 sm:px-6 md:grid-cols-2 lg:grid-cols-4">
+    <div>
+      <Image src={logo} alt={site.name} width={150} densities={[1, 2]} />
+      <p class="mt-5 max-w-xs text-sm text-muted">{site.tagline}</p>
+    </div>
+    <nav aria-label="Services">
+      <h2 class={heading}>Services</h2>
+      <ul class="mt-4 grid gap-2.5 text-sm">
+        {site.services.map((s) => <li><a href={`/services/${s.slug}`} class="hover:text-green">{s.name}</a></li>)}
+      </ul>
+    </nav>
+    <nav aria-label="Company">
+      <h2 class={heading}>Company</h2>
+      <ul class="mt-4 grid gap-2.5 text-sm">
+        {company.map(([label, href]) => <li><a href={href} class="hover:text-green">{label}</a></li>)}
+      </ul>
+    </nav>
+    <div>
+      <h2 class={heading}>Contact</h2>
+      <ul class="mt-4 grid gap-2.5 text-sm">
+        <li><a href={`tel:${site.tel}`} class="hover:text-green">{site.phone}</a></li>
+        <li><a href={site.whatsappUrl} class="hover:text-green">WhatsApp</a></li>
+        <li><a href={`mailto:${site.email}`} class="hover:text-green">{site.email}</a></li>
+        <li class="text-muted">{site.hoursText}</li>
+        <li class="text-muted">{site.city}, UAE</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="border-t border-line">
+    <div class="mx-auto flex max-w-7xl flex-wrap justify-between gap-4 px-4 py-6 text-xs text-muted sm:px-6">
+      <p>© {new Date().getFullYear()} {site.name}</p>
+      <div class="flex gap-5">
+        {Object.entries(site.social).map(([label, href]) => <a href={href} target="_blank" rel="noopener" class="hover:text-fg">{label}</a>)}
+        <a href="/privacy-policy" class="hover:text-fg">Privacy</a>
+        <a href="/terms-and-condition" class="hover:text-fg">Terms</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile quick actions (body has pb-16 on mobile so this never covers content) -->
+  <nav aria-label="Quick actions" class="fixed inset-x-0 bottom-0 z-40 grid grid-cols-3 border-t border-line bg-ink/90 text-xs font-semibold backdrop-blur-md md:hidden">
+    <a href={`tel:${site.tel}`} class="flex flex-col items-center gap-1 py-2.5"><Icon name="phone" />Call</a>
+    <a href={site.whatsappUrl} class="flex flex-col items-center gap-1 py-2.5 text-green"><Icon name="chat" />WhatsApp</a>
+    <a href="/book-a-trial" class="flex flex-col items-center gap-1 bg-green py-2.5 text-black"><Icon name="arrow" />Book trial</a>
+  </nav>
+</footer>

@@ -1,0 +1,24 @@
+{
+  "name": "Muscularity Fitness",
+  "url": "https://www.muscularityfitness.com",
+  "tagline": "Personal training in Abu Dhabi: at your home, outdoors or in the gym.",
+  "phone": "+971 56 585 2769",
+  "tel": "+971565852769",
+  "whatsappUrl": "https://wa.me/971565852769?text=Hi%20Muscularity%20Fitness%2C%20I%27d%20like%20to%20book%20a%20free%20trial.",
+  "email": "info@muscularityfitness.com",
+  "city": "Abu Dhabi",
+  "country": "AE",
+  "hours": "Mo-Su 06:00-23:00",
+  "hoursText": "Mon–Sun, 6:00 AM – 11:00 PM",
+  "social": {
+    "Facebook": "https://www.facebook.com/profile.php?id=61567289974312"
+  },
+  "services": [
+    { "name": "Cross Fit", "slug": "cross-fit" },
+    { "name": "Body Building", "slug": "body-building" },
+    { "name": "Fitness", "slug": "fitness" },
+    { "name": "Flexibility and Mobility", "slug": "flexibility-and-mobility" },
+    { "name": "Functional Training", "slug": "functional-training" },
+    { "name": "Strength Training & Sports Conditioning", "slug": "strength-training-sports-conditioning" }
+  ]
+}

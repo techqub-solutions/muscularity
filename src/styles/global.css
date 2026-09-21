@@ -1,0 +1,36 @@
+@import "tailwindcss";
+
+/* Brand tokens (PLAN.md §2). Green buttons always use black text. */
+@theme {
+  --color-ink: #0b0d0c;
+  --color-surface: #151917;
+  --color-line: #ffffff14;
+  --color-fg: #f4f6f5;
+  --color-muted: #9aa39f;
+  --color-green: #39b54a;
+  --color-paper: #f5f6f4;
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@theme inline {
+  --font-sans: var(--font-archivo);
+}
+
+@utility display {
+  @apply font-extrabold uppercase leading-[0.95] tracking-tight text-balance;
+}
+
+@utility btn {
+  @apply inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 font-semibold transition duration-300 ease-out-expo active:scale-[.97];
+}
+
+/* Page transitions: pure CSS, only when the visitor allows motion */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition { navigation: auto; }
+  ::view-transition-new(root) { animation: page-in 0.5s var(--ease-out-expo); }
+}
+@keyframes page-in { from { opacity: 0; translate: 0 16px; } }
+
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}

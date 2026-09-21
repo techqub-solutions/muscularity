@@ -1,0 +1,58 @@
+---
+import { Font } from 'astro:assets';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import site from '../content/site.json';
+import '../styles/global.css';
+
+interface Props {
+  title: string; // primary keyword; " | Muscularity Fitness" is added here
+  description: string;
+  image?: string;
+}
+const { title, description, image = '/icon-512.png' } = Astro.props;
+const fullTitle = `${title} | ${site.name}`;
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+
+const business = {
+  '@context': 'https://schema.org',
+  '@type': 'LocalBusiness',
+  name: site.name,
+  url: site.url,
+  telephone: site.tel,
+  email: site.email,
+  image: new URL('/icon-512.png', Astro.site).href,
+  address: { '@type': 'PostalAddress', addressLocality: site.city, addressCountry: site.country },
+  openingHours: site.hours,
+  sameAs: Object.values(site.social),
+};
+---
+
+<!doctype html>
+<html lang="en" dir="ltr" class="scheme-dark scroll-pt-20 scroll-smooth">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={new URL(image, Astro.site).href} />
+    <meta name="theme-color" content="#0b0d0c" />
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <Font cssVariable="--font-archivo" preload />
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(business)} />
+  </head>
+  <body class="bg-ink pb-16 text-fg antialiased md:pb-0">
+    <a href="#main" class="btn sr-only bg-green text-black focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-60">Skip to content</a>
+    <Header />
+    <main id="main"><slot /></main>
+    <Footer />
+  </body>
+</html>
