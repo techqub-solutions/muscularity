@@ -1,0 +1,77 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import ServiceGrid from '../../components/ServiceGrid.astro';
+import Faq from '../../components/Faq.astro';
+import Icon from '../../components/Icon.astro';
+import site from '../../content/site.json';
+
+export async function getStaticPaths() {
+  const services = await getCollection('services');
+  return services.map((service) => ({ params: { slug: service.id }, props: { service } }));
+}
+
+const { service } = Astro.props;
+const { Content } = await render(service);
+const s = service.data;
+const prices = site.packages.map((p) => p.price);
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: `${s.name} personal training`,
+  description: s.description,
+  areaServed: site.city,
+  provider: { '@type': 'LocalBusiness', name: site.name, url: site.url, telephone: site.tel },
+  offers: { '@type': 'AggregateOffer', priceCurrency: 'AED', lowPrice: Math.min(...prices), highPrice: Math.max(...prices) },
+};
+---
+
+<Base title={s.seoTitle} description={s.description}>
+  <PageHero title={s.name} eyebrow={`Personal training · ${site.city}`} intro={s.tagline} image={s.image} crumbs={[['Services', '/#services'], [s.name, `/services/${service.id}`]]}>
+    <div class="mt-10 flex flex-wrap items-center gap-8">
+      <a href={`/book-a-trial?Service=${encodeURIComponent(s.name)}`} class="btn">Book a free trial <Icon name="arrow" /></a>
+      <a href={site.whatsappUrl} class="link">WhatsApp us</a>
+    </div>
+  </PageHero>
+
+  <div class="mx-auto grid max-w-7xl gap-16 px-4 py-20 sm:px-6 lg:grid-cols-[1fr_22rem] lg:py-28">
+    <div>
+      <section class="reveal border-l-4 border-green bg-surface p-6 sm:p-8">
+        <h2 class="eyebrow text-green">Who it's for</h2>
+        <ul class="mt-5 grid gap-3 text-lg">
+          {s.forWho.map((w) => <li class="flex gap-3"><Icon name="check" class="mt-1 size-5 shrink-0 text-green" />{w}</li>)}
+        </ul>
+      </section>
+      <div class="prose mt-14 text-fg/80"><Content /></div>
+    </div>
+
+    <aside class="lg:sticky lg:top-24 lg:self-start">
+      <div class="border border-line bg-surface p-6">
+        <p class="eyebrow text-muted">From</p>
+        <p class="mt-1 font-extrabold uppercase font-stretch-[70%]"><span class="text-2xl">AED</span> <span class="text-6xl">{Math.min(...prices)}</span> <span class="text-lg text-muted">/ session</span></p>
+        <ul class="mt-6 grid gap-3 border-t border-line pt-6 text-fg/85">
+          <li class="flex items-center gap-3"><Icon name="pin" class="size-5 text-green" />{site.places.join(' · ')}</li>
+          <li class="flex items-center gap-3"><Icon name="clock" class="size-5 text-green" />{site.hoursText}</li>
+          <li class="flex items-center gap-3"><Icon name="check" class="size-5 text-green" />First session free</li>
+        </ul>
+        <a href={`/book-a-trial?Service=${encodeURIComponent(s.name)}`} class="btn mt-8 w-full">Book a free trial</a>
+        <a href="/#packages" class="mt-5 block text-center text-sm font-semibold text-muted underline underline-offset-4 hover:text-fg">See all packages</a>
+      </div>
+    </aside>
+  </div>
+
+  <section class="border-t border-line">
+    <div class="mx-auto grid max-w-7xl gap-12 px-4 py-20 sm:px-6 lg:grid-cols-[1fr_1.6fr] lg:py-28">
+      <h2 class="display text-[clamp(2.5rem,5vw,4.5rem)]">{s.name}: your questions</h2>
+      <Faq items={s.faqs} />
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-7xl px-4 pb-24 sm:px-6">
+    <h2 class="display text-[clamp(2.5rem,5vw,4.5rem)]">Pair it with</h2>
+    <div class="mt-10"><ServiceGrid exclude={service.id} limit={3} /></div>
+  </section>
+
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(schema)} />
+</Base>

@@ -1,0 +1,43 @@
+---
+// Top of every inner page: breadcrumbs (+ BreadcrumbList schema), H1, intro, optional photo and actions (slot).
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+interface Props {
+  title: string;
+  crumbs: [string, string][]; // after Home, e.g. [['Services', '/#services'], ['Cross Fit', '/services/cross-fit']]
+  eyebrow?: string;
+  intro?: string;
+  image?: ImageMetadata;
+}
+const { title, crumbs, eyebrow, intro, image } = Astro.props;
+const trail = [['Home', '/'], ...crumbs];
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: trail.map(([name, href], i) => ({ '@type': 'ListItem', position: i + 1, name, item: new URL(href, Astro.site).href })),
+};
+---
+
+<section class="relative isolate overflow-hidden border-b border-line">
+  {image && (
+    <>
+      <Image src={image} alt="" widths={[640, 1280, 1920]} sizes="100vw" loading="eager" class="absolute inset-0 -z-10 size-full object-cover" />
+      <div class="absolute inset-0 -z-10 bg-linear-to-r from-ink via-ink/85 to-ink/30"></div>
+    </>
+  )}
+  <div class="mx-auto max-w-7xl px-4 pt-8 pb-16 sm:px-6 lg:pb-24">
+    <nav aria-label="Breadcrumb" class="eyebrow text-muted">
+      <ol class="flex flex-wrap gap-x-2 gap-y-1">
+        {trail.map(([name, href], i) =>
+          i < trail.length - 1 ? <li><a href={href} class="hover:text-fg">{name}</a> <span class="text-green">/</span></li> : <li aria-current="page" class="text-fg">{name}</li>,
+        )}
+      </ol>
+    </nav>
+    {eyebrow && <p class="eyebrow mt-14 text-green">{eyebrow}</p>}
+    <h1 class:list={['display max-w-5xl text-[clamp(3rem,8vw,7rem)]', eyebrow ? 'mt-4' : 'mt-14']}>{title}</h1>
+    {intro && <p class="mt-6 max-w-2xl text-lg text-fg/80 sm:text-xl">{intro}</p>}
+    <slot />
+  </div>
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(schema)} />
+</section>

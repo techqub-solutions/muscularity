@@ -1,0 +1,30 @@
+---
+// Photo cards for the services (home: all six; service pages: related ones).
+import { Image } from 'astro:assets';
+import { getCollection } from 'astro:content';
+import Icon from './Icon.astro';
+
+interface Props {
+  exclude?: string;
+  limit?: number;
+}
+const { exclude, limit = 6 } = Astro.props;
+const services = (await getCollection('services'))
+  .filter((s) => s.id !== exclude)
+  .sort((a, b) => a.data.order - b.data.order)
+  .slice(0, limit);
+---
+
+<ul class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+  {services.map((s) => (
+    <li class="reveal">
+      <a href={`/services/${s.id}`} class="group relative isolate flex aspect-[4/5] flex-col justify-end overflow-hidden bg-ink p-6 [clip-path:polygon(0_0,calc(100%-2.5rem)_0,100%_2.5rem,100%_100%,0_100%)]">
+        <Image src={s.data.image} alt="" widths={[400, 800]} sizes="(min-width: 1024px) 30vw, (min-width: 640px) 45vw, 90vw" class="absolute inset-0 -z-10 size-full object-cover transition duration-700 ease-out-expo group-hover:scale-105" />
+        <div class="absolute -inset-px -z-10 bg-linear-to-t from-ink via-ink/50 to-transparent"></div>
+        <h3 class="display text-4xl">{s.data.name}</h3>
+        <p class="mt-2 text-fg/80">{s.data.tagline}</p>
+        <span class="eyebrow mt-5 flex items-center gap-2 text-green">Explore <Icon name="arrow" class="size-4 transition duration-300 group-hover:translate-x-1" /></span>
+      </a>
+    </li>
+  ))}
+</ul>

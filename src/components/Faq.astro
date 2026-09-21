@@ -1,0 +1,27 @@
+---
+// Accordion (native <details>, no JS) + FAQPage schema.
+import Icon from './Icon.astro';
+
+interface Props {
+  items: { q: string; a: string }[];
+}
+const { items } = Astro.props;
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: items.map(({ q, a }) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })),
+};
+---
+
+<div class="divide-y divide-line border-y border-line">
+  {items.map(({ q, a }) => (
+    <details name="faq" class="group">
+      <summary class="flex cursor-pointer list-none items-center justify-between gap-6 py-5 text-lg font-bold sm:text-xl [&::-webkit-details-marker]:hidden">
+        {q}
+        <Icon name="plus" class="size-6 shrink-0 text-green transition-transform duration-300 group-open:rotate-45" />
+      </summary>
+      <p class="max-w-3xl pb-6 text-fg/75">{a}</p>
+    </details>
+  ))}
+</div>
+<script is:inline type="application/ld+json" set:html={JSON.stringify(schema)} />

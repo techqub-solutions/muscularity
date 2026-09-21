@@ -1,0 +1,54 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import WaForm from '../components/WaForm.astro';
+import Icon from '../components/Icon.astro';
+import site from '../content/site.json';
+
+const ways = [
+  ['phone', 'Call', site.phone, `tel:${site.tel}`],
+  ['mail', 'Email', site.email, `mailto:${site.email}`],
+  ['clock', 'Hours', site.hoursText, ''],
+  ['pin', 'Based in', `${site.city}, UAE`, ''],
+] as const;
+const field = 'w-full border border-line bg-ink px-4 py-3.5 text-fg placeholder:text-muted focus:border-green focus:outline-none';
+const schema = { '@context': 'https://schema.org', '@type': 'ContactPage', name: `Contact ${site.name}`, url: new URL('/contact-us', Astro.site).href };
+---
+
+<Base title="Contact a Personal Trainer in Abu Dhabi" description="Contact Muscularity Fitness in Abu Dhabi. WhatsApp or call +971 56 585 2769, or email us. Every day 6 AM – 11 PM.">
+  <PageHero title="Contact us" crumbs={[['Contact', '/contact-us']]} intro="The fastest way to reach us is WhatsApp. We reply every day, 6 AM – 11 PM." />
+
+  <div class="mx-auto grid max-w-7xl gap-12 px-4 py-20 sm:px-6 lg:grid-cols-2 lg:py-28">
+    <div class="grid content-start gap-3">
+      <a href={site.whatsappUrl} class="group flex items-center justify-between gap-6 bg-green p-8 text-ink">
+        <span>
+          <span class="eyebrow block">WhatsApp</span>
+          <span class="display mt-2 block text-5xl">{site.phone}</span>
+        </span>
+        <Icon name="arrow" class="size-8 shrink-0 transition group-hover:translate-x-2" />
+      </a>
+      <ul class="grid gap-3 sm:grid-cols-2">
+        {ways.map(([icon, name, value, href]) => (
+          <li class="border border-line bg-surface p-6">
+            <Icon name={icon} class="size-6 text-green" />
+            <p class="eyebrow mt-4 text-muted">{name}</p>
+            {href ? <a href={href} class="mt-1 block text-lg font-bold break-words hover:text-green">{value}</a> : <p class="mt-1 text-lg font-bold">{value}</p>}
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    <div class="border border-line p-6 sm:p-8">
+      <h2 class="display text-5xl">Send a message</h2>
+      <WaForm intro="Hi Muscularity Fitness," class="mt-8 grid gap-6">
+        <label><span class="eyebrow mb-3 block text-muted">Your name</span><input name="Name" required autocomplete="name" class={field} /></label>
+        <label><span class="eyebrow mb-3 block text-muted">Message</span><textarea name="Message" required rows="5" class={field}></textarea></label>
+        <div class="flex flex-wrap items-center gap-6">
+          <button class="btn">Send on WhatsApp <Icon name="arrow" /></button>
+          <a href="/book-a-trial" class="text-sm font-semibold text-muted underline underline-offset-4 hover:text-fg">Want to book? Use the booking form</a>
+        </div>
+      </WaForm>
+    </div>
+  </div>
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(schema)} />
+</Base>

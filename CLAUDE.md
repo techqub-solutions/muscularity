@@ -13,6 +13,7 @@ When something is confirmed, move it from OPEN to CONFIRMED.
 ## Stack
 
 - Now: Astro 7 (static, zero JS by default), Tailwind CSS 4, Astro fonts API (Archivo, self-hosted), `@astrojs/sitemap`
+- Content: `src/content/` (services, blog, careers as Markdown; `site.json` for NAP, prices, testimonials, FAQs), schemas in `src/content.config.ts`
 - Later: Astro Actions + Resend + Turnstile (forms), Postgres/Neon (leads), GSAP (home hero only)
 
 ## Code rules
@@ -23,6 +24,9 @@ When something is confirmed, move it from OPEN to CONFIRMED.
 - Name, phone, hours and links come only from `src/content/site.json`, so NAP matches everywhere.
 - Every page uses `layouts/Base.astro` with `title` (the keyword only; ` | Muscularity Fitness` is added for you) and `description`.
 - Motion: CSS first, only transform/opacity, reduced motion always respected. GSAP only on the homepage.
+- Design system (use it, don't invent new styles): `btn` = green slash button, `link` = underlined action, `display` = condensed headline, `eyebrow` = small label, `prose` = Markdown text, `reveal` = rise on scroll. Shapes are cut at the logo's angle (clip-path / skew).
+- Components: `PageHero` (inner-page top + breadcrumbs), `ServiceGrid`, `Faq` (+ schema), `WaForm` (form → WhatsApp message), `Icon`.
+- Photos in `src/assets/photos/` are **placeholders** (old theme stock, licence unknown). Replace them all before launch.
 - `#menu` is a native popover. Never give it a display class, or it shows when closed.
 
 ## Local run

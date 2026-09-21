@@ -1,0 +1,29 @@
+---
+// A form that opens WhatsApp with the answers filled in. Field names become the message labels.
+// Fields can be pre-filled from the URL, e.g. /book-a-trial?Where=Home. (Email + database come in Phase 4.)
+import site from '../content/site.json';
+
+interface Props {
+  intro: string; // first line of the WhatsApp message
+  class?: string;
+}
+const { intro, class: cls } = Astro.props;
+const number = site.whatsappUrl.split('?')[0].split('/').pop();
+---
+
+<form data-wa={number} data-intro={intro} class={cls}><slot /></form>
+
+<script>
+  for (const form of document.querySelectorAll<HTMLFormElement>('form[data-wa]')) {
+    new URLSearchParams(location.search).forEach((value, key) => {
+      const field = form.elements.namedItem(key) as HTMLInputElement | null;
+      if (field) field.value = value;
+    });
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const lines = [...new FormData(form)].filter(([, v]) => v).map(([k, v]) => `${k}: ${v}`);
+      const text = encodeURIComponent([form.dataset.intro, ...lines].join('\n'));
+      window.open(`https://wa.me/${form.dataset.wa}?text=${text}`, '_blank');
+    });
+  }
+</script>

@@ -1,0 +1,38 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import Icon from '../../components/Icon.astro';
+import site from '../../content/site.json';
+
+export async function getStaticPaths() {
+  const jobs = await getCollection('careers');
+  return jobs.map((job) => ({ params: { slug: job.id }, props: { job } }));
+}
+
+const { job } = Astro.props;
+const { Content } = await render(job);
+const j = job.data;
+const facts = [['Type', j.type], ['Location', j.location], ['Experience', j.experience]];
+const apply = `mailto:${site.email}?subject=${encodeURIComponent(`Application: ${j.title}`)}`;
+---
+
+<Base title={j.seoTitle} description={j.description}>
+  <PageHero title={j.title} eyebrow="We're hiring" crumbs={[['Careers', '/careers'], [j.title, `/careers/${job.id}`]]}>
+    <dl class="mt-10 flex flex-wrap gap-x-12 gap-y-4">
+      {facts.map(([k, v]) => <div><dt class="eyebrow text-muted">{k}</dt><dd class="mt-1 text-xl font-extrabold uppercase font-stretch-[75%]">{v}</dd></div>)}
+    </dl>
+  </PageHero>
+
+  <div class="mx-auto grid max-w-7xl gap-16 px-4 py-20 sm:px-6 lg:grid-cols-[1fr_22rem] lg:py-28">
+    <div class="prose text-fg/80"><Content /></div>
+    <aside class="lg:sticky lg:top-24 lg:self-start">
+      <div class="border border-line bg-surface p-6">
+        <h2 class="display text-4xl">Apply</h2>
+        <p class="mt-3 text-fg/75">Email your CV with the role in the subject line. We reply to every application.</p>
+        <a href={apply} class="btn mt-6 w-full">Email your CV <Icon name="mail" /></a>
+        <a href={site.whatsappUrl} class="mt-5 block text-center text-sm font-semibold text-muted underline underline-offset-4 hover:text-fg">Questions? WhatsApp us</a>
+      </div>
+    </aside>
+  </div>
+</Base>

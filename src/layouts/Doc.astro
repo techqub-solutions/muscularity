@@ -1,0 +1,14 @@
+---
+// Layout for plain Markdown pages (privacy, terms).
+import Base from './Base.astro';
+import PageHero from '../components/PageHero.astro';
+
+const { frontmatter } = Astro.props;
+---
+
+<Base title={frontmatter.seoTitle} description={frontmatter.description}>
+  <PageHero title={frontmatter.title} crumbs={[[frontmatter.title, Astro.url.pathname]]} intro={frontmatter.intro} />
+  <div class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:py-24">
+    <div class="prose text-fg/80"><slot /></div>
+  </div>
+</Base>

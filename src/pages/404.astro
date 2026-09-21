@@ -1,0 +1,18 @@
+---
+import Base from '../layouts/Base.astro';
+import site from '../content/site.json';
+---
+
+<Base title="Page Not Found" description="This page doesn't exist. Find personal training services, prices and free trial booking at Muscularity Fitness in Abu Dhabi.">
+  <section class="mx-auto flex min-h-[70svh] max-w-7xl flex-col justify-center px-4 py-24 sm:px-6">
+    <p class="display text-[clamp(8rem,30vw,22rem)] leading-[0.8] text-green">404</p>
+    <h1 class="display mt-6 text-[clamp(2.5rem,6vw,5rem)]">This page is taking a rest day.</h1>
+    <p class="mt-6 max-w-lg text-lg text-fg/75">It may have moved, or the link is wrong. Try one of these instead:</p>
+    <div class="mt-10 flex flex-wrap items-center gap-8">
+      <a href="/book-a-trial" class="btn">Book a free trial</a>
+      <a href="/#services" class="link">Our services</a>
+      <a href="/" class="link">Home</a>
+      <a href={site.whatsappUrl} class="link">WhatsApp us</a>
+    </div>
+  </section>
+</Base>

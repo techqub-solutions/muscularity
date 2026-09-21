@@ -1,0 +1,73 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import WaForm from '../components/WaForm.astro';
+import Icon from '../components/Icon.astro';
+import site from '../content/site.json';
+
+const times = ['Early morning (6–9 AM)', 'Morning (9 AM–12 PM)', 'Afternoon (12–5 PM)', 'Evening (5–11 PM)'];
+const goals = ['Lose weight', 'Build muscle', 'Get stronger', 'Move better'];
+const next = [
+  ['Send your request', 'It opens WhatsApp with your details already written. Just press send.'],
+  ['We confirm a time', 'We reply on WhatsApp to agree the day, time and place.'],
+  ['Train for free', 'Your first session is on us. Then choose a package if you want to continue.'],
+];
+const field = 'w-full border border-line bg-ink px-4 py-3.5 text-fg placeholder:text-muted focus:border-green focus:outline-none';
+const chip = 'cursor-pointer border border-line px-4 py-2.5 font-semibold transition hover:border-fg has-checked:border-green has-checked:bg-green has-checked:text-ink has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-green';
+const label = 'eyebrow mb-3 block text-muted';
+---
+
+<Base title="Book a Personal Trainer in Abu Dhabi" description="Book your free personal training session in Abu Dhabi. At your home, outdoors or in the gym, every day 6 AM – 11 PM. We confirm on WhatsApp.">
+  <PageHero title="Book a free trial" crumbs={[['Book a free trial', '/book-a-trial']]} intro="Tell us where, when and what you want to achieve. We'll confirm your free session on WhatsApp." />
+
+  <div class="mx-auto grid max-w-7xl gap-16 px-4 py-20 sm:px-6 lg:grid-cols-[1fr_24rem] lg:py-28">
+    <WaForm intro="Hi Muscularity Fitness, I'd like to book a free trial session." class="grid gap-8">
+      <div class="grid gap-6 sm:grid-cols-2">
+        <label><span class={label}>Your name</span><input name="Name" required autocomplete="name" class={field} /></label>
+        <label><span class={label}>Phone / WhatsApp</span><input name="Phone" type="tel" required autocomplete="tel" placeholder="+971" class={field} /></label>
+      </div>
+      <fieldset>
+        <legend class={label}>Where do you want to train?</legend>
+        <div class="flex flex-wrap gap-2">
+          {site.places.map((p, i) => <label class={chip}><input type="radio" name="Where" value={p} checked={i === 0} class="sr-only" />{p}</label>)}
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend class={label}>Your goal</legend>
+        <div class="flex flex-wrap gap-2">
+          {goals.map((g, i) => <label class={chip}><input type="radio" name="Goal" value={g} checked={i === 0} class="sr-only" />{g}</label>)}
+        </div>
+      </fieldset>
+      <div class="grid gap-6 sm:grid-cols-2">
+        <label>
+          <span class={label}>Service</span>
+          <select name="Service" class={field}>
+            <option value="Not sure yet">Not sure yet</option>
+            {site.services.map((s) => <option>{s.name}</option>)}
+          </select>
+        </label>
+        <label>
+          <span class={label}>Preferred time</span>
+          <select name="Preferred time" class={field}>{times.map((t) => <option>{t}</option>)}</select>
+        </label>
+      </div>
+      <label><span class={label}>Anything we should know? (optional)</span><textarea name="Notes" rows="3" placeholder="Injuries, your area in Abu Dhabi, questions…" class={field}></textarea></label>
+      <div class="flex flex-wrap items-center gap-6">
+        <button class="btn">Book your free trial <Icon name="arrow" /></button>
+        <p class="text-sm text-muted">Opens WhatsApp. Prefer to call? <a href={`tel:${site.tel}`} class="text-fg underline underline-offset-4">{site.phone}</a></p>
+      </div>
+    </WaForm>
+
+    <aside>
+      <h2 class="display text-5xl">What happens next</h2>
+      <ol class="mt-8 grid gap-6">
+        {next.map(([title, text], i) => (
+          <li class="grid grid-cols-[3rem_1fr] gap-3 border-t border-line pt-5">
+            <span class="display text-4xl text-green">0{i + 1}</span>
+            <div><h3 class="text-lg font-bold">{title}</h3><p class="mt-1 text-fg/70">{text}</p></div>
+          </li>
+        ))}
+      </ol>
+    </aside>
+  </div>
+</Base>

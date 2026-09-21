@@ -1,43 +1,239 @@
 ---
-// Phase 1 preview of the homepage: hero + services. The full homepage is built in Phase 3.
+import { Image } from 'astro:assets';
+import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import Icon from '../components/Icon.astro';
+import ServiceGrid from '../components/ServiceGrid.astro';
+import Faq from '../components/Faq.astro';
 import site from '../content/site.json';
+import hero from '../assets/photos/trainer-client.jpg';
+import founder from '../assets/photos/founder.jpg';
+
+const posts = await getCollection('blog');
+const { founder: f } = site;
+const facts = [['Where', site.places.join(' · ')], ['When', site.hoursText], ['From', `AED ${site.packages[0].price} / session`]];
+const steps = [
+  ['Free trial', 'We assess your fitness and learn your goal, your history and your week.'],
+  ['Your plan', 'A programme built for you, not copied from a template.'],
+  ['Train', 'One-to-one, at home, outdoors or in the gym. Every session tracked.'],
+];
+const goals = ['Lose weight', 'Build muscle', 'Get stronger', 'Move better'];
+const chip = 'cursor-pointer border border-ink/25 px-4 py-2 font-semibold transition hover:border-ink has-checked:border-ink has-checked:bg-ink has-checked:text-paper has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-green';
+const label = 'eyebrow text-ink/60';
+const heights = ['lg:min-h-60', 'lg:min-h-68', 'lg:min-h-76', 'lg:min-h-84'];
+const h2 = 'display text-[clamp(3rem,7vw,6rem)]';
 ---
 
-<Base
-  title="Personal Trainer Abu Dhabi"
-  description="Personal training in Abu Dhabi at your home, outdoors or in the gym. Cross fit, body building, strength and mobility coaching. Book a free trial."
->
+<Base title="Personal Trainer Abu Dhabi" description="One-to-one personal training in Abu Dhabi at your home, outdoors or in the gym. From AED 135 / session, every day 6 AM – 11 PM. Your first session is free.">
+  <!-- Hero -->
   <section class="relative isolate overflow-hidden">
-    <div class="absolute inset-0 -z-10 bg-radial-[at_80%_10%] from-green/20 via-transparent to-transparent"></div>
-    <div class="mx-auto max-w-7xl px-4 pt-20 pb-24 sm:px-6 sm:pt-28 lg:pb-32">
-      <p class="text-sm font-semibold uppercase tracking-[0.2em] text-green">Personal training · {site.city}</p>
-      <h1 class="display mt-5 max-w-5xl text-5xl sm:text-7xl lg:text-8xl">
-        <span class="block">Be strong.</span> <span class="block">Be fit.</span> <span class="block text-green">Be healthy.</span>
+    <div class="absolute inset-y-0 right-0 -z-10 w-full lg:w-[54%] lg:[clip-path:polygon(30%_0,100%_0,100%_100%,0_100%)]">
+      <Image src={hero} alt="A personal trainer coaching a client through a core exercise" widths={[640, 960, 1280, 1920]} sizes="(min-width: 1024px) 54vw, 100vw" loading="eager" fetchpriority="high" class="size-full object-cover" />
+      <div class="absolute inset-0 bg-ink/75 lg:bg-ink/15"></div>
+    </div>
+    <div class="mx-auto flex min-h-[calc(100svh-4rem)] max-w-7xl flex-col justify-center px-4 py-16 sm:px-6 lg:min-h-[46rem]">
+      <h1>
+        <span class="eyebrow block text-green">Personal trainer in {site.city}</span>
+        <span class="display mt-5 block text-[clamp(4rem,9vw,7.75rem)]">
+          <span class="block overflow-hidden"><span class="block animate-rise">Your trainer.</span></span>
+          <span class="block overflow-hidden"><span class="block animate-rise text-green [animation-delay:.1s]">Your place.</span></span>
+          <span class="block overflow-hidden"><span class="block animate-rise [animation-delay:.2s]">Your pace.</span></span>
+        </span>
       </h1>
-      <p class="mt-6 max-w-xl text-lg text-muted">{site.tagline}</p>
-      <div class="mt-10 flex flex-wrap gap-3">
-        <a href="/book-a-trial" class="btn bg-green text-black hover:bg-fg">Book a free trial <Icon name="arrow" /></a>
-        <a href={site.whatsappUrl} class="btn ring-1 ring-line hover:bg-white/5"><Icon name="chat" /> WhatsApp us</a>
+      <p class="mt-8 max-w-md text-lg text-fg/85">One-to-one coaching at your home, outdoors or in the gym, every day from 6 AM to 11 PM. Your first session is free.</p>
+      <div class="mt-10 flex flex-wrap items-center gap-8">
+        <a href="/book-a-trial" class="btn">Book a free trial <Icon name="arrow" /></a>
+        <a href={site.whatsappUrl} class="link">WhatsApp us</a>
+      </div>
+      <dl class="mt-16 grid max-w-xl gap-6 border-t border-line pt-6 sm:grid-cols-3">
+        {facts.map(([k, v]) => (
+          <div>
+            <dt class="eyebrow text-muted">{k}</dt>
+            <dd class="mt-1 text-xl font-extrabold uppercase font-stretch-[75%]">{v}</dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+  </section>
+
+  <!-- Marquee -->
+  <div class="overflow-hidden bg-green py-4 text-ink" aria-hidden="true">
+    <div class="flex w-max animate-marquee text-3xl font-black uppercase font-stretch-[62%] sm:text-4xl">
+      {[...site.services, ...site.services].map((s) => <span class="pr-10">{s.name} <span class="pl-8">/</span></span>)}
+    </div>
+  </div>
+
+  <!-- Services -->
+  <section id="services" class="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:py-32">
+    <div class="flex flex-wrap items-end justify-between gap-6">
+      <h2 class={h2}>Six ways<br />to train</h2>
+      <p class="max-w-sm text-lg text-fg/70">Every programme is one-to-one and built around your goal, your level and your week.</p>
+    </div>
+    <div class="mt-12"><ServiceGrid /></div>
+  </section>
+
+  <!-- How it works + quick booking -->
+  <section class="bg-paper text-ink">
+    <div class="mx-auto grid max-w-7xl gap-16 px-4 py-24 sm:px-6 lg:grid-cols-[1fr_26rem] lg:py-32">
+      <div>
+        <p class={label}>How it works</p>
+        <h2 class={`${h2} mt-4`}>Start with a free session</h2>
+        <ol class="mt-12 grid gap-8">
+          {steps.map(([title, text], i) => (
+            <li class="reveal grid grid-cols-[4.5rem_1fr] gap-4 border-t-2 border-ink pt-5">
+              <span class="display text-6xl text-ink/25">0{i + 1}</span>
+              <div>
+                <h3 class="text-2xl font-extrabold uppercase font-stretch-[75%]">{title}</h3>
+                <p class="mt-1 text-lg text-ink/70">{text}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </div>
+
+      <form action="/book-a-trial" class="reveal self-start border-2 border-ink bg-paper shadow-[10px_10px_0_var(--color-green)]">
+        <p class="flex items-center justify-between border-b-2 border-ink px-5 py-3"><span class={label}>Session 01</span><span class="bg-green px-2 py-1 text-xs font-bold uppercase">Free trial</span></p>
+        <fieldset class="border-b border-ink/15 p-5">
+          <legend class={`float-left mb-3 w-full ${label}`}>Where</legend>
+          <div class="clear-both flex flex-wrap gap-2">
+            {site.places.map((p, i) => <label class={chip}><input type="radio" name="Where" value={p} checked={i === 0} class="sr-only" />{p}</label>)}
+          </div>
+        </fieldset>
+        <fieldset class="border-b border-ink/15 p-5">
+          <legend class={`float-left mb-3 w-full ${label}`}>Your goal</legend>
+          <div class="clear-both flex flex-wrap gap-2">
+            {goals.map((g, i) => <label class={chip}><input type="radio" name="Goal" value={g} checked={i === 0} class="sr-only" />{g}</label>)}
+          </div>
+        </fieldset>
+        <p class="p-5 text-sm text-ink/70">{site.hoursText}. We confirm on WhatsApp.</p>
+        <button class="flex w-full items-center justify-between bg-ink px-5 py-4 font-bold uppercase text-paper transition hover:bg-green hover:text-ink">Book my free session <Icon name="arrow" /></button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Packages -->
+  <section id="packages" class="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:py-32">
+    <div class="flex flex-wrap items-end justify-between gap-6">
+      <h2 class={h2}>Clear prices.<br /><span class="text-muted">Per session.</span></h2>
+      <p class="max-w-sm text-lg text-fg/70">Every package is one-to-one coaching at your home, outdoors or in the gym.</p>
+    </div>
+    <ol class="mt-14 grid gap-3 sm:grid-cols-2 lg:grid-cols-4 lg:items-end">
+      {site.packages.map((p, i) => (
+        <li class={`reveal flex min-h-48 flex-col justify-between bg-surface p-6 pt-14 [clip-path:polygon(0_14%,100%_0,100%_100%,0_100%)] last:bg-green last:text-ink ${heights[i]}`}>
+          <h3 class="eyebrow opacity-75">{p.name}</h3>
+          <p class="font-extrabold uppercase font-stretch-[70%]"><span class="text-2xl">AED</span> <span class="text-7xl">{p.price}</span> <span class="text-lg opacity-75">/ session</span></p>
+        </li>
+      ))}
+    </ol>
+    <div class="mt-10 flex flex-wrap items-center justify-between gap-6 border-t border-line pt-8">
+      <p class="text-lg text-fg/80"><strong class="text-fg">{site.customPackages.join(' and ')}</strong> are priced to your goal. Ask us on WhatsApp.</p>
+      <a href="/book-a-trial" class="btn">Start with a free trial</a>
+    </div>
+  </section>
+
+  <!-- Founder -->
+  <section class="bg-surface">
+    <div class="mx-auto grid max-w-7xl items-center gap-16 px-4 py-24 sm:px-6 lg:grid-cols-2 lg:py-32">
+      <div class="reveal relative mx-auto w-full max-w-md">
+        <div class="absolute inset-0 translate-x-5 translate-y-5 bg-green [clip-path:polygon(12%_0,100%_0,88%_100%,0_100%)]"></div>
+        <Image src={founder} alt={`${f.name}, founder of ${site.name}, on a bodybuilding stage`} widths={[480, 667]} sizes="(min-width: 1024px) 28rem, 90vw" class="relative aspect-[4/5] w-full object-cover [clip-path:polygon(12%_0,100%_0,88%_100%,0_100%)]" />
+      </div>
+      <div>
+        <p class="eyebrow text-green">Meet the founder</p>
+        <h2 class={`${h2} mt-4`}>{f.name}</h2>
+        <p class="mt-6 max-w-lg text-lg text-fg/80">{f.years} years in fitness, across bodybuilding, Cross Fit, functional training and strength conditioning. In {f.founded} he founded {site.name} so every client gets a plan built around them.</p>
+        <dl class="mt-10 grid max-w-md grid-cols-2 gap-6 border-t border-line pt-6">
+          <div><dt class="eyebrow text-muted">In fitness</dt><dd class="display mt-2 text-6xl text-green">{f.years} yrs</dd></div>
+          <div><dt class="eyebrow text-muted">Founded</dt><dd class="display mt-2 text-6xl">{f.founded}</dd></div>
+        </dl>
+        <a href="/about-founder" class="link mt-10 inline-block">Read his story</a>
       </div>
     </div>
   </section>
 
-  <section id="services" class="mx-auto max-w-7xl px-4 pb-24 sm:px-6">
-    <h2 class="display text-3xl sm:text-5xl">Our services</h2>
-    <ul class="mt-10 grid gap-px overflow-hidden rounded-3xl border border-line bg-line sm:grid-cols-2 lg:grid-cols-3">
-      {site.services.map((s, i) => (
-        <li>
-          <a href={`/services/${s.slug}`} class="group flex h-full min-h-44 flex-col justify-between gap-8 bg-ink p-6 transition duration-300 hover:bg-surface">
-            <span class="text-sm text-muted">0{i + 1}</span>
-            <span class="flex items-end justify-between gap-4 text-xl font-bold">
-              {s.name}
-              <Icon name="arrow" class="size-5 shrink-0 text-green transition duration-300 group-hover:translate-x-1" />
-            </span>
-          </a>
+  <!-- Testimonials -->
+  <section class="py-24 lg:py-32">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6"><h2 class={h2}>In their words</h2></div>
+    <ul class="mt-12 flex snap-x snap-mandatory scroll-px-(--pad) gap-4 overflow-x-auto px-(--pad) pb-6 [--pad:max(1.5rem,calc((100vw_-_80rem)/2_+_1.5rem))]">
+      {site.testimonials.map((t) => (
+        <li class="flex w-[85vw] max-w-md shrink-0 snap-start flex-col justify-between gap-8 border border-line bg-surface p-8">
+          <blockquote class="text-lg leading-relaxed text-fg/90"><span class="display block text-7xl leading-none text-green" aria-hidden="true">“</span>{t.text}</blockquote>
+          <p class="eyebrow">{t.name}</p>
         </li>
       ))}
     </ul>
   </section>
+
+  <!-- BMI -->
+  <section class="bg-paper text-ink">
+    <div class="mx-auto grid max-w-7xl items-center gap-14 px-4 py-24 sm:px-6 lg:grid-cols-2 lg:py-32">
+      <div>
+        <p class={label}>Free tool</p>
+        <h2 class={`${h2} mt-4`}>Check your BMI</h2>
+        <p class="mt-6 max-w-md text-lg text-ink/75">Body mass index is a quick first check of your weight for your height. It's a starting point, not a verdict. Your free trial gives you the full picture.</p>
+      </div>
+      <form id="bmi" class="group grid gap-6 border-2 border-ink p-6 sm:p-8">
+        <div class="grid grid-cols-2 gap-4">
+          {[['h', 'Height (cm)', 100, 250], ['w', 'Weight (kg)', 30, 300]].map(([name, text, min, max]) => (
+            <label class="grid gap-2 font-semibold">{text}<input name={name} type="number" inputmode="decimal" min={min} max={max} required class="border-2 border-ink/20 bg-white px-4 py-3 text-lg focus:border-ink focus:outline-none" /></label>
+          ))}
+        </div>
+        <button class="btn justify-self-start">Calculate</button>
+        <div>
+          <div class="relative h-3 bg-ink/10">
+            <div class="absolute inset-y-0 left-[14%] w-[25.6%] bg-green"></div>
+            <div class="absolute inset-0 opacity-0 transition duration-700 ease-out-expo group-data-[done]:opacity-100" style="transform: translateX(var(--bmi, 0%))">
+              <div class="absolute -top-2 left-0 h-7 w-1.5 -translate-x-1/2 bg-ink"></div>
+            </div>
+          </div>
+          <p class="relative mt-2 h-4 text-xs font-semibold text-ink/60"><span class="absolute left-0">15</span><span class="absolute left-[14%] text-ink">Healthy 18.5 – 24.9</span><span class="absolute right-0">40</span></p>
+          <output class="mt-5 block text-2xl font-extrabold"></output>
+          <a href="/book-a-trial" class="link mt-4 hidden group-data-[done]:inline-block">Get your plan: book a free trial</a>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="mx-auto grid max-w-7xl gap-12 px-4 py-24 sm:px-6 lg:grid-cols-[1fr_1.6fr] lg:py-32">
+    <div>
+      <h2 class="display text-[clamp(3rem,6vw,5.5rem)]">Questions, answered</h2>
+      <p class="mt-6 text-lg text-fg/70">Anything else? <a href={site.whatsappUrl} class="underline decoration-green decoration-2 underline-offset-4 hover:text-green">Ask us on WhatsApp</a>.</p>
+    </div>
+    <Faq items={site.faqs} />
+  </section>
+
+  <!-- Blog -->
+  <section class="border-t border-line">
+    <div class="mx-auto max-w-7xl px-4 py-24 sm:px-6">
+      <div class="flex flex-wrap items-end justify-between gap-6">
+        <h2 class="display text-[clamp(2.5rem,5vw,4.5rem)]">From the blog</h2>
+        <a href="/blog" class="link">All articles</a>
+      </div>
+      <ul class="mt-12 grid gap-10 md:grid-cols-3">
+        {posts.map((p) => (
+          <li class="reveal">
+            <a href={`/blog/${p.id}`} class="group block">
+              <div class="overflow-hidden"><Image src={p.data.image} alt="" widths={[400, 800]} sizes="(min-width: 768px) 30vw, 90vw" class="aspect-[3/2] w-full object-cover transition duration-700 ease-out-expo group-hover:scale-105" /></div>
+              <h3 class="mt-5 text-xl font-bold leading-snug transition-colors group-hover:text-green">{p.data.title}</h3>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
 </Base>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>('#bmi')!;
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const data = new FormData(form);
+    const m = Number(data.get('h')) / 100;
+    const bmi = Number(data.get('w')) / (m * m);
+    const zone = bmi < 18.5 ? 'underweight' : bmi < 25 ? 'in the healthy range' : bmi < 30 ? 'overweight' : 'in the obese range';
+    form.style.setProperty('--bmi', `${Math.min(100, Math.max(0, ((bmi - 15) / 25) * 100))}%`);
+    form.querySelector('output')!.textContent = `Your BMI is ${bmi.toFixed(1)}: ${zone}.`;
+    form.dataset.done = '';
+  });
+</script>

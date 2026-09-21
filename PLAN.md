@@ -33,6 +33,8 @@ Bootstrap, WordPress, a CMS. If the client wants to edit content themselves late
 
 ## 2. Design direction: a 2027 look
 
+**Chosen 22 Sept 2026** after testing 3 directions: dark gym look + shapes cut at the logo's angle (slash buttons, slanted photos, price columns) + condensed Archivo headlines + a "session card" booking widget + light paper sections for rhythm.
+
 - **Feel:** dark, cinematic, bold. Real trainers and real sessions, no stock photos.
 - **Colours** (from the logo: green + black):
 

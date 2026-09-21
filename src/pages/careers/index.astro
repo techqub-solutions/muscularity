@@ -1,0 +1,28 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import Icon from '../../components/Icon.astro';
+import site from '../../content/site.json';
+
+const jobs = await getCollection('careers');
+---
+
+<Base title="Personal Trainer Jobs in Abu Dhabi" description="Careers at Muscularity Fitness in Abu Dhabi: trainer, personal trainer, senior gym trainer and fitness manager roles. Full time.">
+  <PageHero title="Careers" crumbs={[['Careers', '/careers']]} intro="Love coaching people? Join a team that trains clients one-to-one at their homes, outdoors and in the gym." />
+
+  <section class="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:py-28">
+    <h2 class="eyebrow text-muted">Open roles</h2>
+    <ul class="mt-6 border-t-2 border-fg">
+      {jobs.map((j) => (
+        <li class="border-b border-line">
+          <a href={`/careers/${j.id}`} class="group flex flex-wrap items-center justify-between gap-4 px-2 py-6 transition-colors duration-300 hover:bg-green hover:text-ink">
+            <span class="display text-[clamp(2rem,5vw,3.75rem)] transition-transform duration-500 ease-out-expo group-hover:translate-x-3">{j.data.title}</span>
+            <span class="flex items-center gap-6 text-sm font-bold uppercase tracking-wide">{j.data.type} · {j.data.location}<Icon name="arrow" class="size-6" /></span>
+          </a>
+        </li>
+      ))}
+    </ul>
+    <p class="mt-10 text-lg text-fg/70">Don't see your role? Send your CV to <a href={`mailto:${site.email}?subject=Job application`} class="text-fg underline decoration-green decoration-2 underline-offset-4">{site.email}</a>.</p>
+  </section>
+</Base>

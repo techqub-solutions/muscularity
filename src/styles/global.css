@@ -21,13 +21,63 @@
   --font-sans: var(--font-archivo);
 }
 
-@utility display {
-  @apply font-extrabold uppercase leading-[0.95] tracking-tight text-balance;
+@layer base {
+  :focus-visible { outline: 2px solid var(--color-green); outline-offset: 3px; }
 }
 
-@utility btn {
-  @apply inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 font-semibold transition duration-300 ease-out-expo active:scale-[.97];
+/* Condensed sports headline */
+@utility display {
+  @apply font-black uppercase leading-[0.88] tracking-tight text-balance font-stretch-[68%];
 }
+
+/* Small label above a heading */
+@utility eyebrow {
+  @apply text-xs font-bold uppercase tracking-[0.2em];
+}
+
+/* Main button: a green slash at the logo's angle, black text */
+@utility btn {
+  @apply relative isolate inline-flex items-center justify-center gap-2 px-8 py-3.5 font-bold uppercase tracking-wide text-ink;
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: var(--color-green);
+    transform: skewX(-18deg);
+    transition: transform 0.3s var(--ease-out-expo), background-color 0.3s;
+  }
+  &:hover::before { transform: skewX(-8deg); background: color-mix(in oklab, var(--color-green), white 22%); }
+}
+
+/* Second action: bold underlined text */
+@utility link {
+  @apply font-bold uppercase tracking-wide underline decoration-green decoration-2 underline-offset-8 transition-colors hover:text-green;
+}
+
+/* Markdown text: services, blog, careers, legal */
+@utility prose {
+  @apply max-w-[68ch] text-lg leading-relaxed;
+  & h2 { @apply mt-14 mb-5 text-4xl font-black uppercase leading-[0.95] font-stretch-[68%] text-fg; }
+  & h3 { @apply mt-8 mb-2 text-xl font-bold text-fg; }
+  & p, & ul, & ol { @apply mb-5; }
+  & strong { @apply font-bold text-fg; }
+  & a { @apply underline decoration-green decoration-2 underline-offset-4; }
+  & ul > li { @apply relative mb-3 pl-6; }
+  & ul > li::before { content: '/'; @apply absolute left-0 font-black text-green; }
+  & ol { @apply list-decimal pl-6; }
+  & > :first-child { @apply mt-0; }
+}
+
+/* Rise into view on scroll. Browsers without scroll timelines just show the content. */
+@utility reveal {
+  @supports (animation-timeline: view()) {
+    animation: reveal linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 35%;
+  }
+}
+@keyframes reveal { from { opacity: 0; translate: 0 2.5rem; } }
 
 /* Page transitions: pure CSS, only when the visitor allows motion */
 @media (prefers-reduced-motion: no-preference) {

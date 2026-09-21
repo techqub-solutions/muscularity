@@ -35,78 +35,45 @@ questions are in `CLAUDE.md`. Every phase ends with the user's approval.
 - [x] Sitemap generated
 - [ ] GitHub repo + first online preview link (after the hosting decision)
 
-## Phase 2: content
+## Design ✅ (22 Sept 2026)
 
-- [ ] Content collections: services ×6, blog ×3, careers ×4. Title and description are required, so the build fails without them
-- [ ] Move all text from the old site's view files into the content files
-- [ ] Rewrite each service page (structure: PLAN.md §4). Short sentences, benefit first, local
-- [ ] Packages ×6 in `site.json`: AED prices + what each includes
-- [ ] Testimonials ×5 (only with permission)
-- [ ] FAQs: homepage + 3–5 per service
-- [ ] Images: choose real photos; AVIF/WebP via `<Image>`; descriptive alt text on every image
+- [x] Research: Abu Dhabi competitors + "AI-looking website" patterns; critique of the first draft
+- [x] 3 directions tested (Poster, Monogram, Session card) → mix chosen: dark gym look, logo-angle "slash" shapes, condensed type, booking card
+- [x] Design system in `global.css`: slash button, `display`/`eyebrow` type, prose, scroll reveal, marquee
 
-## Phase 3: pages
+## Phase 2: content (draft done 22 Sept 2026, needs client review)
 
-### Homepage `/`
-- [ ] Title + meta for *home personal trainer Abu Dhabi*
-- [ ] Sections in PLAN.md order: hero, marquee, services, how it works, packages, founder & trainers, testimonials, BMI, FAQ, articles, final CTA
-- [ ] Free assessment offer above the fold
-- [ ] Packages with AED prices and what each includes
-- [ ] Trainer cards: photo, certification, specialism
-- [ ] Live Google rating and review count (only if real)
-- [ ] BMI calculator with a booking CTA after the result
-- [ ] FAQ block + `FAQPage` schema
-- [ ] Exactly one H1
+- [x] Content collections: services ×6, blog ×3, careers ×4 (title + description required, so the build fails without them)
+- [x] All old text moved in and rewritten: shorter, benefit first, facts only from the old site
+- [x] Cross Fit page written new (the old page was empty)
+- [x] Home FAQs (7) + 3 FAQs per service
+- [x] Packages ×4 with AED prices + 2 "priced to your goal" in `site.json`
+- [x] Testimonials ×5, word for word from the old site
+- [ ] **What each package includes** (client)
+- [ ] **Testimonial permission** + area + result (client)
+- [ ] **Replace every placeholder photo** with the shoot. The current ones are the old theme's stock images and their licence is unknown. **Launch blocker**
+- [ ] Logo as a vector file (currently made from the old PNG)
 
-### About `/about-us`
-- [ ] Unique title + meta (must differ from `/about-founder`)
-- [ ] Named certifications with issuing body and year
-- [ ] Insurance and safety statement; team size and clients trained (confirmed only)
-- [ ] `AboutPage` + `Organization` schema; links to services and booking
+## Phase 3: pages (built 22 Sept 2026)
 
-### Founder `/about-founder`
-- [ ] Correct founder name and role
-- [ ] Real certifications (not "numerous certifications"); real photo with alt text
-- [ ] Unique title + meta; `Person` schema linked to the business; links to booking and services
-
-### Service pages ×6 `/services/<slug>`
-cross-fit · body-building · fitness · flexibility-and-mobility · functional-training · strength-training-sports-conditioning
-- [ ] Unique title + meta per service; one H1
-- [ ] AED price + what's included
-- [ ] Trainer who delivers it, with certification; one real client result
-- [ ] 3–5 FAQs + `FAQPage` schema; `Service` schema; `BreadcrumbList`
-- [ ] Internal links: booking, two related services (area pages later)
-- [ ] CTA at the top and at the bottom
-
-### Book a free trial `/book-a-trial`
-- [ ] H1 `Book A Free Trial`, button `Book Your Free Trial`
-- [ ] Fewest fields that still allow a callback (PLAN.md §6)
-- [ ] "What happens next" in 3 steps
-- [ ] Title + meta for *book a personal trainer Abu Dhabi*
-
-### Contact `/contact-us`
-- [ ] WhatsApp as the main contact method
-- [ ] Map + the address exactly as on the trade licence
-- [ ] State a response time; short form
-- [ ] Title + meta; `ContactPage` schema; NAP matches Google Business Profile character for character
-
-### Careers `/careers` + 4 roles
-- [ ] Unique title + meta on the hub and each role
-- [ ] `JobPosting` schema on all 4 roles
-- [ ] Application form with CV upload; salary and location if the client shares them
-
-### Blog `/blog` + 3 posts
-- [ ] New `/blog` index page
-- [ ] Cardio Workouts, Rebooting Your Body's Vital Organs, Strength Training: unique titles + meta
-- [ ] Visible author and publish date; `Article` schema
-- [ ] Each post links to a service page and to booking; CTA at the end
-
-### Legal + 404
-- [ ] Privacy and Terms: no shipping/returns/refund clauses; correct legal business name and address
-- [ ] Friendly 404 with links to services and booking
+- [x] Home: hero, marquee, services, how it works + booking card, prices, founder, testimonials, BMI, FAQ, blog
+- [x] Services ×6 (one template): hero, who it's for, text, sticky price card, FAQ, related, `Service` + `FAQPage` + `BreadcrumbList` schema
+- [x] About, Founder (`Person` schema), Contact (`ContactPage` schema)
+- [x] Book a free trial: pre-fills from the home card and service pages; sends a WhatsApp message; "what happens next"
+- [x] Careers hub + 4 roles (apply by email), Blog index + 3 posts (`Article` schema)
+- [x] Privacy, Terms, friendly 404
+- [x] Old URLs redirect: `/book-a-trail`, `/about-ceo`, `/services/details/*`
+- [x] Unique title + meta on every page; one H1; canonical; breadcrumbs
+- [ ] Confirm founder name, role and certifications (then add certifications)
+- [ ] Confirm the 4 job roles (duties are drafts), location, salary; then add `JobPosting` schema
+- [ ] Privacy and Terms: legal review; correct legal business name and address
+- [ ] Contact: map + trade-licence address; stated response time
+- [ ] Blog: real author and publish dates
+- [ ] About: `AboutPage` + `Organization` schema; certifications with issuer and year; insurance statement
 
 ## Phase 4: forms and leads
 
+- [x] Interim (works now, no backend): booking and contact forms open WhatsApp with the answers filled in
 - [ ] Astro Actions for trial, contact and careers forms
 - [ ] Resend: verify the domain; **merge** SPF with Hostinger's, never replace it
 - [ ] Turnstile + honeypot on every form
@@ -118,11 +85,12 @@ cross-fit · body-building · fitness · flexibility-and-mobility · functional-
 
 ## Phase 5: motion and polish
 
-- [ ] Scroll reveals (CSS scroll-driven)
+- [x] Scroll reveals (CSS scroll-driven)
 - [ ] Hero: GSAP SplitText headline + video loop (homepage only)
-- [ ] Services marquee; card hovers; testimonial swipe slider; WhatsApp pulse
+- [x] Services marquee; card hovers; testimonial swipe slider
+- [ ] WhatsApp button pulse
 - [ ] Number counters (confirmed numbers only)
-- [ ] BMI animated gauge
+- [x] BMI calculator with animated marker + booking link
 - [ ] Accessibility pass: keyboard, contrast, reduced motion. Mobile pass on real phones
 
 ## Phase 6: launch

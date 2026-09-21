@@ -7,47 +7,62 @@ import site from '../content/site.json';
 const company = [
   ['About us', '/about-us'],
   ['Our founder', '/about-founder'],
+  ['Pricing', '/#packages'],
   ['Careers', '/careers'],
   ['Blog', '/blog'],
   ['Contact', '/contact-us'],
 ];
-const heading = 'text-xs font-semibold uppercase tracking-widest text-muted';
+const heading = 'eyebrow text-muted';
 ---
 
-<footer class="border-t border-line bg-surface">
-  <div class="mx-auto grid max-w-7xl gap-10 px-4 py-16 sm:px-6 md:grid-cols-2 lg:grid-cols-4">
+<!-- Every page ends with the free-trial offer (except the booking page itself) -->
+<section class:list={['bg-green text-ink', Astro.url.pathname === '/book-a-trial' && 'hidden']}>
+  <div class="mx-auto flex max-w-7xl flex-col gap-10 px-4 py-16 sm:px-6 lg:flex-row lg:items-end lg:justify-between lg:py-20">
+    <div>
+      <p class="eyebrow">{site.places.join(' · ')} · {site.hoursText}</p>
+      <h2 class="display mt-4 text-[clamp(3rem,8vw,7rem)]">Your first session<br />is free.</h2>
+    </div>
+    <div class="flex flex-wrap items-center gap-8">
+      <a href="/book-a-trial" class="btn text-paper! before:bg-ink!">Book a free trial <Icon name="arrow" /></a>
+      <a href={site.whatsappUrl} class="font-bold uppercase tracking-wide underline decoration-2 underline-offset-8">WhatsApp us</a>
+    </div>
+  </div>
+</section>
+
+<footer class="bg-surface">
+  <div class="mx-auto grid max-w-7xl gap-12 px-4 py-16 sm:px-6 md:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1.2fr]">
     <div>
       <Image src={logo} alt={site.name} width={150} densities={[1, 2]} />
-      <p class="mt-5 max-w-xs text-sm text-muted">{site.tagline}</p>
+      <p class="mt-6 max-w-xs text-fg/70">{site.tagline}</p>
     </div>
     <nav aria-label="Services">
       <h2 class={heading}>Services</h2>
-      <ul class="mt-4 grid gap-2.5 text-sm">
-        {site.services.map((s) => <li><a href={`/services/${s.slug}`} class="hover:text-green">{s.name}</a></li>)}
+      <ul class="mt-5 grid gap-2.5">
+        {site.services.map((s) => <li><a href={`/services/${s.slug}`} class="text-fg/85 hover:text-green">{s.name}</a></li>)}
       </ul>
     </nav>
     <nav aria-label="Company">
       <h2 class={heading}>Company</h2>
-      <ul class="mt-4 grid gap-2.5 text-sm">
-        {company.map(([label, href]) => <li><a href={href} class="hover:text-green">{label}</a></li>)}
+      <ul class="mt-5 grid gap-2.5">
+        {company.map(([label, href]) => <li><a href={href} class="text-fg/85 hover:text-green">{label}</a></li>)}
       </ul>
     </nav>
     <div>
       <h2 class={heading}>Contact</h2>
-      <ul class="mt-4 grid gap-2.5 text-sm">
-        <li><a href={`tel:${site.tel}`} class="hover:text-green">{site.phone}</a></li>
-        <li><a href={site.whatsappUrl} class="hover:text-green">WhatsApp</a></li>
-        <li><a href={`mailto:${site.email}`} class="hover:text-green">{site.email}</a></li>
-        <li class="text-muted">{site.hoursText}</li>
-        <li class="text-muted">{site.city}, UAE</li>
+      <ul class="mt-5 grid gap-3 text-fg/85">
+        <li><a href={site.whatsappUrl} class="flex items-center gap-3 hover:text-green"><Icon name="chat" class="size-5 text-green" />WhatsApp {site.phone}</a></li>
+        <li><a href={`tel:${site.tel}`} class="flex items-center gap-3 hover:text-green"><Icon name="phone" class="size-5 text-green" />{site.phone}</a></li>
+        <li><a href={`mailto:${site.email}`} class="flex items-center gap-3 hover:text-green"><Icon name="mail" class="size-5 text-green" />{site.email}</a></li>
+        <li class="flex items-center gap-3"><Icon name="clock" class="size-5 text-green" />{site.hoursText}</li>
+        <li class="flex items-center gap-3"><Icon name="pin" class="size-5 text-green" />{site.city}, UAE</li>
       </ul>
     </div>
   </div>
 
   <div class="border-t border-line">
-    <div class="mx-auto flex max-w-7xl flex-wrap justify-between gap-4 px-4 py-6 text-xs text-muted sm:px-6">
+    <div class="mx-auto flex max-w-7xl flex-wrap justify-between gap-4 px-4 py-6 text-sm text-muted sm:px-6">
       <p>© {new Date().getFullYear()} {site.name}</p>
-      <div class="flex gap-5">
+      <div class="flex gap-6">
         {Object.entries(site.social).map(([label, href]) => <a href={href} target="_blank" rel="noopener" class="hover:text-fg">{label}</a>)}
         <a href="/privacy-policy" class="hover:text-fg">Privacy</a>
         <a href="/terms-and-condition" class="hover:text-fg">Terms</a>
@@ -56,9 +71,9 @@ const heading = 'text-xs font-semibold uppercase tracking-widest text-muted';
   </div>
 
   <!-- Mobile quick actions (body has pb-16 on mobile so this never covers content) -->
-  <nav aria-label="Quick actions" class="fixed inset-x-0 bottom-0 z-40 grid grid-cols-3 border-t border-line bg-ink/90 text-xs font-semibold backdrop-blur-md md:hidden">
+  <nav aria-label="Quick actions" class="fixed inset-x-0 bottom-0 z-40 grid grid-cols-3 border-t border-line bg-ink/95 text-xs font-bold uppercase backdrop-blur-md md:hidden">
     <a href={`tel:${site.tel}`} class="flex flex-col items-center gap-1 py-2.5"><Icon name="phone" />Call</a>
     <a href={site.whatsappUrl} class="flex flex-col items-center gap-1 py-2.5 text-green"><Icon name="chat" />WhatsApp</a>
-    <a href="/book-a-trial" class="flex flex-col items-center gap-1 bg-green py-2.5 text-black"><Icon name="arrow" />Book trial</a>
+    <a href="/book-a-trial" class="flex flex-col items-center gap-1 bg-green py-2.5 text-ink"><Icon name="arrow" />Free trial</a>
   </nav>
 </footer>
