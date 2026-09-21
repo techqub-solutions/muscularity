@@ -1,0 +1,69 @@
+---
+// Design direction C, "Session card": light coach's-notebook grid; the hero starts your booking. Temporary.
+import Base from '../../layouts/Base.astro';
+import site from '../../content/site.json';
+
+const where = ['Home', 'Outdoors', 'Gym'];
+const goals = ['Lose weight', 'Build muscle', 'Get stronger', 'Move better'];
+const steps = [
+  ['Free assessment', 'We learn your goal, your history and your week.'],
+  ['Your plan', 'A programme built for you, not copied from a template.'],
+  ['Train', 'One-to-one, at home, outdoors or in the gym. Every session tracked.'],
+];
+const label = 'text-xs font-bold uppercase tracking-widest text-ink/60';
+const chip = 'cursor-pointer border border-ink/25 px-4 py-2 font-semibold transition hover:border-ink has-checked:border-ink has-checked:bg-ink has-checked:text-paper has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-green';
+---
+
+<Base title="Direction C: Session card" description="Design direction C">
+  <div class="grid-paper bg-paper text-ink">
+    <section class="mx-auto grid max-w-7xl gap-12 px-4 py-16 sm:px-6 lg:grid-cols-[1fr_27rem] lg:py-24">
+      <div class="self-center">
+        <h1 class="text-[clamp(3.25rem,7vw,6.5rem)] leading-[0.9] font-black font-stretch-[75%]">Your first session is on us.</h1>
+        <p class="mt-6 max-w-lg text-xl leading-relaxed">Personal training in {site.city}, at your home, outdoors or in the gym. Pick where and what. We do the rest.</p>
+        <p class="mt-8 font-bold">From AED 135 / session <span class="text-ink/40">·</span> Every day, 6 AM – 11 PM</p>
+      </div>
+
+      <form action="/book-a-trial" class="border-2 border-ink bg-paper shadow-[10px_10px_0_var(--color-green)]">
+        <p class="flex items-center justify-between border-b-2 border-ink px-5 py-3"><span class={label}>Session 01</span><span class="bg-green px-2 py-1 text-xs font-bold uppercase">Free trial</span></p>
+        <fieldset class="border-b border-ink/15 p-5">
+          <legend class={`float-left mb-3 w-full ${label}`}>Where</legend>
+          <div class="clear-both flex flex-wrap gap-2">
+            {where.map((w, i) => <label class={chip}><input type="radio" name="where" value={w} checked={i === 0} class="sr-only" />{w}</label>)}
+          </div>
+        </fieldset>
+        <fieldset class="border-b border-ink/15 p-5">
+          <legend class={`float-left mb-3 w-full ${label}`}>Your goal</legend>
+          <div class="clear-both flex flex-wrap gap-2">
+            {goals.map((g, i) => <label class={chip}><input type="radio" name="goal" value={g} checked={i === 0} class="sr-only" />{g}</label>)}
+          </div>
+        </fieldset>
+        <p class="p-5 text-sm text-ink/70">Every day, 6 AM – 11 PM. We confirm on WhatsApp.</p>
+        <button class="flex w-full items-center justify-between bg-ink px-5 py-4 font-bold uppercase text-paper transition hover:bg-green hover:text-ink">Book my free session <span aria-hidden="true">→</span></button>
+      </form>
+    </section>
+
+    <section class="mx-auto max-w-7xl px-4 pb-24 sm:px-6">
+      <h2 class={label}>How it works</h2>
+      <ol class="mt-6 grid border-t-2 border-ink md:grid-cols-3">
+        {steps.map(([title, text], i) => (
+          <li class="border-b border-ink/15 py-8 md:border-r md:border-b-0 md:px-8 md:first:pl-0 md:last:border-r-0">
+            <span class="text-6xl font-black font-stretch-[62%] text-ink/15">0{i + 1}</span>
+            <h3 class="mt-3 text-2xl font-extrabold uppercase font-stretch-[75%]">{title}</h3>
+            <p class="mt-2 text-ink/70">{text}</p>
+          </li>
+        ))}
+      </ol>
+    </section>
+  </div>
+  <nav class="fixed right-4 bottom-20 z-50 flex bg-ink p-1 text-xs font-bold ring-1 ring-line md:bottom-4">
+    {['a', 'b', 'c'].map((d) => <a href={`/lab/${d}`} aria-current={d === 'c' ? 'page' : undefined} class="px-3 py-2 aria-[current=page]:bg-green aria-[current=page]:text-ink">{d.toUpperCase()}</a>)}
+  </nav>
+</Base>
+
+<style>
+  .grid-paper {
+    --grid: color-mix(in oklab, var(--color-ink) 6%, transparent);
+    background-image: linear-gradient(to right, var(--grid) 1px, transparent 1px), linear-gradient(var(--grid) 1px, transparent 1px);
+    background-size: 32px 32px;
+  }
+</style>

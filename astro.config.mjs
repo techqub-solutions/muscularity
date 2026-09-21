@@ -17,6 +17,7 @@ export default defineConfig({
       styles: ['normal'],
       subsets: ['latin'],
       fallbacks: ['sans-serif'],
+      options: { experimental: { variableAxis: { wdth: [['62', '125']] } } }, // condensed ↔ wide
     },
   ],
 });

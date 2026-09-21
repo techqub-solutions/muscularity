@@ -1,0 +1,49 @@
+---
+// Design direction B, "Monogram": dark, every shape is cut at the angle of the MF logo bars. Temporary.
+import { Image } from 'astro:assets';
+import Base from '../../layouts/Base.astro';
+import site from '../../content/site.json';
+import athlete from '../../assets/lab/athlete.jpg';
+
+const plans = [['Body Reboot', 135, 'lg:min-h-56'], ['Elite', 155, 'lg:min-h-64'], ['Pro', 175, 'lg:min-h-72'], ['VIP', 195, 'lg:min-h-80']];
+const slash = '[clip-path:polygon(10%_0,100%_0,90%_100%,0_100%)]'; // parallelogram, like the logo bars
+---
+
+<Base title="Direction B: Monogram" description="Design direction B">
+  <section class="mx-auto grid max-w-7xl items-center gap-14 px-4 pt-14 pb-24 sm:px-6 lg:grid-cols-[1.15fr_1fr] lg:pt-20">
+    <div>
+      <p class="font-bold uppercase tracking-widest text-muted">{site.city} · Home · Outdoors · Gym</p>
+      <h1 class="mt-6 text-[clamp(3.5rem,8vw,7.5rem)] leading-[0.86] font-black uppercase font-stretch-[70%]">
+        Personal training.<br /><span class="text-green">Your place.</span><br />Your pace.
+      </h1>
+      <p class="mt-8 max-w-md text-lg text-muted">One-to-one coaching every day from 6 AM to 11 PM. Your first session is free.</p>
+      <div class="mt-10 flex flex-wrap items-center gap-4">
+        <a href="/book-a-trial" class={`bg-green px-12 py-4 font-bold uppercase text-ink transition hover:bg-fg ${slash}`}>Book a free trial</a>
+        <a href={site.whatsappUrl} class="px-4 py-4 font-bold uppercase underline decoration-green decoration-2 underline-offset-8 hover:text-green">WhatsApp</a>
+      </div>
+    </div>
+    <div class="relative">
+      <div class={`absolute inset-0 translate-x-6 translate-y-6 bg-green ${slash}`}></div>
+      <Image src={athlete} alt="Muscularity Fitness coach on a bodybuilding stage" widths={[480, 667]} sizes="(min-width: 1024px) 34rem, 100vw" class={`relative aspect-[5/6] w-full object-cover ${slash}`} />
+      <p class="absolute bottom-8 left-0 bg-ink px-5 py-3 font-extrabold uppercase font-stretch-[75%] text-xl">From AED 135 / session</p>
+    </div>
+  </section>
+
+  <section class="border-t border-line">
+    <div class="mx-auto max-w-7xl px-4 py-24 sm:px-6">
+      <h2 class="text-[clamp(2.5rem,5vw,4.5rem)] leading-none font-black uppercase font-stretch-[70%]">Clear prices. <span class="text-muted">Per session.</span></h2>
+      <ol class="mt-14 grid gap-3 sm:grid-cols-2 lg:grid-cols-4 lg:items-end">
+        {plans.map(([name, price, h]) => (
+          <li class={`flex min-h-44 flex-col justify-between bg-surface p-6 pt-10 [clip-path:polygon(0_12%,100%_0,100%_100%,0_100%)] last:bg-green last:text-ink ${h}`}>
+            <span class="font-bold uppercase tracking-widest opacity-70">{name}</span>
+            <span class="font-extrabold uppercase font-stretch-[70%]"><span class="text-2xl">AED</span> <span class="text-7xl">{price}</span> <span class="text-lg opacity-70">/ session</span></span>
+          </li>
+        ))}
+      </ol>
+      <p class="mt-6 text-muted">Total Transformation and Lifestyle Coach: priced to your goal.</p>
+    </div>
+  </section>
+  <nav class="fixed right-4 bottom-20 z-50 flex bg-ink p-1 text-xs font-bold ring-1 ring-line md:bottom-4">
+    {['a', 'b', 'c'].map((d) => <a href={`/lab/${d}`} aria-current={d === 'b' ? 'page' : undefined} class="px-3 py-2 aria-[current=page]:bg-green aria-[current=page]:text-ink">{d.toUpperCase()}</a>)}
+  </nav>
+</Base>
