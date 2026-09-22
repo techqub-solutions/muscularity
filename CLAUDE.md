@@ -31,7 +31,7 @@ When something is confirmed, move it from OPEN to CONFIRMED.
 
 ## Local run
 
-- `npx astro dev --background` → http://localhost:4321. Stop with `npx astro dev stop`; logs with `npx astro dev logs`. Or start preview `muscularity-new`.
+- Start the preview `muscularity-new` (`.claude/launch.json`) → http://localhost:4321. Don't also run `astro dev` in the background: two servers fight over port 4321.
 - `npm run build` must pass before every commit.
 - Docs: https://docs.astro.build (routing, components, content collections, styling, i18n).
 
