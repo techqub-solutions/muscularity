@@ -35,7 +35,7 @@ const schema = {
       </ol>
     </nav>
     {eyebrow && <p class="eyebrow mt-14 text-green">{eyebrow}</p>}
-    <h1 class:list={['display max-w-5xl text-[clamp(3rem,8vw,7rem)]', eyebrow ? 'mt-4' : 'mt-14']}>{title}</h1>
+    <h1 class:list={['display max-w-5xl', title.length > 30 ? 'text-[clamp(2.5rem,5.5vw,5rem)]' : 'text-[clamp(3rem,8vw,7rem)]', eyebrow ? 'mt-4' : 'mt-14']}>{title}</h1>
     {intro && <p class="mt-6 max-w-2xl text-lg text-fg/80 sm:text-xl">{intro}</p>}
     <slot />
   </div>

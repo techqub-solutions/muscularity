@@ -1,6 +1,6 @@
 ---
 title: "Cardio Workouts: The Ultimate Guide to Boosting Your Fitness"
-seoTitle: "Cardio Workouts Guide: Types, Benefits and How Often"
+seoTitle: "Cardio Workouts: Types and Benefits"
 description: Why cardio matters, the best types of cardio workouts, how often to do them for health, weight loss or endurance, and how to combine cardio with strength.
 image: ../../assets/photos/trainer-gym.jpg
 ---

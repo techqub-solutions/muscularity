@@ -40,6 +40,7 @@ questions are in `CLAUDE.md`. Every phase ends with the user's approval.
 - [x] Research: Abu Dhabi competitors + "AI-looking website" patterns; critique of the first draft
 - [x] 3 directions tested (Poster, Monogram, Session card) → mix chosen: dark gym look, logo-angle "slash" shapes, condensed type, booking card
 - [x] Design system in `global.css`: slash button, `display`/`eyebrow` type, prose, scroll reveal, marquee
+- [x] Round 2 (research: Ultimate Performance, UAE home-PT market, conversion studies): "Built for your life" audience banners, numbers banner, client quotes beside every booking button, programme finder in the booking card, offer bar, service "try it free" banner, photo headers, desktop WhatsApp button, reading times, brand slash-reveal motion
 
 ## Phase 2: content (draft done 22 Sept 2026, needs client review)
 
@@ -89,7 +90,7 @@ questions are in `CLAUDE.md`. Every phase ends with the user's approval.
 - [ ] Hero: GSAP SplitText headline + video loop (homepage only)
 - [x] Services marquee; card hovers; testimonial swipe slider
 - [ ] WhatsApp button pulse
-- [ ] Number counters (confirmed numbers only)
+- [x] Number counters (confirmed numbers only: 22+ years, 6 disciplines, 3 places, 7 days)
 - [x] BMI calculator with animated marker + booking link
 - [ ] Accessibility pass: keyboard, contrast, reduced motion. Mobile pass on real phones
 

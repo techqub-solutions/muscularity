@@ -1,6 +1,6 @@
 ---
 title: "Rebooting Your Body's Vital Organs: A Step-by-Step Guide"
-seoTitle: "How to Reboot Your Body: Liver, Gut, Heart, Lungs, Kidneys and Skin"
+seoTitle: "How to Reboot Your Body's Vital Organs"
 description: Simple, practical habits to support your liver, gut, heart, lungs, kidneys and skin, plus why rest and mental wellness complete a body reboot.
 image: ../../assets/photos/flexibility.jpg
 ---

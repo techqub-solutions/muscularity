@@ -1,6 +1,6 @@
 ---
 title: "Strength Training: Building Power, Endurance and Resilience"
-seoTitle: "Strength Training Guide: Benefits, Types and How Often"
+seoTitle: "Strength Training: Benefits and Types"
 description: What strength training is, why it matters for muscle, metabolism and bones, the main types of resistance training, how often to train and why recovery matters.
 image: ../../assets/photos/strength.jpg
 ---

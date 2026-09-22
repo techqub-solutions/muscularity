@@ -8,16 +8,40 @@ import Faq from '../components/Faq.astro';
 import site from '../content/site.json';
 import hero from '../assets/photos/trainer-client.jpg';
 import founder from '../assets/photos/founder.jpg';
+import photoGym from '../assets/photos/trainer-gym.jpg';
+import photoFitness from '../assets/photos/fitness.jpg';
+import photoSprint from '../assets/photos/sprint.jpg';
+import photoHome from '../assets/photos/flexibility.jpg';
 
 const posts = await getCollection('blog');
 const { founder: f } = site;
-const facts = [['Where', site.places.join(' · ')], ['When', site.hoursText], ['From', `AED ${site.packages[0].price} / session`]];
+const quote = site.testimonials[2];
+const facts = [['Where', site.places.join(' · ')], ['When', site.hoursText.replace('Every day', 'Daily')], ['From', `AED ${site.packages[0].price} / session`]];
+const people = [
+  ['Busy professionals', 'Train before work from 6 AM or after it until 11 PM, wherever suits your day.', '/services/fitness', 'See the programme', photoGym],
+  ['Complete beginners', 'Start exactly where you are. We build your strength, fitness and confidence step by step.', '/services/functional-training', 'See the programme', photoFitness],
+  ['Athletes and competitors', 'Conditioning for your sport, and full competition prep with posing practice and meal plans.', '/services/strength-training-sports-conditioning', 'See the programme', photoSprint],
+  ['Training at home', 'Your space, your privacy, no crowded gym floor. Your trainer comes to you.', '/book-a-trial?Where=Home', 'Book a home session', photoHome],
+] as const;
 const steps = [
   ['Free trial', 'We assess your fitness and learn your goal, your history and your week.'],
   ['Your plan', 'A programme built for you, not copied from a template.'],
   ['Train', 'One-to-one, at home, outdoors or in the gym. Every session tracked.'],
 ];
-const goals = ['Lose weight', 'Build muscle', 'Get stronger', 'Move better'];
+// goal → best-matching service (shown live in the booking card, no JavaScript)
+const goals = [
+  ['Lose weight', 'fitness', "group-has-[[value='Lose_weight']:checked]:inline"],
+  ['Build muscle', 'body-building', "group-has-[[value='Build_muscle']:checked]:inline"],
+  ['Get stronger', 'strength-training-sports-conditioning', "group-has-[[value='Get_stronger']:checked]:inline"],
+  ['Move better', 'flexibility-and-mobility', "group-has-[[value='Move_better']:checked]:inline"],
+];
+const serviceName = (slug: string) => site.services.find((s) => s.slug === slug)?.name;
+const stats = [
+  [parseInt(f.years), '+', 'Years in fitness: our founder'],
+  [site.services.length, '', 'Training disciplines'],
+  [site.places.length, '', 'Places to train'],
+  [7, '', `Days a week, ${site.hoursText.replace('Every day, ', '')}`],
+] as const;
 const chip = 'cursor-pointer border border-ink/25 px-4 py-2 font-semibold transition hover:border-ink has-checked:border-ink has-checked:bg-ink has-checked:text-paper has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-green';
 const label = 'eyebrow text-ink/60';
 const heights = ['lg:min-h-60', 'lg:min-h-68', 'lg:min-h-76', 'lg:min-h-84'];
@@ -31,7 +55,7 @@ const h2 = 'display text-[clamp(3rem,7vw,6rem)]';
       <Image src={hero} alt="A personal trainer coaching a client through a core exercise" widths={[640, 960, 1280, 1920]} sizes="(min-width: 1024px) 54vw, 100vw" loading="eager" fetchpriority="high" class="size-full object-cover" />
       <div class="absolute inset-0 bg-ink/75 lg:bg-ink/15"></div>
     </div>
-    <div class="mx-auto flex min-h-[calc(100svh-4rem)] max-w-7xl flex-col justify-center px-4 py-16 sm:px-6 lg:min-h-[46rem]">
+    <div class="mx-auto flex min-h-[calc(100svh-6rem)] max-w-7xl flex-col justify-center px-4 py-16 sm:px-6 lg:min-h-[46rem]">
       <h1>
         <span class="eyebrow block text-green">Personal trainer in {site.city}</span>
         <span class="display mt-5 block text-[clamp(4rem,9vw,7.75rem)]">
@@ -45,7 +69,7 @@ const h2 = 'display text-[clamp(3rem,7vw,6rem)]';
         <a href="/book-a-trial" class="btn">Book a free trial <Icon name="arrow" /></a>
         <a href={site.whatsappUrl} class="link">WhatsApp us</a>
       </div>
-      <dl class="mt-16 grid max-w-xl gap-6 border-t border-line pt-6 sm:grid-cols-3">
+      <dl class="mt-16 grid max-w-2xl gap-x-10 gap-y-6 border-t border-line pt-6 sm:grid-cols-[repeat(3,auto)] sm:justify-start">
         {facts.map(([k, v]) => (
           <div>
             <dt class="eyebrow text-muted">{k}</dt>
@@ -54,22 +78,52 @@ const h2 = 'display text-[clamp(3rem,7vw,6rem)]';
         ))}
       </dl>
     </div>
+    <figure class="absolute right-[max(1.5rem,calc((100vw_-_80rem)/2_+_1.5rem))] bottom-10 hidden max-w-xs border-l-4 border-green bg-ink/85 p-5 backdrop-blur-md lg:block">
+      <blockquote class="text-lg leading-snug">“{quote.text.split(/(?<=[.!?])\s/)[0]}”</blockquote>
+      <figcaption class="eyebrow mt-3 text-green">{quote.name}</figcaption>
+    </figure>
   </section>
 
   <!-- Marquee -->
   <div class="overflow-hidden bg-green py-4 text-ink" aria-hidden="true">
     <div class="flex w-max animate-marquee text-3xl font-black uppercase font-stretch-[62%] sm:text-4xl">
-      {[...site.services, ...site.services].map((s) => <span class="pr-10">{s.name} <span class="pl-8">/</span></span>)}
+      {[...site.services, ...site.services].map((s, i) => (
+        <span class:list={['pr-10', i % 2 && 'text-transparent [-webkit-text-stroke:1.5px_var(--color-ink)]']}>{s.name} <span class="pl-8 text-ink">/</span></span>
+      ))}
     </div>
   </div>
 
-  <!-- Services -->
-  <section id="services" class="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:py-32">
+  <!-- Who we train -->
+  <section class="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:py-32">
     <div class="flex flex-wrap items-end justify-between gap-6">
-      <h2 class={h2}>Six ways<br />to train</h2>
-      <p class="max-w-sm text-lg text-fg/70">Every programme is one-to-one and built around your goal, your level and your week.</p>
+      <h2 class={h2}>Built for<br />your life</h2>
+      <p class="max-w-sm text-lg text-fg/70">However busy, new or competitive you are, your programme starts where you are.</p>
     </div>
-    <div class="mt-12"><ServiceGrid /></div>
+    <ul class="mt-12 grid gap-3 md:grid-cols-2">
+      {people.map(([title, text, href, cta, img]) => (
+        <li>
+          <a href={href} class="slash-reveal group isolate flex min-h-96 flex-col justify-end p-6 sm:p-8">
+            <Image src={img} alt="" widths={[480, 960]} sizes="(min-width: 768px) 45vw, 90vw" class="absolute inset-0 -z-10 size-full object-cover transition duration-700 ease-out-expo group-hover:scale-105" />
+            <div class="absolute inset-0 -z-10 bg-linear-to-t from-ink via-ink/60 to-ink/10"></div>
+            <p class="eyebrow text-green">For</p>
+            <h3 class="display mt-2 text-5xl">{title}</h3>
+            <p class="mt-3 max-w-md text-lg text-fg/85">{text}</p>
+            <span class="eyebrow mt-6 flex items-center gap-2 text-green">{cta} <Icon name="arrow" class="size-4 transition duration-300 group-hover:translate-x-1" /></span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <!-- Services -->
+  <section id="services" class="border-t border-line">
+    <div class="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:py-32">
+      <div class="flex flex-wrap items-end justify-between gap-6">
+        <h2 class={h2}>Six ways<br />to train</h2>
+        <p class="max-w-sm text-lg text-fg/70">Every programme is one-to-one and built around your goal, your level and your week.</p>
+      </div>
+      <div class="mt-12"><ServiceGrid /></div>
+    </div>
   </section>
 
   <!-- How it works + quick booking -->
@@ -91,7 +145,7 @@ const h2 = 'display text-[clamp(3rem,7vw,6rem)]';
         </ol>
       </div>
 
-      <form action="/book-a-trial" class="reveal self-start border-2 border-ink bg-paper shadow-[10px_10px_0_var(--color-green)]">
+      <form action="/book-a-trial" class="group reveal self-start border-2 border-ink bg-paper shadow-[10px_10px_0_var(--color-green)]">
         <p class="flex items-center justify-between border-b-2 border-ink px-5 py-3"><span class={label}>Session 01</span><span class="bg-green px-2 py-1 text-xs font-bold uppercase">Free trial</span></p>
         <fieldset class="border-b border-ink/15 p-5">
           <legend class={`float-left mb-3 w-full ${label}`}>Where</legend>
@@ -102,8 +156,11 @@ const h2 = 'display text-[clamp(3rem,7vw,6rem)]';
         <fieldset class="border-b border-ink/15 p-5">
           <legend class={`float-left mb-3 w-full ${label}`}>Your goal</legend>
           <div class="clear-both flex flex-wrap gap-2">
-            {goals.map((g, i) => <label class={chip}><input type="radio" name="Goal" value={g} checked={i === 0} class="sr-only" />{g}</label>)}
+            {goals.map(([g], i) => <label class={chip}><input type="radio" name="Goal" value={g} checked={i === 0} class="sr-only" />{g}</label>)}
           </div>
+          <p class="mt-4 text-sm text-ink/70" aria-live="polite">Best match:{' '}
+            {goals.map(([, slug, show]) => <a href={`/services/${slug}`} class={`hidden font-bold text-ink underline decoration-green decoration-2 underline-offset-4 ${show}`}>{serviceName(slug)}</a>)}
+          </p>
         </fieldset>
         <p class="p-5 text-sm text-ink/70">{site.hoursText}. We confirm on WhatsApp.</p>
         <button class="flex w-full items-center justify-between bg-ink px-5 py-4 font-bold uppercase text-paper transition hover:bg-green hover:text-ink">Book my free session <Icon name="arrow" /></button>
@@ -131,6 +188,18 @@ const h2 = 'display text-[clamp(3rem,7vw,6rem)]';
     </div>
   </section>
 
+  <!-- Numbers banner -->
+  <section class="bg-green text-ink" aria-label="Muscularity Fitness in numbers">
+    <dl class="mx-auto grid max-w-7xl grid-cols-2 lg:grid-cols-4">
+      {stats.map(([n, suffix, text]) => (
+        <div class="flex flex-col-reverse gap-2 border-ink/20 px-4 py-10 odd:border-r sm:px-6 lg:border-r lg:last:border-r-0">
+          <dt class="text-sm font-bold uppercase tracking-wide">{text}</dt>
+          <dd class="display text-7xl sm:text-8xl"><span class="count" style={`--n:${n}`} aria-hidden="true"></span><span class="sr-only">{n}</span>{suffix}</dd>
+        </div>
+      ))}
+    </dl>
+  </section>
+
   <!-- Founder -->
   <section class="bg-surface">
     <div class="mx-auto grid max-w-7xl items-center gap-16 px-4 py-24 sm:px-6 lg:grid-cols-2 lg:py-32">
@@ -142,10 +211,7 @@ const h2 = 'display text-[clamp(3rem,7vw,6rem)]';
         <p class="eyebrow text-green">Meet the founder</p>
         <h2 class={`${h2} mt-4`}>{f.name}</h2>
         <p class="mt-6 max-w-lg text-lg text-fg/80">{f.years} years in fitness, across bodybuilding, Cross Fit, functional training and strength conditioning. In {f.founded} he founded {site.name} so every client gets a plan built around them.</p>
-        <dl class="mt-10 grid max-w-md grid-cols-2 gap-6 border-t border-line pt-6">
-          <div><dt class="eyebrow text-muted">In fitness</dt><dd class="display mt-2 text-6xl text-green">{f.years} yrs</dd></div>
-          <div><dt class="eyebrow text-muted">Founded</dt><dd class="display mt-2 text-6xl">{f.founded}</dd></div>
-        </dl>
+        <blockquote class="mt-8 max-w-lg border-l-4 border-green pl-5 text-lg text-fg/90">“{site.testimonials[3].text.split(/(?<=[.!?])\s/)[0]}”<footer class="eyebrow mt-2 text-muted">{site.testimonials[3].name}</footer></blockquote>
         <a href="/about-founder" class="link mt-10 inline-block">Read his story</a>
       </div>
     </div>
@@ -153,12 +219,19 @@ const h2 = 'display text-[clamp(3rem,7vw,6rem)]';
 
   <!-- Testimonials -->
   <section class="py-24 lg:py-32">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6"><h2 class={h2}>In their words</h2></div>
+    <div class="mx-auto flex max-w-7xl flex-wrap items-end justify-between gap-6 px-4 sm:px-6">
+      <h2 class={h2}>In their words</h2>
+      <p class="text-fg/60">Swipe for more <Icon name="arrow" class="inline size-4" /></p>
+    </div>
     <ul class="mt-12 flex snap-x snap-mandatory scroll-px-(--pad) gap-4 overflow-x-auto px-(--pad) pb-6 [--pad:max(1.5rem,calc((100vw_-_80rem)/2_+_1.5rem))]">
       {site.testimonials.map((t) => (
-        <li class="flex w-[85vw] max-w-md shrink-0 snap-start flex-col justify-between gap-8 border border-line bg-surface p-8">
-          <blockquote class="text-lg leading-relaxed text-fg/90"><span class="display block text-7xl leading-none text-green" aria-hidden="true">“</span>{t.text}</blockquote>
-          <p class="eyebrow">{t.name}</p>
+        <li class="flex w-[85vw] max-w-md shrink-0 snap-start flex-col gap-6 border border-line bg-surface p-8">
+          <p class="display text-4xl text-green">“{t.highlight}”</p>
+          <blockquote class="text-fg/80">{t.text}</blockquote>
+          <p class="mt-auto flex items-center gap-3 border-t border-line pt-5">
+            <span class="grid size-11 place-items-center rounded-full bg-green text-sm font-black text-ink" aria-hidden="true">{t.name.split(' ').map((w) => w[0]).join('')}</span>
+            <span class="eyebrow">{t.name}</span>
+          </p>
         </li>
       ))}
     </ul>
@@ -215,7 +288,8 @@ const h2 = 'display text-[clamp(3rem,7vw,6rem)]';
           <li class="reveal">
             <a href={`/blog/${p.id}`} class="group block">
               <div class="overflow-hidden"><Image src={p.data.image} alt="" widths={[400, 800]} sizes="(min-width: 768px) 30vw, 90vw" class="aspect-[3/2] w-full object-cover transition duration-700 ease-out-expo group-hover:scale-105" /></div>
-              <h3 class="mt-5 text-xl font-bold leading-snug transition-colors group-hover:text-green">{p.data.title}</h3>
+              <p class="eyebrow mt-5 text-muted">{Math.max(1, Math.round((p.body ?? '').split(/\s+/).length / 200))} min read</p>
+              <h3 class="mt-2 text-xl font-bold leading-snug transition-colors group-hover:text-green">{p.data.title}</h3>
             </a>
           </li>
         ))}

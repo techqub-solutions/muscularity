@@ -2,14 +2,15 @@
 import { Image } from 'astro:assets';
 import { getCollection } from 'astro:content';
 import Base from '../../layouts/Base.astro';
+import photo from '../../assets/photos/strength.jpg';
 import PageHero from '../../components/PageHero.astro';
 import Icon from '../../components/Icon.astro';
 
 const posts = await getCollection('blog');
 ---
 
-<Base title="Fitness Blog: Training Tips from Abu Dhabi Coaches" description="Training guides from Muscularity Fitness: cardio, strength training and healthy habits, from personal trainers in Abu Dhabi.">
-  <PageHero title="Blog" crumbs={[['Blog', '/blog']]} intro="Practical guides on training, recovery and healthy habits from our coaches." />
+<Base title="Fitness Blog: Training Tips" description="Training guides from Muscularity Fitness: cardio, strength training and healthy habits, from personal trainers in Abu Dhabi.">
+  <PageHero title="Blog" image={photo} crumbs={[['Blog', '/blog']]} intro="Practical guides on training, recovery and healthy habits from our coaches." />
 
   <section class="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:py-28">
     <ul class="grid gap-x-8 gap-y-14 md:grid-cols-2 lg:grid-cols-3">
@@ -17,7 +18,8 @@ const posts = await getCollection('blog');
         <li class="reveal">
           <a href={`/blog/${p.id}`} class="group block">
             <div class="overflow-hidden"><Image src={p.data.image} alt="" widths={[400, 800]} sizes="(min-width: 1024px) 30vw, (min-width: 768px) 45vw, 90vw" class="aspect-[3/2] w-full object-cover transition duration-700 ease-out-expo group-hover:scale-105" /></div>
-            <h2 class="mt-5 text-2xl font-bold leading-snug transition-colors group-hover:text-green">{p.data.title}</h2>
+            <p class="eyebrow mt-5 text-muted">{Math.max(1, Math.round((p.body ?? '').split(/\s+/).length / 200))} min read</p>
+            <h2 class="mt-2 text-2xl font-bold leading-snug transition-colors group-hover:text-green">{p.data.title}</h2>
             <p class="mt-3 text-fg/70">{p.data.description}</p>
             <span class="eyebrow mt-5 flex items-center gap-2 text-green">Read <Icon name="arrow" class="size-4 transition group-hover:translate-x-1" /></span>
           </a>

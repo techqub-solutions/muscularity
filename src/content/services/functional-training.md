@@ -1,7 +1,7 @@
 ---
 name: Functional Training
 order: 5
-seoTitle: Functional Training Personal Trainer Abu Dhabi
+seoTitle: Functional Training Abu Dhabi
 description: One-to-one functional training in Abu Dhabi. Real-life movements that build strength, balance and coordination, at home, outdoors or in the gym.
 tagline: Get stronger at the movements you use every day.
 image: ../../assets/photos/functional.jpg

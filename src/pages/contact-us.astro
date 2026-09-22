@@ -1,5 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
+import photo from '../assets/photos/trainer-gym.jpg';
 import PageHero from '../components/PageHero.astro';
 import WaForm from '../components/WaForm.astro';
 import Icon from '../components/Icon.astro';
@@ -7,8 +8,8 @@ import site from '../content/site.json';
 
 const ways = [
   ['phone', 'Call', site.phone, `tel:${site.tel}`],
-  ['mail', 'Email', site.email, `mailto:${site.email}`],
   ['clock', 'Hours', site.hoursText, ''],
+  ['mail', 'Email', site.email, `mailto:${site.email}`],
   ['pin', 'Based in', `${site.city}, UAE`, ''],
 ] as const;
 const field = 'w-full border border-line bg-ink px-4 py-3.5 text-fg placeholder:text-muted focus:border-green focus:outline-none';
@@ -16,7 +17,7 @@ const schema = { '@context': 'https://schema.org', '@type': 'ContactPage', name:
 ---
 
 <Base title="Contact a Personal Trainer in Abu Dhabi" description="Contact Muscularity Fitness in Abu Dhabi. WhatsApp or call +971 56 585 2769, or email us. Every day 6 AM – 11 PM.">
-  <PageHero title="Contact us" crumbs={[['Contact', '/contact-us']]} intro="The fastest way to reach us is WhatsApp. We reply every day, 6 AM – 11 PM." />
+  <PageHero title="Contact us" image={photo} crumbs={[['Contact', '/contact-us']]} intro="The fastest way to reach us is WhatsApp. We reply every day, 6 AM – 11 PM." />
 
   <div class="mx-auto grid max-w-7xl gap-12 px-4 py-20 sm:px-6 lg:grid-cols-2 lg:py-28">
     <div class="grid content-start gap-3">
@@ -28,11 +29,11 @@ const schema = { '@context': 'https://schema.org', '@type': 'ContactPage', name:
         <Icon name="arrow" class="size-8 shrink-0 transition group-hover:translate-x-2" />
       </a>
       <ul class="grid gap-3 sm:grid-cols-2">
-        {ways.map(([icon, name, value, href]) => (
-          <li class="border border-line bg-surface p-6">
+        {ways.map(([icon, name, value, href], i) => (
+          <li class:list={['border border-line bg-surface p-6', i > 1 && 'sm:col-span-2']}>
             <Icon name={icon} class="size-6 text-green" />
             <p class="eyebrow mt-4 text-muted">{name}</p>
-            {href ? <a href={href} class="mt-1 block text-lg font-bold break-words hover:text-green">{value}</a> : <p class="mt-1 text-lg font-bold">{value}</p>}
+            {href ? <a href={href} class="mt-1 block text-lg font-bold hover:text-green">{value}</a> : <p class="mt-1 text-lg font-bold">{value}</p>}
           </li>
         ))}
       </ul>
