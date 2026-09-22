@@ -27,6 +27,7 @@ When something is confirmed, move it from OPEN to CONFIRMED.
 - Design system (use it, don't invent new styles): `btn` = green slash button, `link` = underlined action, `display` = condensed headline, `eyebrow` = small label, `prose` = Markdown text, `reveal` = rise on scroll, `slash-reveal` = green slash sweeps off a photo on scroll, `count` = number counts up (`style="--n: 22"`). Shapes are cut at the logo's angle (clip-path / skew).
 - Components: `PageHero` (inner-page top + breadcrumbs), `ServiceGrid`, `Faq` (+ schema), `WaForm` (form → WhatsApp message), `Icon`.
 - Photos in `src/assets/photos/` are **placeholders** (old theme stock, licence unknown). Replace them all before launch.
+- Home hero = people cut out of a photo (`hero-cutout.png`) standing in front of a green slash + giant MF mark. Cut-outs are made locally with `rembg` (Python, model `isnet-general-use`); make a new one from the shoot photo.
 - `#menu` is a native popover. Never give it a display class, or it shows when closed.
 
 ## Local run
