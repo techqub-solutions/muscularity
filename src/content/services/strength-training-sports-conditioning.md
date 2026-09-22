@@ -1,7 +1,7 @@
 ---
 name: Strength Training & Sports Conditioning
 order: 6
-seoTitle: Strength and Conditioning Coach Abu Dhabi
+seoTitle: Strength and Conditioning Abu Dhabi
 description: One-to-one strength training and sports conditioning in Abu Dhabi. Build power, speed and stamina for your sport, at home, outdoors or in the gym.
 tagline: Build power, speed and stamina for your sport and your life.
 image: ../../assets/photos/sprint.jpg

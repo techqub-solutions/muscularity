@@ -1,7 +1,7 @@
 ---
 name: Flexibility and Mobility
 order: 4
-seoTitle: Flexibility and Mobility Training Abu Dhabi
+seoTitle: Flexibility Training Abu Dhabi
 description: One-to-one flexibility and mobility sessions in Abu Dhabi. Ease stiffness, protect your joints and move freely, at home, outdoors or in the gym.
 tagline: Ease stiffness, protect your joints and move freely again.
 image: ../../assets/photos/flexibility.jpg
