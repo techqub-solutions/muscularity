@@ -7,8 +7,7 @@ import ServiceGrid from '../components/ServiceGrid.astro';
 import Faq from '../components/Faq.astro';
 import site from '../content/site.json';
 import cutout from '../assets/photos/hero-cutout.png';
-import mark from '../assets/brand/mark-light.png';
-import gym from '../assets/photos/gym-floor.jpg';
+import photo from '../assets/photos/trainer-client.jpg';
 import founder from '../assets/photos/founder.jpg';
 import photoGym from '../assets/photos/trainer-gym.jpg';
 import photoFitness from '../assets/photos/fitness.jpg';
@@ -78,17 +77,12 @@ const h2 = 'display text-[clamp(3rem,7vw,6rem)]';
         </dl>
       </div>
 
-      <div class="relative -mx-4 h-[25rem] sm:-mx-6 sm:h-[34rem] lg:mx-0 lg:h-auto">
-        <div class="absolute inset-y-0 right-[-40%] left-[18%] origin-bottom-left -skew-x-[18deg] animate-slash-in overflow-hidden border-l-8 border-green bg-ink lg:left-[8%]">
-          <!-- counter-skewed layer: gym photo + giant MF mark stay straight inside the slanted panel -->
-          <div class="absolute inset-y-0 left-0 w-[160%] origin-bottom-left skew-x-[18deg]">
-            <Image src={gym} alt="" widths={[640, 1200]} sizes="(min-width: 1024px) 55vw, 100vw" loading="eager" class="absolute inset-0 size-full object-cover object-left" />
-            <div class="absolute inset-0 bg-ink/30"></div>
-            <div class="absolute top-[6%] bottom-[30%] left-[14%] w-[30%] bg-green/45" style={`mask:url(${mark.src}) center/contain no-repeat;-webkit-mask:url(${mark.src}) center/contain no-repeat`} aria-hidden="true"></div>
-          </div>
-        </div>
-        <Image src={cutout} alt="A personal trainer coaching a client through a core exercise" widths={[640, 960, 1280, 1600]} sizes="(min-width: 1024px) 55vw, 100vw" loading="eager" fetchpriority="high" class="absolute bottom-0 left-0 w-full animate-pop drop-shadow-[0_30px_40px_rgb(0_0_0/0.45)] lg:-left-[4%] lg:w-[112%] lg:max-w-none" />
-        <figure class="absolute top-10 right-0 hidden max-w-[17rem] border-l-4 border-ink bg-fg p-5 text-ink shadow-2xl lg:block">
+      <!-- Out-of-bounds: the photo sits in a slanted frame; the same people, cut out, sit exactly on top and step out of the frame -->
+      <div class="relative -mx-4 aspect-[4/3] animate-pop sm:-mx-6 lg:mx-0 lg:-mr-[max(1.5rem,calc((100vw_-_80rem)/2_+_1.5rem))] lg:self-end">
+        <div class="absolute inset-0 -translate-x-2 bg-green [clip-path:polygon(34%_0,100%_0,100%_100%,14%_100%)]"></div>
+        <Image src={photo} alt="" widths={[640, 960, 1280, 1600]} sizes="(min-width: 1024px) 50vw, 100vw" loading="eager" class="absolute inset-0 size-full object-cover object-[30%_50%] [clip-path:polygon(34%_0,100%_0,100%_100%,14%_100%)]" />
+        <Image src={cutout} alt="A personal trainer coaching a client through a core exercise" widths={[640, 960, 1280, 1600]} sizes="(min-width: 1024px) 50vw, 100vw" loading="eager" fetchpriority="high" class="absolute inset-0 size-full object-cover object-[30%_50%]" />
+        <figure class="absolute right-4 bottom-full mb-6 hidden max-w-[17rem] border-l-4 border-green bg-fg p-5 text-ink shadow-2xl lg:block">
           <blockquote class="text-lg leading-snug font-semibold">“{quote.text.split(/(?<=[.!?])\s/)[0]}”</blockquote>
           <figcaption class="eyebrow mt-3 text-ink/60">{quote.name}</figcaption>
         </figure>
@@ -113,8 +107,8 @@ const h2 = 'display text-[clamp(3rem,7vw,6rem)]';
     </div>
     <ul class="mt-12 grid gap-3 md:grid-cols-2">
       {people.map(([title, text, href, cta, img]) => (
-        <li>
-          <a href={href} class="slash-reveal group isolate flex min-h-96 flex-col justify-end p-6 sm:p-8">
+        <li class="reveal">
+          <a href={href} class="group relative isolate flex overflow-hidden min-h-96 flex-col justify-end p-6 sm:p-8">
             <Image src={img} alt="" widths={[480, 960]} sizes="(min-width: 768px) 45vw, 90vw" class="absolute inset-0 -z-10 size-full object-cover transition duration-700 ease-out-expo group-hover:scale-105" />
             <div class="absolute inset-0 -z-10 bg-linear-to-t from-ink via-ink/60 to-ink/10"></div>
             <p class="eyebrow text-green">For</p>
