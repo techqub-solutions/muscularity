@@ -25,6 +25,10 @@
 
 @layer base {
   :focus-visible { outline: 2px solid var(--color-green); outline-offset: 3px; }
+  html { scroll-behavior: smooth; }
+  body { overflow-x: hidden; }
+  img, video, svg, canvas { display: block; max-width: 100%; }
+  a, button, input, select, textarea { -webkit-tap-highlight-color: transparent; }
 }
 
 /* Condensed sports headline */
@@ -100,6 +104,18 @@
   ::view-transition-new(root) { animation: page-in 0.5s var(--ease-out-expo); }
 }
 @keyframes page-in { from { opacity: 0; translate: 0 16px; } }
+
+@media (max-width: 640px) {
+  .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .display,
+  .eyebrow {
+    word-break: break-word;
+  }
+}
 
 @media (prefers-reduced-motion: reduce) {
   *, ::before, ::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }

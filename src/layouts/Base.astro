@@ -52,7 +52,11 @@ const business = {
   <body class="bg-ink pb-16 text-fg antialiased md:pb-0">
     <a href="#main" class="btn sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-60">Skip to content</a>
     {Astro.url.pathname !== '/book-a-trial' && (
-      <a href="/book-a-trial" class="block bg-green px-4 py-2 text-center text-xs font-bold uppercase tracking-widest text-ink transition hover:bg-fg">Your first session is free <span aria-hidden="true">·</span> Book now →</a>
+      <a href="/book-a-trial" class="flex items-center justify-center gap-2 bg-green px-3 py-2 text-center text-[0.62rem] font-black uppercase tracking-[0.18em] text-ink transition hover:bg-fg sm:text-xs">
+        <span>Your first session is free</span>
+        <span aria-hidden="true">·</span>
+        <span>Book now →</span>
+      </a>
     )}
     <Header />
     <main id="main"><slot /></main>
