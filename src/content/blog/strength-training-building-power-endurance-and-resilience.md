@@ -38,4 +38,4 @@ Training creates tiny tears in your muscle fibres, and they grow back stronger w
 
 ## Strength training for every level
 
-We build strength programmes around your goal and your level, from your first session to your heaviest lift. Your trainer coaches safe, effective technique so you keep progressing without injury.
+We build [strength programmes](/services/strength-training-sports-conditioning) around your goal and your level, from your first session to your heaviest lift. If size and definition are the goal, see [bodybuilding](/services/body-building). Your trainer coaches safe, effective technique so you keep progressing without injury.

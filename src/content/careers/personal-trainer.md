@@ -1,7 +1,7 @@
 ---
 title: Personal Trainer
 seoTitle: Personal Trainer Job in Abu Dhabi
-description: Join Muscularity Fitness as a Personal Trainer in Abu Dhabi. Full time, 2+ years' experience. Apply today.
+description: "Personal Trainer job in Abu Dhabi: assess clients, write their programmes and coach one-to-one at home, outdoors or in the gym. Full time, 2+ years' experience."
 type: Full time
 location: Abu Dhabi
 experience: 2+ years

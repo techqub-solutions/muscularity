@@ -33,8 +33,8 @@ The best cardio is the one that suits your preferences and fitness level:
 
 ## Combine cardio with strength
 
-For a balanced routine, pair cardio with strength training. Cardio burns fat and builds endurance, while strength training builds muscle, which raises your metabolism even further. We encourage every client to combine both.
+For a balanced routine, pair cardio with [strength training](/services/strength-training-sports-conditioning). Cardio burns fat and builds endurance, while strength training builds muscle, which raises your metabolism even further. We encourage every client to combine both.
 
 ## Final thoughts
 
-Cardio isn't just about weight loss. It builds a strong, resilient heart, gives you more energy and makes you feel better, physically and mentally. That's why it's part of every programme we write, at home, outdoors or in the gym.
+Cardio isn't just about weight loss. It builds a strong, resilient heart, gives you more energy and makes you feel better, physically and mentally. That's why it's part of every [fitness programme](/services/fitness) we write, at home, outdoors or in the gym.

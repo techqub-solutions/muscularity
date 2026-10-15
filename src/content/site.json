@@ -52,8 +52,8 @@
     { "q": "Which areas do you cover?", "a": "We're based in Abu Dhabi. Send us your area on WhatsApp and we'll confirm straight away." }
   ],
   "videos": [
-    { "title": "Home strength coaching", "src": "/videos/clients/IMG_5452.MP4", "description": "One-to-one home training focused on strength, form, and consistent progress." },
-    { "title": "Progress review session", "src": "/videos/clients/IMG_5481.MP4", "description": "A coaching review centred on technique, accountability, and visible improvements over time." },
-    { "title": "Mobility and strength training", "src": "/videos/clients/IMG_7157.MP4", "description": "A balance-focused session designed to improve mobility, confidence, and everyday strength." }
+    { "title": "Home strength coaching", "src": "/videos/clients/IMG_5452.MP4", "poster": "/videos/clients/IMG_5452.webp", "description": "One-to-one home training focused on strength, form, and consistent progress." },
+    { "title": "Progress review session", "src": "/videos/clients/IMG_5481.MP4", "poster": "/videos/clients/IMG_5481.webp", "description": "A coaching review centred on technique, accountability, and visible improvements over time." },
+    { "title": "Mobility and strength training", "src": "/videos/clients/IMG_7157.MP4", "poster": "/videos/clients/IMG_7157.webp", "description": "A balance-focused session designed to improve mobility, confidence, and everyday strength." }
   ]
 }

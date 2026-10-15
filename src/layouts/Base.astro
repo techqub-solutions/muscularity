@@ -8,21 +8,29 @@ import '../styles/global.css';
 interface Props {
   title: string; // primary keyword; " | Muscularity Fitness" is added here
   description: string;
-  image?: string;
+  image?: string; // a page photo (shared as a large card); defaults to the square logo
+  type?: 'website' | 'article';
 }
-const { title, description, image = '/icon-512.png' } = Astro.props;
+const { title, description, image, type = 'website' } = Astro.props;
 const fullTitle = `${title} | ${site.name}`;
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const logo = new URL('/icon-512.png', Astro.site).href;
+const prices = site.packages.map((p) => p.price);
 
+// Other schema on the site points at this one with { '@id': `${site.url}/#business` }.
 const business = {
   '@context': 'https://schema.org',
   '@type': 'LocalBusiness',
+  '@id': `${site.url}/#business`,
   name: site.name,
   url: site.url,
   telephone: site.tel,
   email: site.email,
-  image: new URL('/icon-512.png', Astro.site).href,
+  logo,
+  image: logo,
+  priceRange: `AED ${Math.min(...prices)}–${Math.max(...prices)}`,
   address: { '@type': 'PostalAddress', addressLocality: site.city, addressCountry: site.country },
+  areaServed: { '@type': 'City', name: site.city },
   openingHours: site.hours,
   sameAs: Object.values(site.social),
 };
@@ -36,12 +44,13 @@ const business = {
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content={type} />
     <meta property="og:site_name" content={site.name} />
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
-    <meta property="og:image" content={new URL(image, Astro.site).href} />
+    <meta property="og:image" content={image ? new URL(image, Astro.site).href : logo} />
+    <meta name="twitter:card" content={image ? 'summary_large_image' : 'summary'} />
     <meta name="theme-color" content="#0b0d0c" />
     <link rel="icon" href="/favicon.ico" sizes="48x48" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
@@ -52,9 +61,9 @@ const business = {
   <body class="bg-ink pb-16 text-fg antialiased md:pb-0">
     <a href="#main" class="btn sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-60">Skip to content</a>
     {Astro.url.pathname !== '/book-a-trial' && (
-      <a href="/book-a-trial" class="flex items-center justify-center gap-2 bg-green px-3 py-2 text-center text-[0.62rem] font-black uppercase tracking-[0.18em] text-ink transition hover:bg-fg sm:text-xs">
+      <a href="/book-a-trial" class="flex flex-wrap items-center justify-center gap-x-2 bg-green px-3 py-2 text-center text-xs font-black uppercase tracking-wider text-ink transition hover:bg-fg sm:tracking-[0.18em]">
         <span>Your first session is free</span>
-        <span aria-hidden="true">·</span>
+        <span aria-hidden="true" class="max-[359px]:hidden">·</span>
         <span>Book now →</span>
       </a>
     )}

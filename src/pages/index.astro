@@ -17,12 +17,22 @@ import photoHome from '../assets/photos/flexibility.jpg';
 const posts = await getCollection('blog');
 const { founder: f } = site;
 const quote = site.testimonials[2];
-const videos: Array<{ title: string; src: string; poster?: string; description?: string; type?: string }> = Array.isArray(site.videos)
-  ? (site.videos as Array<{ title: string; src: string; poster?: string; description?: string; type?: string }>).filter((video) => !video.src || video.src.toLowerCase().endsWith('.mp4'))
-  : [];
-const facts = [['Where', site.places.join(' · ')], ['When', site.hoursText.replace('Every day', 'Daily')], ['From', `AED ${site.packages[0].price} / session`]];
+const older = [
+  ['Strength & Muscle Conditioning', 'Build functional strength for everyday activities.'],
+  ['Balance & Stability', 'Improve coordination and confidence in movement.'],
+  ['Posture Correction', 'Develop better alignment and body support.'],
+  ['Flexibility & Mobility', 'Maintain range of motion and comfort in daily movement.'],
+];
+const olderNotes = [
+  'Functional movement for walking, standing, sitting, and everyday tasks.',
+  'Confidence and independence through safe, sustainable progress.',
+  'Every session is adapted to your ability, with focus on technique and safety.',
+];
+const from = Math.min(...site.packages.map((p) => p.price));
+const hours = site.hoursText.replace('Every day', 'every day');
+const facts = [['Where', site.places.join(' · ')], ['When', site.hoursText.replace('Every day', 'Daily')], ['From', `AED ${from} / session`]];
 const people = [
-  ['Busy professionals', 'Train before work from 6 AM or after it until 11 PM, wherever suits your day.', '/services/fitness', 'See the programme', photoGym],
+  ['Busy professionals', 'Train before work from 6 AM or after it until 11 PM, wherever suits your day.', '/services/fitness', 'See the programme', photoGym], // keep in step with site.json hours
   ['Complete beginners', 'Start exactly where you are. We build your strength, fitness and confidence step by step.', '/services/functional-training', 'See the programme', photoFitness],
   ['Athletes and competitors', 'Conditioning for your sport, and full competition prep with posing practice and meal plans.', '/services/strength-training-sports-conditioning', 'See the programme', photoSprint],
   ['Training at home', 'Your space, your privacy, no crowded gym floor. Your trainer comes to you.', '/book-a-trial?Where=Home', 'Book a home session', photoHome],
@@ -50,22 +60,24 @@ const chip = 'cursor-pointer border border-ink/25 px-4 py-2 font-semibold transi
 const label = 'eyebrow text-ink/60';
 const heights = ['lg:min-h-60', 'lg:min-h-68', 'lg:min-h-76', 'lg:min-h-84'];
 const h2 = 'display text-[clamp(3rem,7vw,6rem)]';
+// Homepage only: tells Google the site name to show in results
+const website = { '@context': 'https://schema.org', '@type': 'WebSite', name: site.name, url: site.url, publisher: { '@id': `${site.url}/#business` } };
 ---
 
-<Base title="Personal Trainer Abu Dhabi" description="One-to-one personal training in Abu Dhabi at your home, outdoors or in the gym. From AED 135 / session, every day 6 AM – 11 PM. Your first session is free.">
-  <!-- Hero: text left; on the right the people stand IN FRONT of a green slash and the giant MF mark -->
+<Base title="Personal Trainer Abu Dhabi" description={`One-to-one personal training in ${site.city} at your home, outdoors or in the gym. From AED ${from} / session, ${hours}. Your first session is free.`}>
+  <!-- Hero: text left; on the right the "out of bounds" photo (see CLAUDE.md) -->
   <section class="relative isolate overflow-hidden">
     <div class="mx-auto grid max-w-7xl gap-6 px-4 pt-8 sm:px-6 lg:min-h-[46rem] lg:grid-cols-[1.1fr_1fr] lg:gap-0 lg:pt-0">
       <div class="relative z-10 flex flex-col justify-center lg:py-16">
         <h1>
-          <span class="eyebrow block text-green">Personal trainer in {site.city}</span>
+          <span class="eyebrow block text-green">Personal trainer in {site.city}</span>{' '}
           <span class="display mt-5 block text-[clamp(3rem,15vw,6.75rem)] leading-[0.9]">
-            <span class="block overflow-hidden"><span class="block animate-rise">Your trainer.</span></span>
-            <span class="block overflow-hidden"><span class="block animate-rise text-green [animation-delay:.1s]">Your place.</span></span>
+            <span class="block overflow-hidden"><span class="block animate-rise">Your trainer.</span></span>{' '}
+            <span class="block overflow-hidden"><span class="block animate-rise text-green [animation-delay:.1s]">Your place.</span></span>{' '}
             <span class="block overflow-hidden"><span class="block animate-rise [animation-delay:.2s]">Your pace.</span></span>
           </span>
         </h1>
-        <p class="mt-6 max-w-md text-base text-fg/85 sm:text-lg">One-to-one coaching at your home, outdoors or in the gym, every day from 6 AM to 11 PM. Your first session is free.</p>
+        <p class="mt-6 max-w-md text-base text-fg/85 sm:text-lg">One-to-one coaching at your home, outdoors or in the gym, {hours}. Your first session is free.</p>
         <div class="mt-8 flex flex-col gap-4 sm:mt-10 sm:flex-row sm:flex-wrap sm:items-center sm:gap-8">
           <a href="/book-a-trial" class="btn">Book a free trial <Icon name="arrow" /></a>
           <a href={site.whatsappUrl} class="link">WhatsApp us</a>
@@ -113,9 +125,9 @@ const h2 = 'display text-[clamp(3rem,7vw,6rem)]';
         <li class="reveal">
           <a href={href} class="group relative isolate flex overflow-hidden min-h-96 flex-col justify-end p-6 sm:p-8">
             <Image src={img} alt="" widths={[480, 960]} sizes="(min-width: 768px) 45vw, 90vw" class="absolute inset-0 -z-10 size-full object-cover transition duration-700 ease-out-expo group-hover:scale-105" />
-            <div class="absolute inset-0 -z-10 bg-linear-to-t from-ink via-ink/60 to-ink/10"></div>
+            <div class="absolute inset-0 -z-10 bg-linear-to-t from-ink via-ink/70 to-ink/25"></div>
             <p class="eyebrow text-green">For</p>
-            <h3 class="display mt-2 text-5xl">{title}</h3>
+            <h3 class="display mt-2 text-[clamp(2rem,10vw,3rem)]">{title}</h3>
             <p class="mt-3 max-w-md text-lg text-fg/85">{text}</p>
             <span class="eyebrow mt-6 flex items-center gap-2 text-green">{cta} <Icon name="arrow" class="size-4 transition duration-300 group-hover:translate-x-1" /></span>
           </a>
@@ -144,7 +156,7 @@ const h2 = 'display text-[clamp(3rem,7vw,6rem)]';
         <ol class="mt-12 grid gap-8">
           {steps.map(([title, text], i) => (
             <li class="reveal grid grid-cols-[4.5rem_1fr] gap-4 border-t-2 border-ink pt-5">
-              <span class="display text-6xl text-ink/25">0{i + 1}</span>
+              <span class="display text-6xl text-ink/25" aria-hidden="true">0{i + 1}</span>
               <div>
                 <h3 class="text-2xl font-extrabold uppercase font-stretch-[75%]">{title}</h3>
                 <p class="mt-1 text-lg text-ink/70">{text}</p>
@@ -213,7 +225,7 @@ const h2 = 'display text-[clamp(3rem,7vw,6rem)]';
   <section class="bg-surface">
     <div class="mx-auto grid max-w-7xl items-center gap-10 px-4 py-20 sm:px-6 sm:gap-16 lg:grid-cols-2 lg:py-32">
       <div class="reveal relative mx-auto w-full max-w-md">
-        <div class="absolute inset-0 translate-x-5 translate-y-5 bg-green [clip-path:polygon(12%_0,100%_0,88%_100%,0_100%)]"></div>
+        <div class="absolute inset-0 translate-x-3 translate-y-3 bg-green sm:translate-x-5 sm:translate-y-5 [clip-path:polygon(12%_0,100%_0,88%_100%,0_100%)]"></div>
         <Image src={founder} alt={`${f.name}, founder of ${site.name}, on a bodybuilding stage`} widths={[480, 667]} sizes="(min-width: 1024px) 28rem, 90vw" class="relative aspect-[4/5] w-full object-cover [clip-path:polygon(12%_0,100%_0,88%_100%,0_100%)]" />
       </div>
       <div>
@@ -232,10 +244,10 @@ const h2 = 'display text-[clamp(3rem,7vw,6rem)]';
       <h2 class={h2}>In their words</h2>
       <p class="text-fg/60">Swipe for more <Icon name="arrow" class="inline size-4" /></p>
     </div>
-    <ul class="mt-12 flex snap-x snap-mandatory scroll-px-(--pad) gap-4 overflow-x-auto px-(--pad) pb-6 [--pad:max(1.5rem,calc((100vw_-_80rem)/2_+_1.5rem))]">
+    <ul class="mt-12 flex snap-x snap-mandatory scroll-px-(--pad) gap-4 overflow-x-auto px-(--pad) pb-6 [--pad:1rem] sm:[--pad:max(1.5rem,calc((100vw_-_80rem)/2_+_1.5rem))]">
       {site.testimonials.map((t) => (
-        <li class="flex w-[85vw] max-w-md shrink-0 snap-start flex-col gap-6 border border-line bg-surface p-8">
-          <p class="display text-4xl text-green">“{t.highlight}”</p>
+        <li class="flex w-[85vw] max-w-md shrink-0 snap-start flex-col gap-6 border border-line bg-surface p-6 sm:p-8">
+          <p class="display text-[clamp(1.75rem,8.5vw,2.25rem)] text-green">“{t.highlight}”</p>
           <blockquote class="text-fg/80">{t.text}</blockquote>
           <p class="mt-auto flex items-center gap-3 border-t border-line pt-5">
             <span class="grid size-11 place-items-center rounded-full bg-green text-sm font-black text-ink" aria-hidden="true">{t.name.split(' ').map((w) => w[0]).join('')}</span>
@@ -246,97 +258,55 @@ const h2 = 'display text-[clamp(3rem,7vw,6rem)]';
     </ul>
   </section>
 
-  {videos.length > 0 ? (
-    <section class="border-t border-line bg-paper text-ink">
-      <div class="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:py-32">
-        <div class="flex flex-wrap items-end justify-between gap-6">
-          <div class="max-w-3xl">
-            <p class="eyebrow text-green">Fitness Training for Older Adults</p>
-            <h2 class={`${h2} mt-4`}>Stay Strong. Stay Balanced. Stay Independent.</h2>
-          </div>
-          <p class="max-w-md text-lg text-ink/70">Our specialized training helps older adults improve strength, mobility, balance, and confidence through safe, personalized coaching.</p>
+  <!-- Older adults + client videos -->
+  <section class="bg-surface">
+    <div class="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:py-32">
+      <div class="flex flex-wrap items-end justify-between gap-6">
+        <div>
+          <p class="eyebrow text-green">Training for older adults</p>
+          <h2 class={`${h2} mt-4`}>Stay strong.<br />Stay balanced.<br />Stay independent.</h2>
         </div>
+        <p class="max-w-sm text-lg text-fg/70">Our specialised training helps older adults improve strength, mobility, balance, and confidence through safe, personalised coaching.</p>
+      </div>
 
-        <div class="mt-12 rounded-[2rem] border border-line bg-surface p-6 text-fg sm:p-8 lg:p-10">
-          <div class="grid gap-8 lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
-            <div class="space-y-5">
-              <p class="text-lg leading-relaxed text-fg/80">As we age, maintaining muscle strength and mobility becomes increasingly important for everyday activities and independence. Our experienced trainers use controlled, age-appropriate exercises designed around each client’s abilities, fitness level, and individual needs.</p>
-
-              <div class="grid gap-4 sm:grid-cols-2">
-                <div class="rounded-2xl border border-line bg-paper p-4">
-                  <p class="text-lg font-extrabold uppercase font-stretch-[75%] text-ink">Strength & Muscle Conditioning</p>
-                  <p class="mt-2 text-sm leading-relaxed text-ink/70">Build functional strength for everyday activities.</p>
-                </div>
-                <div class="rounded-2xl border border-line bg-paper p-4">
-                  <p class="text-lg font-extrabold uppercase font-stretch-[75%] text-ink">Balance & Stability</p>
-                  <p class="mt-2 text-sm leading-relaxed text-ink/70">Improve coordination and confidence in movement.</p>
-                </div>
-                <div class="rounded-2xl border border-line bg-paper p-4">
-                  <p class="text-lg font-extrabold uppercase font-stretch-[75%] text-ink">Posture Correction</p>
-                  <p class="mt-2 text-sm leading-relaxed text-ink/70">Develop better alignment and body support.</p>
-                </div>
-                <div class="rounded-2xl border border-line bg-paper p-4">
-                  <p class="text-lg font-extrabold uppercase font-stretch-[75%] text-ink">Flexibility & Mobility</p>
-                  <p class="mt-2 text-sm leading-relaxed text-ink/70">Maintain range of motion and comfort in daily movement.</p>
-                </div>
-              </div>
-            </div>
-
-            <div class="space-y-5">
-              <ul class="space-y-3">
-                <li class="flex items-start gap-3 rounded-2xl border border-line bg-paper p-4">
-                  <span class="mt-0.5 text-xl">🚶</span>
-                  <span class="text-sm leading-relaxed text-ink/80">Functional Movement for walking, standing, sitting, and everyday tasks.</span>
-                </li>
-                <li class="flex items-start gap-3 rounded-2xl border border-line bg-paper p-4">
-                  <span class="mt-0.5 text-xl">❤️</span>
-                  <span class="text-sm leading-relaxed text-ink/80">Confidence and independence through safe, sustainable progress.</span>
-                </li>
-                <li class="flex items-start gap-3 rounded-2xl border border-line bg-paper p-4">
-                  <span class="mt-0.5 text-xl">🧍</span>
-                  <span class="text-sm leading-relaxed text-ink/80">Every session is adapted to your ability, with focus on technique and safety.</span>
-                </li>
-              </ul>
-
-              <p class="text-base leading-relaxed text-fg/75">Age should never be a barrier to becoming stronger and more active. With the right training and guidance, you can continue moving better, feeling stronger, and enjoying an active lifestyle at every stage of life.</p>
-            </div>
-          </div>
-
-          <div class="mt-10 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-            {videos.map((video) => (
-              <div class="reveal group overflow-hidden rounded-[1.5rem] border border-line bg-surface shadow-[0_18px_45px_rgba(11,13,12,0.08)] text-fg">
-                <div class="border-b border-line bg-paper p-3">
-                  <div class="mx-auto max-w-[430px] overflow-hidden rounded-[1.1rem] border border-ink/10 bg-ink/5">
-                    <video controls preload="metadata" poster={video.poster || undefined} class="aspect-[9/16] w-full object-cover object-center bg-ink/10">
-                      <source src={video.src} type={video.type || 'video/mp4'} />
-                      Your browser does not support the video tag.
-                    </video>
-                  </div>
-                </div>
-
-                <div class="space-y-4 p-6">
-                  <div class="flex items-center justify-between gap-3">
-                    <p class="eyebrow text-green">Client review</p>
-                    <span class="rounded-full border border-green/30 bg-green/10 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-ink/75">Results</span>
-                  </div>
-                  <h3 class="text-2xl font-extrabold uppercase font-stretch-[75%] text-fg">{video.title}</h3>
-                  {video.description && <p class="text-base leading-relaxed text-fg/70">{video.description}</p>}
-                </div>
-              </div>
-            ))}
-          </div>
+      <div class="mt-14 grid gap-12 lg:grid-cols-[1fr_1.2fr]">
+        <div>
+          <p class="text-lg text-fg/80">As we age, maintaining muscle strength and mobility becomes increasingly important for everyday activities and independence. Our experienced trainers use controlled, age-appropriate exercises designed around each client’s abilities, fitness level, and individual needs.</p>
+          <ul class="mt-8 grid gap-3 text-lg">
+            {olderNotes.map((n) => <li class="flex gap-3"><Icon name="check" class="mt-1 size-5 shrink-0 text-green" />{n}</li>)}
+          </ul>
+          <p class="mt-8 text-fg/70">Age should never be a barrier to becoming stronger and more active. With the right training and guidance, you can continue moving better, feeling stronger, and enjoying an active lifestyle at every stage of life.</p>
+          <a href="/book-a-trial" class="btn mt-10">Book a free trial <Icon name="arrow" /></a>
         </div>
+        <ul class="grid content-start gap-3 sm:grid-cols-2">
+          {older.map(([title, text]) => (
+            <li class="reveal border-t-4 border-green bg-ink p-6">
+              <h3 class="text-xl font-extrabold uppercase font-stretch-[75%]">{title}</h3>
+              <p class="mt-2 text-fg/70">{text}</p>
+            </li>
+          ))}
+        </ul>
       </div>
-    </section>
-  ) : (
-    <section class="border-t border-line bg-paper text-ink">
-      <div class="mx-auto max-w-4xl px-4 py-20 text-center sm:px-6 lg:py-24">
-        <p class="eyebrow text-green">Client videos</p>
-        <h2 class={`${h2} mt-4 text-[clamp(2.5rem,5vw,4.5rem)]`}>Video section ready</h2>
-        <p class="mx-auto mt-6 max-w-2xl text-lg text-ink/75">Add your review and training videos in the site data, and this section will automatically populate with them.</p>
-      </div>
-    </section>
-  )}
+
+      {site.videos.length > 0 && (
+        <ul class="reveal mt-16 -mx-4 flex snap-x snap-mandatory scroll-px-4 gap-3 overflow-x-auto px-4 pb-4 sm:-mx-6 sm:scroll-px-6 sm:px-6 md:mx-0 md:grid md:grid-cols-3 md:overflow-visible md:p-0">
+          {site.videos.map((v) => (
+            <li class="w-[min(72vw,20rem)] shrink-0 snap-start md:w-auto">
+              <video controls preload="none" poster={v.poster} aria-label={v.title} class="aspect-[9/16] w-full bg-ink object-cover [clip-path:polygon(0_0,calc(100%-2.5rem)_0,100%_2.5rem,100%_100%,0_100%)]">
+                <source src={v.src} type="video/mp4" />
+              </video>
+              <p class="mt-5 flex items-center justify-between gap-3">
+                <span class="eyebrow text-green">Client review</span>
+                <span class="bg-green px-2 py-1 text-xs font-bold uppercase text-ink">Results</span>
+              </p>
+              <h3 class="mt-3 text-xl font-extrabold uppercase font-stretch-[75%] lg:text-2xl">{v.title}</h3>
+              <p class="mt-2 text-fg/70">{v.description}</p>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  </section>
 
   <!-- BMI -->
   <section class="bg-paper text-ink">
@@ -400,6 +370,7 @@ const h2 = 'display text-[clamp(3rem,7vw,6rem)]';
       </ul>
     </div>
   </section>
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(website)} />
 </Base>
 
 <script>

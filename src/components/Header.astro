@@ -42,8 +42,8 @@ const current = (href: string) => (Astro.url.pathname.startsWith(href) ? 'page' 
     <button popovertarget="menu" class="-mr-2 ml-auto p-2 sm:ml-0 lg:hidden" aria-label="Open menu"><Icon name="menu" class="size-7" /></button>
   </div>
 
-  <!-- Mobile menu: native popover, no JavaScript. Never give #menu a display class. -->
-  <div id="menu" popover class="m-0 h-dvh max-h-none w-full max-w-none overflow-y-auto bg-ink p-6 text-fg">
+  <!-- Mobile menu: native popover. Never give #menu a display class. -->
+  <div id="menu" popover class="m-0 h-dvh max-h-none w-full max-w-none overflow-y-auto overscroll-contain bg-ink p-6 text-fg">
     <div class="flex items-center justify-between">
       <Image src={mark} alt="" height={32} densities={[1, 2]} />
       <button popovertarget="menu" popovertargetaction="hide" class="-mr-2 p-2" aria-label="Close menu"><Icon name="close" class="size-7" /></button>
@@ -56,3 +56,11 @@ const current = (href: string) => (Astro.url.pathname.startsWith(href) ? 'page' 
     <a href="/book-a-trial" class="btn mt-10 w-full">Book a free trial</a>
   </div>
 </header>
+
+<script>
+  // Same-page links (e.g. Pricing → /#packages on the homepage) don't load a new page, so close the menu ourselves.
+  const menu = document.querySelector<HTMLElement>('#menu')!;
+  menu.addEventListener('click', (e) => {
+    if ((e.target as Element).closest('a')) menu.hidePopover();
+  });
+</script>

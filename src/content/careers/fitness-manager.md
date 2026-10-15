@@ -1,7 +1,7 @@
 ---
 title: Fitness Manager
 seoTitle: Fitness Manager Job in Abu Dhabi
-description: Join Muscularity Fitness as a Fitness Manager in Abu Dhabi. Full time, 2+ years' experience. Apply today.
+description: "Fitness Manager job in Abu Dhabi: lead the training team, plan schedules and keep coaching standards high. Full time, 2+ years' experience. Email your CV."
 type: Full time
 location: Abu Dhabi
 experience: 2+ years

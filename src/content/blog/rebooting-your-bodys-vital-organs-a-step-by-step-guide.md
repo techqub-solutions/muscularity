@@ -29,14 +29,14 @@ A sedentary lifestyle and poor diet can lead to heart disease.
 
 - **Exercise regularly:** aim for at least 150 minutes of moderate exercise a week, such as walking, swimming or cycling.
 - **Eat heart-healthy fats:** omega-3s from fish, flaxseeds and walnuts.
-- **Manage stress:** meditation, yoga and breathing exercises all help.
+- **Manage stress:** meditation, yoga and breathing exercises all help. Our [flexibility and mobility](/services/flexibility-and-mobility) sessions use yoga-inspired movement.
 
 ## 4. Lungs: the breath of life
 
 Pollution, smoking and inactivity can all reduce lung function.
 
 - **Practise deep breathing** to improve lung capacity.
-- **Do cardio:** running and swimming help expand lung capacity and improve circulation.
+- **Do cardio:** running and swimming help expand lung capacity and improve circulation. See our [guide to cardio workouts](/blog/cardio-workouts-the-ultimate-guide-to-boosting-your-fitness-journey).
 - **Avoid pollutants:** limit exposure to smoke, chemicals and allergens.
 
 ## 5. Kidneys: your filtration system

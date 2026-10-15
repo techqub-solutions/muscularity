@@ -12,19 +12,20 @@ const ways = [
   ['mail', 'Email', site.email, `mailto:${site.email}`],
   ['pin', 'Based in', `${site.city}, UAE`, ''],
 ] as const;
+const hours = site.hoursText.replace('Every day', 'every day');
 const field = 'w-full border border-line bg-ink px-4 py-3.5 text-fg placeholder:text-muted focus:border-green focus:outline-none';
 const schema = { '@context': 'https://schema.org', '@type': 'ContactPage', name: `Contact ${site.name}`, url: new URL('/contact-us', Astro.site).href };
 ---
 
-<Base title="Contact a Personal Trainer in Abu Dhabi" description="Contact Muscularity Fitness in Abu Dhabi. WhatsApp or call +971 56 585 2769, or email us. Every day 6 AM – 11 PM.">
-  <PageHero title="Contact us" image={photo} crumbs={[['Contact', '/contact-us']]} intro="The fastest way to reach us is WhatsApp. We reply every day, 6 AM – 11 PM." />
+<Base title="Contact a Personal Trainer in Abu Dhabi" description={`Contact ${site.name} in ${site.city}. WhatsApp or call ${site.phone}, or email ${site.email}. Open ${hours}.`}>
+  <PageHero title="Contact us" image={photo} crumbs={[['Contact', '/contact-us']]} intro={`The fastest way to reach us is WhatsApp. We reply ${hours}.`} />
 
   <div class="mx-auto grid max-w-7xl gap-12 px-4 py-20 sm:px-6 lg:grid-cols-2 lg:py-28">
     <div class="grid content-start gap-3">
-      <a href={site.whatsappUrl} class="group flex items-center justify-between gap-6 bg-green p-8 text-ink">
+      <a href={site.whatsappUrl} class="group flex items-center justify-between gap-6 bg-green p-6 text-ink sm:p-8">
         <span>
           <span class="eyebrow block">WhatsApp</span>
-          <span class="display mt-2 block text-5xl">{site.phone}</span>
+          <span class="display mt-2 block text-[clamp(1.75rem,9vw,3rem)] whitespace-nowrap">{site.phone}</span>
         </span>
         <Icon name="arrow" class="size-8 shrink-0 transition group-hover:translate-x-2" />
       </a>
@@ -46,7 +47,7 @@ const schema = { '@context': 'https://schema.org', '@type': 'ContactPage', name:
         <label><span class="eyebrow mb-3 block text-muted">Message</span><textarea name="Message" required rows="5" class={field}></textarea></label>
         <div class="flex flex-wrap items-center gap-6">
           <button class="btn">Send on WhatsApp <Icon name="arrow" /></button>
-          <a href="/book-a-trial" class="text-sm font-semibold text-muted underline underline-offset-4 hover:text-fg">Want to book? Use the booking form</a>
+          <a href="/book-a-trial" class="py-2 text-sm font-semibold text-muted underline underline-offset-4 hover:text-fg">Want to book? Use the booking form</a>
         </div>
       </WaForm>
     </div>

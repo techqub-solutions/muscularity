@@ -7,7 +7,8 @@ export default defineConfig({
   site: 'https://www.muscularityfitness.com',
   trailingSlash: 'never', // same URL style as the old site
   redirects: {
-    // old URLs → new (never drop an old URL without a 301)
+    // old URLs → new (never drop an old URL without a 301). On a static build these are only
+    // meta-refresh pages (dev + fallback); the real 301s are in vercel.json. Keep both in sync.
     '/book-a-trail': '/book-a-trial',
     '/about-ceo': '/about-founder',
     '/services/details/[slug]': '/services/[slug]',
