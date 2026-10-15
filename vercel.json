@@ -1,0 +1,14 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "trailingSlash": false,
+  "redirects": [
+    { "source": "/book-a-trail", "destination": "/book-a-trial", "statusCode": 301 },
+    { "source": "/about-ceo", "destination": "/about-founder", "statusCode": 301 },
+    { "source": "/services/details/:slug", "destination": "/services/:slug", "statusCode": 301 },
+    { "source": "/admin/:path*", "destination": "/", "statusCode": 301 },
+    { "source": "/cart.html", "destination": "/", "statusCode": 301 },
+    { "source": "/checkout.html", "destination": "/", "statusCode": 301 },
+    { "source": "/blog.html", "destination": "/blog", "statusCode": 301 },
+    { "source": "/blog-details.html", "destination": "/blog", "statusCode": 301 }
+  ]
+}

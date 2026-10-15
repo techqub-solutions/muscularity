@@ -26,6 +26,7 @@ When something is confirmed, move it from OPEN to CONFIRMED.
 - Motion: CSS first, only transform/opacity, reduced motion always respected. GSAP only on the homepage.
 - Design system (use it, don't invent new styles): `btn` = green slash button, `link` = underlined action, `display` = condensed headline, `eyebrow` = small label, `prose` = Markdown text, `reveal` = rise on scroll, `count` = number counts up (`style="--n: 22"`). Shapes are cut at the logo's angle (clip-path / skew).
 - Components: `PageHero` (inner-page top + breadcrumbs), `ServiceGrid`, `Faq` (+ schema), `WaForm` (form → WhatsApp message), `Icon`.
+- Client videos: `public/videos/clients/`, listed in `site.json` `videos`. 720 px wide, H.264, faststart, with a `.webp` poster (commands in `README.md`).
 - Photos in `src/assets/photos/` are **placeholders** (old theme stock, licence unknown). Replace them all before launch.
 - Home hero = "out of bounds": the photo in a slanted frame + the same people cut out (`hero-cutout.png`, same size as the photo) on top, so they step out of the frame. Never put a cut-out on a different photo (light won't match). Cut-outs are made locally with `rembg` (Python, model `isnet-general-use`).
 - `#menu` is a native popover. Never give it a display class, or it shows when closed.
@@ -33,6 +34,7 @@ When something is confirmed, move it from OPEN to CONFIRMED.
 ## Local run
 
 - Start the preview `muscularity-new` (`.claude/launch.json`) → http://localhost:4321. Don't also run `astro dev` in the background: two servers fight over port 4321.
+- Mobile/visual checks: preview `muscularity-dist` serves the production build on :4322 (run `npm run build` first; no dev toolbar in the way).
 - `npm run build` must pass before every commit.
 - Docs: https://docs.astro.build (routing, components, content collections, styling, i18n).
 
@@ -41,7 +43,6 @@ When something is confirmed, move it from OPEN to CONFIRMED.
 - [ ] **Founder name.** Old metadata says `Ramiz Girach`, which is the old developer (the old template says
       "Developed By Ramiz Girach"). `/about-founder` and the testimonials say (Mohammed) Akram.
       Blocks: About pages, schema, Google Business Profile, citations.
-- [ ] **Hosting.** Vercel Pro (commercial use needs Pro) or Cloudflare (free).
 - [ ] **Areas actually served.** Needed before writing any area pages.
 - [ ] **GA4** `G-4D1XENMZCR` is in the old template. Who owns it?
 - [ ] **Site uptime.** The old site was unreachable on 21 and 22 Sept.
@@ -54,6 +55,7 @@ When something is confirmed, move it from OPEN to CONFIRMED.
 - Old site: custom PHP (CodeIgniter 3.1.6) on Hostinger; replaced by this rebuild — 22 Sept 2026
 - Old "shop" (cart, 5 products) was template demo markup with no shop code; not rebuilt — 22 Sept 2026
 - Email (MX) and DNS are at Hostinger. At launch, change only the website records — 22 Sept 2026
+- Hosting: Vercel (a client site is commercial use, so the Pro plan), connected to the GitHub repo: every push deploys — 15 Oct 2026
 - Old sitemap last modified: January 2025
 - Old robots.txt: auto-generated placeholder, no Sitemap directive
 - No structured data anywhere on the old site
@@ -70,6 +72,7 @@ When something is confirmed, move it from OPEN to CONFIRMED.
 /services/details/<slug>         ← 301 to the above, not in the sitemap
 /book-a-trail                    ← 301 to /book-a-trial
 ```
+Real 301s live in `vercel.json` (Astro's `redirects` only make meta-refresh pages on a static build). Add every new redirect to both.
 
 **Spelling:** it is **trial**, never "trail". Check every button, heading, URL and alt attribute before committing.
 

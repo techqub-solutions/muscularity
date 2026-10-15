@@ -11,7 +11,12 @@ const { intro, class: cls } = Astro.props;
 const number = site.whatsappUrl.split('?')[0].split('/').pop();
 ---
 
-<form data-wa={number} data-intro={intro} class={cls}><slot /></form>
+<form data-wa={number} data-intro={intro} class={cls}>
+  <slot />
+  <p data-wa-status hidden role="status" class="text-sm text-muted">
+    Opening WhatsApp… Didn't open? <a class="font-semibold text-fg underline decoration-green decoration-2 underline-offset-4">Tap here to send your message</a>.
+  </p>
+</form>
 
 <script>
   for (const form of document.querySelectorAll<HTMLFormElement>('form[data-wa]')) {
@@ -23,7 +28,12 @@ const number = site.whatsappUrl.split('?')[0].split('/').pop();
       e.preventDefault();
       const lines = [...new FormData(form)].filter(([, v]) => v).map(([k, v]) => `${k}: ${v}`);
       const text = encodeURIComponent([form.dataset.intro, ...lines].join('\n'));
-      window.open(`https://wa.me/${form.dataset.wa}?text=${text}`, '_blank');
+      const url = `https://wa.me/${form.dataset.wa}?text=${text}`;
+      const status = form.querySelector<HTMLElement>('[data-wa-status]')!;
+      status.querySelector('a')!.href = url;
+      status.hidden = false;
+      // In-app browsers (Instagram, Facebook) often block new windows: then go to WhatsApp in this tab.
+      if (!window.open(url, '_blank')) location.href = url;
     });
   }
 </script>

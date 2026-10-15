@@ -14,20 +14,21 @@ const { post } = Astro.props;
 const { Content } = await render(post);
 const p = post.data;
 const minutes = Math.max(1, Math.round((post.body ?? '').split(/\s+/).length / 200));
-const org = { '@type': 'Organization', name: site.name, url: site.url };
+const org = { '@id': `${site.url}/#business` }; // the LocalBusiness in Base.astro
 const schema = {
   '@context': 'https://schema.org',
   '@type': 'Article',
   headline: p.title,
   description: p.description,
   image: new URL(p.image.src, Astro.site).href,
+  mainEntityOfPage: new URL(Astro.url.pathname, Astro.site).href,
   author: org,
   publisher: org,
   ...(p.date && { datePublished: p.date.toISOString() }),
 };
 ---
 
-<Base title={p.seoTitle} description={p.description} image={p.image.src}>
+<Base title={p.seoTitle} description={p.description} image={p.image.src} type="article">
   <PageHero title={p.title} image={p.image} crumbs={[['Blog', '/blog'], [p.title, `/blog/${post.id}`]]}>
     <p class="eyebrow mt-8 text-muted">By {site.name} · {minutes} min read{p.date && ` · ${p.date.toLocaleDateString('en-GB', { dateStyle: 'long' })}`}</p>
   </PageHero>

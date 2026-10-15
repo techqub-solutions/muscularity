@@ -37,40 +37,40 @@ const heading = 'eyebrow text-muted';
     </div>
     <nav aria-label="Services">
       <h2 class={heading}>Services</h2>
-      <ul class="mt-5 grid gap-2.5">
-        {site.services.map((s) => <li><a href={`/services/${s.slug}`} class="text-fg/85 hover:text-green">{s.name}</a></li>)}
+      <ul class="mt-4 grid">
+        {site.services.map((s) => <li><a href={`/services/${s.slug}`} class="block py-1.5 text-fg/85 hover:text-green">{s.name}</a></li>)}
       </ul>
     </nav>
     <nav aria-label="Company">
       <h2 class={heading}>Company</h2>
-      <ul class="mt-5 grid gap-2.5">
-        {company.map(([label, href]) => <li><a href={href} class="text-fg/85 hover:text-green">{label}</a></li>)}
+      <ul class="mt-4 grid">
+        {company.map(([label, href]) => <li><a href={href} class="block py-1.5 text-fg/85 hover:text-green">{label}</a></li>)}
       </ul>
     </nav>
     <div>
       <h2 class={heading}>Contact</h2>
-      <ul class="mt-5 grid gap-3 text-fg/85">
-        <li><a href={site.whatsappUrl} class="flex items-center gap-3 hover:text-green"><Icon name="chat" class="size-5 text-green" />WhatsApp {site.phone}</a></li>
-        <li><a href={`tel:${site.tel}`} class="flex items-center gap-3 hover:text-green"><Icon name="phone" class="size-5 text-green" />{site.phone}</a></li>
-        <li><a href={`mailto:${site.email}`} class="flex items-center gap-3 hover:text-green"><Icon name="mail" class="size-5 text-green" />{site.email}</a></li>
-        <li class="flex items-center gap-3"><Icon name="clock" class="size-5 text-green" />{site.hoursText}</li>
-        <li class="flex items-center gap-3"><Icon name="pin" class="size-5 text-green" />{site.city}, UAE</li>
+      <ul class="mt-4 grid gap-1 text-fg/85">
+        <li><a href={site.whatsappUrl} class="flex items-center gap-3 py-1.5 hover:text-green"><Icon name="chat" class="size-5 text-green" />WhatsApp {site.phone}</a></li>
+        <li><a href={`tel:${site.tel}`} class="flex items-center gap-3 py-1.5 hover:text-green"><Icon name="phone" class="size-5 text-green" />{site.phone}</a></li>
+        <li><a href={`mailto:${site.email}`} class="flex items-center gap-3 py-1.5 hover:text-green"><Icon name="mail" class="size-5 text-green" />{site.email}</a></li>
+        <li class="flex items-center gap-3 py-1.5"><Icon name="clock" class="size-5 text-green" />{site.hoursText}</li>
+        <li class="flex items-center gap-3 py-1.5"><Icon name="pin" class="size-5 text-green" />{site.city}, UAE</li>
       </ul>
     </div>
   </div>
 
   <div class="border-t border-line">
-    <div class="mx-auto flex max-w-7xl flex-wrap justify-between gap-4 px-4 py-6 text-sm text-muted sm:px-6">
+    <div class="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-x-4 px-4 py-4 text-sm text-muted sm:px-6 md:pb-28">
       <p>© {new Date().getFullYear()} {site.name}</p>
       <div class="flex gap-6">
-        {Object.entries(site.social).map(([label, href]) => <a href={href} target="_blank" rel="noopener" class="hover:text-fg">{label}</a>)}
-        <a href="/privacy-policy" class="hover:text-fg">Privacy</a>
-        <a href="/terms-and-condition" class="hover:text-fg">Terms</a>
+        {Object.entries(site.social).map(([label, href]) => <a href={href} target="_blank" rel="noopener" class="py-2 hover:text-fg">{label}</a>)}
+        <a href="/privacy-policy" class="py-2 hover:text-fg">Privacy</a>
+        <a href="/terms-and-condition" class="py-2 hover:text-fg">Terms</a>
       </div>
     </div>
   </div>
 
-  <a href={site.whatsappUrl} class="btn fixed! right-8 bottom-8 z-40 hidden shadow-2xl md:inline-flex"><Icon name="chat" />WhatsApp</a>
+  <a href={site.whatsappUrl} class="btn fixed! right-8 bottom-8 z-40 hidden shadow-2xl after:absolute after:inset-0 after:-z-20 after:-skew-x-18 after:bg-green after:animate-pulse-soft md:inline-flex"><Icon name="chat" />WhatsApp</a>
 
   <!-- Mobile quick actions (body has pb-16 on mobile so this never covers content) -->
   <nav aria-label="Quick actions" class="fixed inset-x-0 bottom-0 z-40 grid grid-cols-3 border-t border-line bg-ink/95 text-xs font-bold uppercase backdrop-blur-md md:hidden">

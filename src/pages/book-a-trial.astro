@@ -6,7 +6,8 @@ import WaForm from '../components/WaForm.astro';
 import Icon from '../components/Icon.astro';
 import site from '../content/site.json';
 
-const times = ['Early morning (6–9 AM)', 'Morning (9 AM–12 PM)', 'Afternoon (12–5 PM)', 'Evening (5–11 PM)'];
+const times = ['Early morning (6–9 AM)', 'Morning (9 AM–12 PM)', 'Afternoon (12–5 PM)', 'Evening (5–11 PM)']; // keep in step with site.json hours
+const hours = site.hoursText.replace('Every day', 'every day');
 const goals = ['Lose weight', 'Build muscle', 'Get stronger', 'Move better'];
 const next = [
   ['Send your request', 'It opens WhatsApp with your details already written. Just press send.'],
@@ -18,7 +19,7 @@ const chip = 'cursor-pointer border border-line px-4 py-2.5 font-semibold transi
 const label = 'eyebrow mb-3 block text-muted';
 ---
 
-<Base title="Book a Personal Trainer in Abu Dhabi" description="Book your free personal training session in Abu Dhabi. At your home, outdoors or in the gym, every day 6 AM – 11 PM. We confirm on WhatsApp.">
+<Base title="Book a Personal Trainer in Abu Dhabi" description={`Book your free personal training session in ${site.city}. At your home, outdoors or in the gym, ${hours}. We confirm on WhatsApp.`}>
   <PageHero title="Book a free trial" image={photo} crumbs={[['Book a free trial', '/book-a-trial']]} intro="Tell us where, when and what you want to achieve. We'll confirm your free session on WhatsApp." />
 
   <div class="mx-auto grid max-w-7xl gap-16 px-4 py-20 sm:px-6 lg:grid-cols-[1fr_24rem] lg:py-28">
@@ -64,7 +65,7 @@ const label = 'eyebrow mb-3 block text-muted';
       <ol class="mt-8 grid gap-6">
         {next.map(([title, text], i) => (
           <li class="grid grid-cols-[3rem_1fr] gap-3 border-t border-line pt-5">
-            <span class="display text-4xl text-green">0{i + 1}</span>
+            <span class="display text-4xl text-green" aria-hidden="true">0{i + 1}</span>
             <div><h3 class="text-lg font-bold">{title}</h3><p class="mt-1 text-fg/70">{text}</p></div>
           </li>
         ))}

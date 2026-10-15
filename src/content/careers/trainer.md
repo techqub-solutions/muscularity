@@ -1,7 +1,7 @@
 ---
 title: Trainer
 seoTitle: Trainer Job in Abu Dhabi
-description: Join Muscularity Fitness as a Trainer in Abu Dhabi. Full time, 2+ years' experience. Apply today.
+description: "Trainer job in Abu Dhabi: deliver safe, motivating sessions at clients' homes, outdoors or in the gym. Full time, 2+ years' experience. Email your CV to apply."
 type: Full time
 location: Abu Dhabi
 experience: 2+ years

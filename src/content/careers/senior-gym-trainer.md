@@ -1,7 +1,7 @@
 ---
 title: Senior Gym Trainer
 seoTitle: Senior Gym Trainer Job in Abu Dhabi
-description: Join Muscularity Fitness as a Senior Gym Trainer in Abu Dhabi. Full time, 2+ years' experience. Apply today.
+description: "Senior Gym Trainer job in Abu Dhabi: coach strength, conditioning and mobility, and mentor newer trainers. Full time, 2+ years' experience. Email your CV."
 type: Full time
 location: Abu Dhabi
 experience: 2+ years
