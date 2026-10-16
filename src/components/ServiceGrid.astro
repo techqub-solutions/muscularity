@@ -1,5 +1,5 @@
 ---
-// Photo cards for the services (home: all six; service pages: related ones).
+// Photo cards for the services (home: all six; service pages: related ones). A swipe row on phones.
 import { Image } from 'astro:assets';
 import { getCollection } from 'astro:content';
 import Icon from './Icon.astro';
@@ -15,9 +15,9 @@ const at = all.findIndex((s) => s.id === exclude);
 const services = (at < 0 ? all : [...all.slice(at + 1), ...all.slice(0, at)]).slice(0, limit);
 ---
 
-<ul class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+<ul class="swipe reveal md:grid-cols-2 lg:grid-cols-3">
   {services.map((s) => (
-    <li class="reveal">
+    <li>
       <a href={`/services/${s.id}`} class="group relative isolate flex aspect-square flex-col justify-end sm:aspect-[4/5] overflow-hidden bg-ink p-6 [clip-path:polygon(0_0,calc(100%-2.5rem)_0,100%_2.5rem,100%_100%,0_100%)]">
         <Image src={s.data.image} alt="" widths={[400, 800]} sizes="(min-width: 1024px) 30vw, (min-width: 640px) 45vw, 90vw" class="absolute inset-0 -z-10 size-full object-cover transition duration-700 ease-out-expo group-hover:scale-105" />
         <div class="absolute -inset-px -z-10 bg-linear-to-t from-ink via-ink/50 to-transparent"></div>
