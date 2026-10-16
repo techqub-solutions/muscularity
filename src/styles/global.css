@@ -78,6 +78,13 @@
   & > :first-child { @apply mt-0; }
 }
 
+/* Phones: a swipe row that runs to the screen edge, next card peeking in. From md up: a grid (add md:grid-cols-N).
+   Put `reveal` on the row itself, not on the cards inside it. */
+@utility swipe {
+  @apply -mx-4 flex snap-x snap-mandatory scroll-px-4 gap-3 overflow-x-auto px-4 pb-4 sm:-mx-6 sm:scroll-px-6 sm:px-6 md:mx-0 md:grid md:overflow-visible md:p-0;
+  & > * { @apply w-[min(80vw,22rem)] shrink-0 snap-start md:w-auto; }
+}
+
 /* Rise into view on scroll. Browsers without scroll timelines just show the content. */
 @utility reveal {
   @supports (animation-timeline: view()) {

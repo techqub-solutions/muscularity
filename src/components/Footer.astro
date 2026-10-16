@@ -39,6 +39,7 @@ const heading = 'eyebrow text-muted';
       <h2 class={heading}>Services</h2>
       <ul class="mt-4 grid">
         {site.services.map((s) => <li><a href={`/services/${s.slug}`} class="block py-1.5 text-fg/85 hover:text-green">{s.name}</a></li>)}
+        <li><a href="/older-adults" class="block py-1.5 text-fg/85 hover:text-green">Training for older adults</a></li>
       </ul>
     </nav>
     <nav aria-label="Company">

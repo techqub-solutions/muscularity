@@ -17,7 +17,6 @@ export async function getStaticPaths() {
 const { service } = Astro.props;
 const { Content } = await render(service);
 const s = service.data;
-const prices = site.packages.map((p) => p.price);
 const t = site.testimonials[(s.order - 1) % site.testimonials.length];
 const schema = {
   '@context': 'https://schema.org',
@@ -26,7 +25,7 @@ const schema = {
   description: s.description,
   areaServed: site.city,
   provider: { '@id': `${site.url}/#business` }, // the LocalBusiness in Base.astro
-  offers: { '@type': 'AggregateOffer', priceCurrency: 'AED', lowPrice: Math.min(...prices), highPrice: Math.max(...prices) },
+  offers: { '@type': 'Offer', price: site.price.amount, priceCurrency: 'AED', description: `Per session. ${site.price.note}` },
 };
 ---
 
@@ -51,15 +50,15 @@ const schema = {
 
     <aside class="lg:sticky lg:top-24 lg:self-start">
       <div class="border border-line bg-surface p-6">
-        <p class="eyebrow text-muted">From</p>
-        <p class="mt-1 font-extrabold uppercase font-stretch-[70%]"><span class="text-2xl">AED</span> <span class="text-6xl">{Math.min(...prices)}</span> <span class="text-lg text-muted">/ session</span></p>
+        <p class="eyebrow text-muted">Price</p>
+        <p class="mt-1 font-extrabold uppercase font-stretch-[70%]"><span class="text-2xl">AED</span> <span class="text-6xl">{site.price.amount}</span> <span class="text-lg text-muted">/ session</span></p>
+        <p class="mt-2 text-sm text-muted">{site.price.note}</p>
         <ul class="mt-6 grid gap-3 border-t border-line pt-6 text-fg/85">
           <li class="flex items-center gap-3"><Icon name="pin" class="size-5 text-green" />{site.places.join(' · ')}</li>
           <li class="flex items-center gap-3"><Icon name="clock" class="size-5 text-green" />{site.hoursText}</li>
           <li class="flex items-center gap-3"><Icon name="check" class="size-5 text-green" />First session free</li>
         </ul>
         <a href={`/book-a-trial?Service=${encodeURIComponent(s.name)}`} class="btn mt-8 w-full">Book a free trial</a>
-        <a href="/#packages" class="mt-3 block py-2 text-center text-sm font-semibold text-muted underline underline-offset-4 hover:text-fg">See all packages</a>
       </div>
       <figure class="mt-3 border-l-4 border-green bg-surface p-6">
         <blockquote class="display text-3xl">“{t.highlight}”</blockquote>
@@ -74,7 +73,7 @@ const schema = {
     <div class="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:py-28">
       <p class="eyebrow text-green">First session free</p>
       <h2 class="display mt-4 max-w-3xl text-[clamp(2.75rem,6vw,5.5rem)]">Try {s.name} on us</h2>
-      <p class="mt-5 max-w-xl text-lg text-fg/85">One free session at your home, outdoors or in the gym. Then choose a package if you want to continue.</p>
+      <p class="mt-5 max-w-xl text-lg text-fg/85">One free session at your home, outdoors or in the gym. Then book more sessions if you want to continue.</p>
       <div class="mt-8 flex flex-wrap items-center gap-8">
         <a href={`/book-a-trial?Service=${encodeURIComponent(s.name)}`} class="btn">Book my free session <Icon name="arrow" /></a>
         <a href={site.whatsappUrl} class="link">WhatsApp us</a>

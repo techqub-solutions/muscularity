@@ -24,8 +24,8 @@ When something is confirmed, move it from OPEN to CONFIRMED.
 - Name, phone, hours and links come only from `src/content/site.json`, so NAP matches everywhere.
 - Every page uses `layouts/Base.astro` with `title` (the keyword only; ` | Muscularity Fitness` is added for you) and `description`.
 - Motion: CSS first, only transform/opacity, reduced motion always respected. GSAP only on the homepage.
-- Design system (use it, don't invent new styles): `btn` = green slash button, `link` = underlined action, `display` = condensed headline, `eyebrow` = small label, `prose` = Markdown text, `reveal` = rise on scroll, `count` = number counts up (`style="--n: 22"`). Shapes are cut at the logo's angle (clip-path / skew).
-- Components: `PageHero` (inner-page top + breadcrumbs), `ServiceGrid`, `Faq` (+ schema), `WaForm` (form → WhatsApp message), `Icon`.
+- Design system (use it, don't invent new styles): `btn` = green slash button, `link` = underlined action, `display` = condensed headline, `eyebrow` = small label, `prose` = Markdown text, `reveal` = rise on scroll, `swipe` = swipe row on phones / grid from md (put `reveal` on the row), `count` = number counts up (`style="--n: 22"`). Shapes are cut at the logo's angle (clip-path / skew).
+- Components: `PageHero` (inner-page top + breadcrumbs), `ServiceGrid`, `ClientVideos` (the `site.json` videos), `Faq` (+ schema), `WaForm` (form → WhatsApp message), `Icon`.
 - Client videos: `public/videos/clients/`, listed in `site.json` `videos`. 720 px wide, H.264, faststart, with a `.webp` poster (commands in `README.md`).
 - Photos in `src/assets/photos/` are **placeholders** (old theme stock, licence unknown). Replace them all before launch.
 - Home hero = "out of bounds": the photo in a slanted frame + the same people cut out (`hero-cutout.png`, same size as the photo) on top, so they step out of the frame. Never put a cut-out on a different photo (light won't match). Cut-outs are made locally with `rembg` (Python, model `isnet-general-use`).
@@ -56,6 +56,8 @@ When something is confirmed, move it from OPEN to CONFIRMED.
 - Old "shop" (cart, 5 products) was template demo markup with no shop code; not rebuilt — 22 Sept 2026
 - Email (MX) and DNS are at Hostinger. At launch, change only the website records — 22 Sept 2026
 - Hosting: Vercel (a client site is commercial use, so the Pro plan), connected to the GitHub repo: every push deploys — 15 Oct 2026
+- Price: one price, AED 165 / session, may vary by location; the old packages (AED 135–195) are dropped — 16 Oct 2026
+- Social media: Instagram only (`muscularityfitnessuae`). No Facebook or LinkedIn on the site — 16 Oct 2026
 - Old sitemap last modified: January 2025
 - Old robots.txt: auto-generated placeholder, no Sitemap directive
 - No structured data anywhere on the old site
@@ -64,7 +66,7 @@ When something is confirmed, move it from OPEN to CONFIRMED.
 
 ## Conventions — apply without being asked
 
-**Prices:** always `AED 135 / session`. Never `135/-`, never a bare number.
+**Prices:** always `AED 165 / session`. Never `165/-`, never a bare number. One price for every service, from `site.json` `price`; wherever it appears, say it may vary by location.
 
 **URLs:** keep every old URL. One canonical page per service:
 ```

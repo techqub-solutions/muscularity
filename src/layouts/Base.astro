@@ -15,7 +15,6 @@ const { title, description, image, type = 'website' } = Astro.props;
 const fullTitle = `${title} | ${site.name}`;
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
 const logo = new URL('/icon-512.png', Astro.site).href;
-const prices = site.packages.map((p) => p.price);
 
 // Other schema on the site points at this one with { '@id': `${site.url}/#business` }.
 const business = {
@@ -28,7 +27,7 @@ const business = {
   email: site.email,
   logo,
   image: logo,
-  priceRange: `AED ${Math.min(...prices)}–${Math.max(...prices)}`,
+  priceRange: `AED ${site.price.amount} per session`,
   address: { '@type': 'PostalAddress', addressLocality: site.city, addressCountry: site.country },
   areaServed: { '@type': 'City', name: site.city },
   openingHours: site.hours,

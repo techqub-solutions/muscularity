@@ -1,0 +1,76 @@
+---
+// Training for older adults: the full text (the home page shows a short teaser + the client videos).
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import ClientVideos from '../components/ClientVideos.astro';
+import Icon from '../components/Icon.astro';
+import site from '../content/site.json';
+
+const focus = [
+  ['Strength & Muscle Conditioning', 'Build functional strength for everyday activities.'],
+  ['Balance & Stability', 'Improve coordination and confidence in movement.'],
+  ['Posture Correction', 'Develop better alignment and body support.'],
+  ['Flexibility & Mobility', 'Maintain range of motion and comfort in daily movement.'],
+];
+const notes = [
+  'Functional movement for walking, standing, sitting, and everyday tasks.',
+  'Confidence and independence through safe, sustainable progress.',
+  'Every session is adapted to your ability, with focus on technique and safety.',
+];
+const price = `AED ${site.price.amount} / session`;
+const h2 = 'display text-[clamp(2.75rem,6vw,5rem)]';
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: 'Personal training for older adults',
+  description: 'One-to-one strength, balance, posture and mobility training for older adults.',
+  areaServed: site.city,
+  provider: { '@id': `${site.url}/#business` }, // the LocalBusiness in Base.astro
+  offers: { '@type': 'Offer', price: site.price.amount, priceCurrency: 'AED', description: `Per session. ${site.price.note}` },
+};
+---
+
+<Base title="Senior Fitness Training Abu Dhabi" description={`Training for older adults in ${site.city}: strength, balance, posture and mobility, at home, outdoors or in the gym. ${price} (varies by location).`}>
+  <PageHero title="Training for older adults" titleEnd={`in ${site.city}`} eyebrow="One-to-one personal training" intro="Our specialised training helps older adults improve strength, mobility, balance, and confidence through safe, personalised coaching." crumbs={[['Training for older adults', '/older-adults']]}>
+    <div class="mt-10 flex flex-wrap items-center gap-8">
+      <a href="/book-a-trial" class="btn">Book a free trial <Icon name="arrow" /></a>
+      <a href={site.whatsappUrl} class="link">WhatsApp us</a>
+    </div>
+  </PageHero>
+
+  <section class="mx-auto grid max-w-7xl gap-12 px-4 py-20 sm:px-6 lg:grid-cols-[1fr_1.2fr] lg:py-28">
+    <div>
+      <h2 class={h2}>Stay strong.<br />Stay balanced.<br />Stay independent.</h2>
+      <p class="mt-8 text-lg text-fg/80">As we age, maintaining muscle strength and mobility becomes increasingly important for everyday activities and independence. Our experienced trainers use controlled, age-appropriate exercises designed around each client’s abilities, fitness level, and individual needs.</p>
+      <ul class="mt-8 grid gap-3 text-lg">
+        {notes.map((n) => <li class="flex gap-3"><Icon name="check" class="mt-1 size-5 shrink-0 text-green" />{n}</li>)}
+      </ul>
+      <p class="mt-8 text-fg/70">Age should never be a barrier to becoming stronger and more active. With the right training and guidance, you can continue moving better, feeling stronger, and enjoying an active lifestyle at every stage of life.</p>
+    </div>
+    <ul class="grid content-start gap-3 sm:grid-cols-2">
+      {focus.map(([title, text]) => (
+        <li class="reveal border-t-4 border-green bg-surface p-6">
+          <h3 class="text-xl font-extrabold uppercase font-stretch-[75%]">{title}</h3>
+          <p class="mt-2 text-fg/70">{text}</p>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  {site.videos.length > 0 && (
+    <section class="border-t border-line">
+      <div class="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:py-28">
+        <h2 class={h2}>Client videos</h2>
+        <div class="mt-12"><ClientVideos /></div>
+      </div>
+    </section>
+  )}
+
+  <section class="border-t border-line">
+    <div class="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-6 px-4 py-16 sm:px-6">
+      <p class="max-w-xl text-lg text-fg/80"><strong class="text-fg">{price}.</strong> {site.price.note} Your first session is free.</p>
+      <a href="/book-a-trial" class="btn">Book a free trial <Icon name="arrow" /></a>
+    </div>
+  </section>
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(schema)} />
+</Base>

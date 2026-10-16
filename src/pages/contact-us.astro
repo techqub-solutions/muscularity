@@ -31,10 +31,10 @@ const schema = { '@context': 'https://schema.org', '@type': 'ContactPage', name:
       </a>
       <ul class="grid gap-3 sm:grid-cols-2">
         {ways.map(([icon, name, value, href], i) => (
-          <li class:list={['border border-line bg-surface p-6', i > 1 && 'sm:col-span-2']}>
+          <li class:list={['min-w-0 border border-line bg-surface p-6', i > 1 && 'sm:col-span-2']}>
             <Icon name={icon} class="size-6 text-green" />
             <p class="eyebrow mt-4 text-muted">{name}</p>
-            {href ? <a href={href} class="mt-1 block text-lg font-bold hover:text-green">{value}</a> : <p class="mt-1 text-lg font-bold">{value}</p>}
+            {href ? <a href={href} class="mt-1 block text-base font-bold [overflow-wrap:anywhere] hover:text-green sm:text-lg">{value}</a> : <p class="mt-1 text-base font-bold [overflow-wrap:anywhere] sm:text-lg">{value}</p>}
           </li>
         ))}
       </ul>
