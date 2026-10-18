@@ -202,6 +202,127 @@ Done 16 Oct 2026: on a 390 px phone the home page went from 21.5 to 15.8 screens
 - [ ] Hero video loop (home page only) once real footage exists
 - [ ] Dates and a named author on blog posts; one new post a month
 
+## Mobile pass 2 (audit 18 Oct 2026)
+
+Production build, all 24 pages at 320 / 375 / 390 px, a small phone (375 × 667, iPhone SE size) and landscape (812 × 375).
+Already fine: no sideways scrolling anywhere, every form field is 16 px or more (no iPhone zoom), headings wrap cleanly.
+What's wrong: on a 375 × 667 phone the home page is 19.8 screens long (16.3 at 375 × 812), the hero photo starts below the
+first screen, and on a service page the price is 3.4 screens down. Work order: sections 1–4 first (small, high impact), then 5–7. Section 8 needs real phones.
+
+**Done 18 Oct 2026 (sections 1–4):** home page 16.3 → 14.9 screens at 375 × 812 and 19.8 → 18.2 at 375 × 667 (goal not reached: the longest
+parts left are older adults, how it works, price and founder, about 1,100–1,300 px each, so getting shorter means cutting or merging content: client's call).
+Hero photo now starts at 502 px on a 667 px phone (was 583). Still no sideways scrolling at 320 / 375 px; every tap target is 44 px or more except the offer bar.
+Checked in the browser preview only, not yet on real phones (section 8).
+
+**1. Quick fixes**
+- [x] iPhone home indicator: `viewport-fit=cover` in `Base.astro` + `env(safe-area-inset-bottom)` padding on the Call · WhatsApp · Free trial bar (and on the body padding under it). Body also gets the left/right safe areas, so text stays out of the notch in landscape
+- [x] Client videos: `playsinline` (3 on home, 3 on `/older-adults`), otherwise iPhones jump to full screen on play
+- [x] Hide the bottom bar while a text field, select or textarea has focus (CSS `:has()` in `global.css`), so it never covers the field above the keyboard
+- [x] `/book-a-trial`: the bar shows Call · WhatsApp only (its "Free trial" button linked to the page you were on)
+- [x] Service pages: the bar's "Free trial" (and the green footer band's button) pre-fills that service (`/book-a-trial?Service=…`)
+- [x] Mobile menu: its logo loads eagerly (it popped in after the menu opened)
+- [x] Tap targets to 44 px or more: footer links, `link` actions (an invisible `::after` makes the tap area bigger without moving anything), booking chips, header logo, breadcrumbs, `/contact-us` cards. **Kept:** the offer bar stays 32 px: it is full width, and a taller bar pushes the hero photo down
+- [x] Pressed state on the bottom bar buttons
+
+**2. Header and menu**
+- [x] The wordmark shows next to the "MF" mark from 360 px, so the name is on the first screen
+- [x] Menu: "Book a free trial", Call and WhatsApp pinned to the bottom (with the hours); the links scroll above them
+- [x] Menu: the current page is green; "Our founder" and "Training for older adults" added
+- [x] Menu fades and slides in and out (CSS `@starting-style` + `transition-behavior: allow-discrete`; off with reduced motion)
+- [ ] Optional: header slides away on scroll down and back on scroll up (small script). Header + bottom bar take 126 px of a 667 px screen. Not done: needs a script; decide after the real-phone check
+
+**3. Home page: shorter (goal ≤ 14 screens at 375 × 812, ≤ 16 at 375 × 667)**
+- [x] Hero facts: "Where" on one line, "When" and "Price" side by side (245 px → 165 px); "Varies by location" under the price (`CLAUDE.md` price rule). Times never break inside "6 AM – 11 PM"
+- [x] Hero: tighter spacing on phones; the "WhatsApp us" link is hidden there (the bottom bar has WhatsApp). Photo starts at 502 px on a 667 px phone (was 583)
+- [x] Reviews: long reviews (over 200 characters) show 4 lines + "Read more" (a button with `aria-expanded` and a few lines of JS: `<details>` can't show a 4-line preview). Card 535 → 379 px
+- [x] Older-adults videos: narrower cards on phones, 533 → 413 px tall, the next video peeks in
+- [x] Numbers banner: less padding and smaller numbers on phones (383 → 298 px); "6 AM – 11 PM" on one line
+- [x] Swipe rows: new `SwipeHint` component on phones ("6 programmes · Swipe →", "3 client videos", "4 profiles", "3 articles", "3 reviews"); the main reviews row says "5 reviews · Swipe" on every screen size
+- [x] Footer: Services and Company side by side on phones (still about 1,130 px, because the links are now 44 px tall)
+- [x] Section padding 80 → 64 px on phones; founder photo a little smaller on phones
+- [x] BMI: scale labels 12 → 14 px; after "Calculate" the keyboard closes and the result scrolls into view. `enterkeyhint` skipped: browsers already show the right key
+
+**4. Booking and contact (where the leads come from)**
+- [x] `/book-a-trial`: less space above the form on phones (all inner-page heroes are shorter on phones); the name field is fully in the first screen on a 667 px phone (515–569 px)
+- [x] Field labels: 12 px grey capitals → 16 px (booking + contact)
+- [x] `autocapitalize="words"` on name. `enterkeyhint` "next" skipped: pressing it would submit the form early (it opens WhatsApp)
+- [x] "What happens next": the 3 steps as one compact row above the form on phones; the full list stays beside the form from 1024 px
+- [x] After sending: the "Didn't open? Tap here" line scrolls into view
+- [x] `/contact-us`: the whole Call and Email cards are tappable
+
+Sections 5–8 (service price, video sizes, landscape, real phones) moved into "Mobile redesign" below.
+
+## Mobile redesign (fresh audit 18 Oct 2026)
+
+Looked at the site as a first-time visitor on a 390 × 844 phone (iPhone 14/15 size), production build, with the browser pane visible so the
+animations really ran: every home section and 8 inner pages. The old plan was not used as a starting point.
+Home today: 14.4 screens (12,117 px). Goal: about 10–11 screens, nothing out of line, and something moving in every section.
+
+What a visitor notices:
+- **Out of line:** every full-width slanted green button sticks out 8 px past the text on both sides; the booking card's green shadow runs to 6 px from the screen edge
+- **Too big:** price (1,110 px for one number), founder (1,040), "How it works" (1,268), older adults (1,323), footer (1,082)
+- **Repeats:** the same client quotes appear in the strip under the hero, in "In their words" and in the founder section; two photo carousels back to back ("Six ways to train", "Built for your life"); three "free trial" calls to action on the first screen (offer bar, hero button, bottom bar)
+- **Flat:** on a phone only the hero headline, the marquee and some card rows move. Photo zoom and arrow nudges are hover-only, so touch screens never see them; inner pages have no animation at all; the menu fades as a whole, so page text shows through it halfway
+- **Unfinished touches:** raw browser controls on the client videos (tiny play icon); inner-page photos hidden under an 85 % black layer; `/about-founder` opens on the photo alone (name and breadcrumbs below it)
+
+**Done 18 Oct 2026 (A–D, browser preview only):** home 14.4 → 11.0 screens at 390 × 844 (18.2 → 13.9 on a 667 px phone); no page wider than
+the screen at 320 / 375 / 390 px, even while things animate; every tap target 44 px or more. Big find: on the live site **no scroll animation ever
+ran** (scroll reveals, number count-ups): the build's CSS minifier folds `animation-timeline` into the `animation` shorthand, browsers reject it and
+drop the rule. Fixed for all of them (rule in `CLAUDE.md`). Not yet checked on real phones (E).
+
+**A. Alignment and polish (no content change)**
+- [x] Slanted buttons stay inside the text column on phones (the slab is pulled in by its slant, `global.css`)
+- [x] Booking card: green shadow 6 px on phones, card pulled in so the shadow ends on the column edge
+- [x] Green footer band: "Every day, 6 AM – 11 PM" never breaks
+- [x] One heading size, one label and one spacing rule for every home section: new `SectionHead` component
+- [x] Menu shows mark + name like the header, at the same spot (X where the menu icon was)
+- [x] Scrollbars hidden under swipe rows on phones
+- [x] `/about-founder`: breadcrumbs and name first, then the photo
+- [x] Inner-page heroes on phones: the photo is a slanted band under the text (form pages keep the dark background, `band={false}`)
+- [x] Blog posts: the breadcrumb stays on one line; a long title ends in "…"
+- [x] Client videos: green "Play" button over the poster; browser controls only once playing; one video plays at a time
+
+**B. Motion on phones (CSS first, transform and opacity only, everything off with reduced motion)**
+- [x] Section headings: each line rises out of a mask as it scrolls in (`rise-lines`)
+- [x] Swipe rows: cards slide in from the right one after another on phones; grids rise in one after another (`stagger`)
+- [x] Photos: a green slab at the logo angle slides off to reveal them (`slash` on scroll, `slash-load` at the top of inner pages)
+- [x] Tap feedback: cards, chips, tiles, FAQ rows, footer links press in (`active:`), plus a touch listener so iPhones show it
+- [x] Menu: solid panel slides in from the right, links follow one by one
+- [x] Bottom bar slides up once the hero "Book a free trial" button has scrolled away (home page)
+- [x] Hero parallax: the green slab slides sideways and the photo + cut-out rise a little (together: moving the cut-out alone would show the people twice)
+- [x] FAQ answers, "Read more" text and the BMI result fade in
+- [x] Inner pages: breadcrumbs, title and intro fade in on load
+- [x] "Swipe →" arrow nudges twice as its row scrolls in
+- [x] Price (165) and founder years (22) count up
+- Scroll-linked effects run in Chrome / Android and Safari 26+; older iPhones show everything, without that motion
+
+**C. Home page: tighter, nothing said twice (14.4 → 11.0 screens at 390 × 844)**
+- [x] Offer bar hidden on phones (and on phones held sideways); still shown from tablets up
+- [x] Reviews: one carousel right after the hero ("Client reviews", 5 cards, 4 lines + "Read more"); the old quote strip, the later "In their words" section and the founder-section quote are gone
+- [x] How it works: booking card + the 3 steps as one compact row
+- [x] "Built for your life": 2 × 2 compact photo tiles on phones (title only), 4 cards with text from lg
+- [x] Price: one card (price, "may vary by location", 4 ticks, button, WhatsApp line)
+- [x] Numbers banner removed; "22+ years" is in the founder card
+- [x] Founder: compact card on phones (small photo beside the name)
+- [x] Older adults: heading on 2 lines ("Stay strong. Stay independent."), shorter intro
+- [x] BMI: compact card
+- [x] FAQ: tighter rows
+- [x] Green footer band 451 → 361 px; footer 1,082 → 861 px (logo beside the tagline, Call / WhatsApp / Email as 3 buttons)
+- [ ] Try: hero photo first with the headline overlapping it. Not tried: the current hero now fits the first screen with one button
+
+**D. Inner pages and other screens**
+- [x] Service pages: "AED 165 / session · may vary by location · first session free" in the hero below 1024 px
+- [x] `/about-us`: the six steps in two columns on phones; tighter sections (now 6.5 screens at 390 × 844)
+- [x] Landscape phones: bottom bar instead of the floating WhatsApp button on short screens (`short:` variant), headline capped at 60 px, no offer bar
+- [x] Phone-size client videos (`site.json` `small`): 2.7, 2.3 and 1.5 MB (were 4.1, 7.9 and 5.3 MB)
+- [x] Hero sections use `overflow-clip`: with `overflow-hidden` the scroll animations inside froze
+- [ ] Already listed under "Live site checks": smaller image widths + AVIF, the font-swap layout shift
+
+**E. Check**
+- [x] Phone audit after the changes: 24 pages at 320 / 375 / 390 px and 667 px tall, landscape 844 × 390, desktop 1280 × 800
+- [ ] Real phones: iPhone Safari (a small one and a 6.1"), Android Chrome, Samsung Internet, the Instagram in-app browser; Android "large text" at 130 %
+- [ ] Lighthouse mobile on the Vercel preview, compared with the 15 Oct scores
+
 ## Phase 6: launch
 
 - [ ] Get the old DB backup: enquiries per month = the baseline

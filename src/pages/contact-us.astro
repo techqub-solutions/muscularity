@@ -14,11 +14,12 @@ const ways = [
 ] as const;
 const hours = site.hoursText.replace('Every day', 'every day');
 const field = 'w-full border border-line bg-ink px-4 py-3.5 text-fg placeholder:text-muted focus:border-green focus:outline-none';
+const label = 'mb-2 block font-semibold text-fg/85';
 const schema = { '@context': 'https://schema.org', '@type': 'ContactPage', name: `Contact ${site.name}`, url: new URL('/contact-us', Astro.site).href };
 ---
 
 <Base title="Contact a Personal Trainer in Abu Dhabi" description={`Contact ${site.name} in ${site.city}. WhatsApp or call ${site.phone}, or email ${site.email}. Open ${hours}.`}>
-  <PageHero title="Contact us" image={photo} crumbs={[['Contact', '/contact-us']]} intro={`The fastest way to reach us is WhatsApp. We reply ${hours}.`} />
+  <PageHero title="Contact us" image={photo} band={false} crumbs={[['Contact', '/contact-us']]} intro={`The fastest way to reach us is WhatsApp. We reply ${hours}.`} />
 
   <div class="mx-auto grid max-w-7xl gap-12 px-4 py-20 sm:px-6 lg:grid-cols-2 lg:py-28">
     <div class="grid content-start gap-3">
@@ -30,24 +31,29 @@ const schema = { '@context': 'https://schema.org', '@type': 'ContactPage', name:
         <Icon name="arrow" class="size-8 shrink-0 transition group-hover:translate-x-2" />
       </a>
       <ul class="grid gap-3 sm:grid-cols-2">
-        {ways.map(([icon, name, value, href], i) => (
-          <li class:list={['min-w-0 border border-line bg-surface p-6', i > 1 && 'sm:col-span-2']}>
-            <Icon name={icon} class="size-6 text-green" />
-            <p class="eyebrow mt-4 text-muted">{name}</p>
-            {href ? <a href={href} class="mt-1 block text-base font-bold [overflow-wrap:anywhere] hover:text-green sm:text-lg">{value}</a> : <p class="mt-1 text-base font-bold [overflow-wrap:anywhere] sm:text-lg">{value}</p>}
-          </li>
-        ))}
+        {ways.map(([icon, name, value, href], i) => {
+          const Card = href ? 'a' : 'div'; // the whole card is the tap target, not just the number or address
+          return (
+            <li class:list={['min-w-0 border border-line bg-surface', href && 'transition-colors hover:border-green active:bg-white/5', i > 1 && 'sm:col-span-2']}>
+              <Card href={href || undefined} class="group block h-full p-6">
+                <Icon name={icon} class="size-6 text-green" />
+                <p class="eyebrow mt-4 text-muted">{name}</p>
+                <p class:list={['mt-1 text-base font-bold [overflow-wrap:anywhere] sm:text-lg', href && 'group-hover:text-green']}>{value}</p>
+              </Card>
+            </li>
+          );
+        })}
       </ul>
     </div>
 
     <div class="border border-line p-6 sm:p-8">
       <h2 class="display text-5xl">Send a message</h2>
       <WaForm intro="Hi Muscularity Fitness," class="mt-8 grid gap-6">
-        <label><span class="eyebrow mb-3 block text-muted">Your name</span><input name="Name" required autocomplete="name" class={field} /></label>
-        <label><span class="eyebrow mb-3 block text-muted">Message</span><textarea name="Message" required rows="5" class={field}></textarea></label>
+        <label><span class={label}>Your name</span><input name="Name" required autocomplete="name" autocapitalize="words" class={field} /></label>
+        <label><span class={label}>Message</span><textarea name="Message" required rows="5" class={field}></textarea></label>
         <div class="flex flex-wrap items-center gap-6">
           <button class="btn">Send on WhatsApp <Icon name="arrow" /></button>
-          <a href="/book-a-trial" class="py-2 text-sm font-semibold text-muted underline underline-offset-4 hover:text-fg">Want to book? Use the booking form</a>
+          <a href="/book-a-trial" class="py-3 text-sm font-semibold text-muted underline underline-offset-4 hover:text-fg">Want to book? Use the booking form</a>
         </div>
       </WaForm>
     </div>
