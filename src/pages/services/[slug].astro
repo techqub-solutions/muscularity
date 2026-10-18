@@ -32,7 +32,7 @@ const schema = {
 <Base title={s.seoTitle} description={s.description}>
   <PageHero title={s.name} titleEnd={`in ${site.city}`} eyebrow="One-to-one personal training" intro={s.tagline} image={s.image} crumbs={[['Services', '/#services'], [s.name, `/services/${service.id}`]]}>
     <!-- Phones and tablets: the price up here (the price card is beside the text only from lg) -->
-    <p class="mt-6 animate-fade-up text-fg/85 [animation-delay:280ms] lg:hidden"><strong class="font-extrabold uppercase font-stretch-[75%] text-xl text-fg">AED {site.price.amount} / session</strong> · may vary by location · first session free</p>
+    <p class="mt-6 animate-fade-up text-fg/85 [animation-delay:480ms] lg:hidden"><strong class="font-extrabold uppercase font-stretch-[75%] text-xl text-fg">AED {site.price.amount} / session</strong> · may vary by location · first session free</p>
     <div class="mt-8 flex flex-wrap items-center gap-8 lg:mt-10">
       <a href={`/book-a-trial?Service=${encodeURIComponent(s.name)}`} class="btn">Book a free trial <Icon name="arrow" /></a>
       <a href={site.whatsappUrl} class="link">WhatsApp us</a>

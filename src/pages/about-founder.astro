@@ -31,9 +31,9 @@ const breadcrumbs = {
         <nav aria-label="Breadcrumb" class="eyebrow animate-fade-up text-muted">
           {crumbs.map(([name, href], i) => (i < crumbs.length - 1 ? <><a href={href} class="-my-3.5 inline-block py-3.5 hover:text-fg">{name}</a> <span class="text-green">/</span> </> : <span aria-current="page" class="text-fg">{name}</span>))}
         </nav>
-        <p class="eyebrow mt-8 animate-fade-up text-green [animation-delay:80ms] sm:mt-14">{f.role}, {site.name}</p>
-        <h1 class="display mt-4 animate-fade-up text-[clamp(3.5rem,9vw,8rem)] [animation-delay:150ms]">{f.name}</h1>
-        <dl class="mt-8 grid max-w-md animate-fade-up grid-cols-2 gap-6 border-t border-line pt-6 [animation-delay:220ms] sm:mt-10">
+        <p class="eyebrow mt-8 animate-fade-up text-green [animation-delay:120ms] sm:mt-14">{f.role}, {site.name}</p>
+        <h1 class="display mt-4 animate-fade-up text-[clamp(3.5rem,9vw,8rem)] [animation-delay:240ms]">{f.name}</h1>
+        <dl class="mt-8 grid max-w-md animate-fade-up grid-cols-2 gap-6 border-t border-line pt-6 [animation-delay:360ms] sm:mt-10">
           <div><dt class="eyebrow text-muted">In fitness</dt><dd class="display mt-2 text-5xl text-green sm:text-6xl">{f.years} yrs</dd></div>
           <div><dt class="eyebrow text-muted">Founded</dt><dd class="display mt-2 text-5xl sm:text-6xl">{f.founded}</dd></div>
         </dl>
