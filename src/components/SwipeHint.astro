@@ -1,0 +1,12 @@
+---
+// Phones only: above a `swipe` row, says how many cards it holds and that it swipes (e.g. "6 programmes · Swipe →").
+import Icon from './Icon.astro';
+
+interface Props {
+  text: string;
+  class?: string;
+}
+const { text, class: cls } = Astro.props;
+---
+
+<p class:list={['eyebrow flex items-center gap-2 text-muted md:hidden', cls]}>{text} · Swipe <Icon name="arrow" class="size-4" /></p>

@@ -27,16 +27,16 @@ const schema = {
       <div class="absolute inset-0 -z-10 bg-ink/85 sm:bg-transparent sm:bg-linear-to-r sm:from-ink sm:via-ink/85 sm:to-ink/30"></div>
     </>
   )}
-  <div class="mx-auto max-w-7xl px-4 pt-8 pb-16 sm:px-6 lg:pb-24">
+  <div class="mx-auto max-w-7xl px-4 pt-6 pb-10 sm:px-6 sm:pt-8 sm:pb-16 lg:pb-24">
     <nav aria-label="Breadcrumb" class="eyebrow text-muted">
       <ol class="flex flex-wrap gap-x-2 gap-y-1">
         {trail.map(([name, href], i) =>
-          i < trail.length - 1 ? <li><a href={href} class="-my-3 inline-block py-3 hover:text-fg">{name}</a> <span class="text-green">/</span></li> : <li aria-current="page" class="text-fg">{name}</li>,
+          i < trail.length - 1 ? <li><a href={href} class="-my-3.5 inline-block py-3.5 hover:text-fg">{name}</a> <span class="text-green">/</span></li> : <li aria-current="page" class="text-fg">{name}</li>,
         )}
       </ol>
     </nav>
-    {eyebrow && <p class="eyebrow mt-14 text-green">{eyebrow}</p>}
-    <h1 class:list={['display max-w-5xl', title.length > 30 ? 'text-[clamp(2.5rem,5.5vw,5rem)]' : 'text-[clamp(3rem,8vw,7rem)]', eyebrow ? 'mt-4' : 'mt-14']}>{title}{titleEnd && <>{' '}<span class="mt-3 block text-[0.42em] tracking-normal text-green font-stretch-[85%] [word-spacing:0.1em]">{titleEnd}</span></>}</h1>
+    {eyebrow && <p class="eyebrow mt-8 text-green sm:mt-14">{eyebrow}</p>}
+    <h1 class:list={['display max-w-5xl', title.length > 30 ? 'text-[clamp(2.5rem,5.5vw,5rem)]' : 'text-[clamp(3rem,8vw,7rem)]', eyebrow ? 'mt-4' : 'mt-8 sm:mt-14']}>{title}{titleEnd && <>{' '}<span class="mt-3 block text-[0.42em] tracking-normal text-green font-stretch-[85%] [word-spacing:0.1em]">{titleEnd}</span></>}</h1>
     {intro && <p class="mt-6 max-w-2xl text-lg text-fg/80 sm:text-xl">{intro}</p>}
     <slot />
   </div>

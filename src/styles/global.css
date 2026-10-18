@@ -28,7 +28,8 @@
 @layer base {
   :focus-visible { outline: 2px solid var(--color-green); outline-offset: 3px; }
   html { scroll-behavior: smooth; }
-  body { overflow-x: hidden; }
+  /* viewport-fit=cover: keep text out of the iPhone notch in landscape */
+  body { overflow-x: hidden; padding-left: env(safe-area-inset-left); padding-right: env(safe-area-inset-right); }
   img, video, svg, canvas { display: block; max-width: 100%; }
   a, button, input, select, textarea { -webkit-tap-highlight-color: transparent; }
 }
@@ -59,9 +60,10 @@
   &:hover::before, &:active::before { transform: skewX(-8deg); background: color-mix(in oklab, var(--color-green), white 22%); }
 }
 
-/* Second action: bold underlined text */
+/* Second action: bold underlined text. The ::after makes the tap area 44 px high without moving anything. */
 @utility link {
-  @apply font-bold uppercase tracking-wide underline decoration-green decoration-2 underline-offset-8 transition-colors hover:text-green active:text-green;
+  @apply relative font-bold uppercase tracking-wide underline decoration-green decoration-2 underline-offset-8 transition-colors hover:text-green active:text-green;
+  &::after { content: ''; position: absolute; inset: -10px -6px; }
 }
 
 /* Markdown text: services, blog, careers, legal */
@@ -114,6 +116,9 @@
   ::view-transition-new(root) { animation: page-in 0.5s var(--ease-out-expo); }
 }
 @keyframes page-in { from { opacity: 0; translate: 0 16px; } }
+
+/* Phones: hide the Call · WhatsApp · Free trial bar while typing, so it never sits on the field above the keyboard */
+body:has(:is(input:not([type=radio], [type=checkbox]), textarea, select):focus) #quick-actions { display: none; }
 
 @media (max-width: 640px) {
   .btn {

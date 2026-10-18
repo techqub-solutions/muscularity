@@ -32,6 +32,7 @@ const number = site.whatsappUrl.split('?')[0].split('/').pop();
       const status = form.querySelector<HTMLElement>('[data-wa-status]')!;
       status.querySelector('a')!.href = url;
       status.hidden = false;
+      status.scrollIntoView({ block: 'nearest' });
       // In-app browsers (Instagram, Facebook) often block new windows: then go to WhatsApp in this tab.
       if (!window.open(url, '_blank')) location.href = url;
     });

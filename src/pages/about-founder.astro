@@ -32,7 +32,7 @@ const breadcrumbs = {
       </div>
       <div>
         <nav aria-label="Breadcrumb" class="eyebrow text-muted">
-          {crumbs.map(([name, href], i) => (i < crumbs.length - 1 ? <><a href={href} class="-my-3 inline-block py-3 hover:text-fg">{name}</a> <span class="text-green">/</span> </> : <span aria-current="page" class="text-fg">{name}</span>))}
+          {crumbs.map(([name, href], i) => (i < crumbs.length - 1 ? <><a href={href} class="-my-3.5 inline-block py-3.5 hover:text-fg">{name}</a> <span class="text-green">/</span> </> : <span aria-current="page" class="text-fg">{name}</span>))}
         </nav>
         <p class="eyebrow mt-14 text-green">{f.role}, {site.name}</p>
         <h1 class="display mt-4 text-[clamp(3.5rem,9vw,8rem)]">{f.name}</h1>

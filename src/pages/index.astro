@@ -5,6 +5,7 @@ import Base from '../layouts/Base.astro';
 import Icon from '../components/Icon.astro';
 import ServiceGrid from '../components/ServiceGrid.astro';
 import ClientVideos from '../components/ClientVideos.astro';
+import SwipeHint from '../components/SwipeHint.astro';
 import Faq from '../components/Faq.astro';
 import site from '../content/site.json';
 import cutout from '../assets/photos/hero-cutout.png';
@@ -21,7 +22,10 @@ const quote = site.testimonials[2]; // shown beside the hero photo on desktop
 const proof = [0, 1, 3].map((i) => site.testimonials[i]); // the strip under the hero: the others
 const price = `AED ${site.price.amount} / session`; // one price for every service (varies by location)
 const hours = site.hoursText.replace('Every day', 'every day');
-const facts = [['Where', site.places.join(' · ')], ['When', site.hoursText.replace('Every day', 'Daily')], ['Price', price]];
+// Never wrap inside, e.g. "6 AM – 11 PM": no-break spaces, and a word joiner (U+2060) because browsers may still break after a dash
+const keep = (s: string) => s.replaceAll(' ', ' ').replaceAll('–', '–⁠');
+const openHours = keep(site.hoursText.replace('Every day, ', ''));
+const facts = [['Where', site.places.join(' · ')], ['When', `Daily, ${openHours}`], ['Price', `${keep(`AED ${site.price.amount}`)} ${keep('/ session')}`, 'Varies by location']];
 const people = [
   ['Busy professionals', 'Train before work from 6 AM or after it until 11 PM, wherever suits your day.', '/services/fitness', 'See the programme', photoGym], // keep in step with site.json hours
   ['Complete beginners', 'Start exactly where you are. We build your strength, fitness and confidence step by step.', '/services/functional-training', 'See the programme', photoFitness],
@@ -45,9 +49,9 @@ const stats = [
   [parseInt(f.years), '+', 'Years in fitness: our founder'],
   [site.services.length, '', 'Training disciplines'],
   [site.places.length, '', 'Places to train'],
-  [7, '', `Days a week, ${site.hoursText.replace('Every day, ', '')}`],
+  [7, '', `Days a week, ${openHours}`],
 ] as const;
-const chip = 'cursor-pointer border border-ink/25 px-4 py-2 font-semibold transition hover:border-ink has-checked:border-ink has-checked:bg-ink has-checked:text-paper has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-green';
+const chip = 'cursor-pointer border border-ink/25 px-4 py-2.5 font-semibold transition hover:border-ink has-checked:border-ink has-checked:bg-ink has-checked:text-paper has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-green';
 const label = 'eyebrow text-ink/60';
 const included = ['One-to-one with your own trainer', 'Any of our six disciplines', 'At your home, outdoors or in the gym', site.hoursText];
 const h2 = 'display text-[clamp(3rem,7vw,6rem)]';
@@ -57,22 +61,23 @@ const website = { '@context': 'https://schema.org', '@type': 'WebSite', name: si
 
 <Base title="Personal Trainer Abu Dhabi" description={`One-to-one personal training in ${site.city} at home, outdoors or in the gym. ${price} (varies by location), ${hours}. First session free.`}>
   <!-- Hero: text left; on the right the "out of bounds" photo (see CLAUDE.md).
-       Phones: text, then the photo (so it is in the first screen), then the facts. -->
+       Phones: text, then the photo (so it is in the first screen, even at 667 px tall), then the facts in one row.
+       The WhatsApp link is left out on phones: the bottom bar has it. -->
   <section class="relative isolate overflow-hidden">
-    <div class="mx-auto grid max-w-7xl gap-6 px-4 pt-8 sm:px-6 lg:min-h-[46rem] lg:grid-cols-[1.1fr_1fr] lg:grid-rows-[1fr_auto] lg:gap-0 lg:pt-0">
+    <div class="mx-auto grid max-w-7xl gap-4 px-4 pt-6 sm:gap-6 sm:px-6 sm:pt-8 lg:min-h-[46rem] lg:grid-cols-[1.1fr_1fr] lg:grid-rows-[1fr_auto] lg:gap-0 lg:pt-0">
       <div class="relative z-10 lg:self-end lg:pt-16">
         <h1>
           <span class="eyebrow block text-green">Personal trainer in {site.city}</span>{' '}
-          <span class="display mt-5 block text-[clamp(3rem,15vw,6.75rem)] leading-[0.9]">
+          <span class="display mt-3 block text-[clamp(3rem,15vw,6.75rem)] leading-[0.9] sm:mt-5">
             <span class="block overflow-hidden"><span class="block animate-rise">Your trainer.</span></span>{' '}
             <span class="block overflow-hidden"><span class="block animate-rise text-green [animation-delay:.1s]">Your place.</span></span>{' '}
             <span class="block overflow-hidden"><span class="block animate-rise [animation-delay:.2s]">Your pace.</span></span>
           </span>
         </h1>
-        <p class="mt-6 max-w-md text-base text-fg/85 sm:text-lg">One-to-one coaching at your home, outdoors or in the gym, {hours}. Your first session is free.</p>
-        <div class="mt-8 flex flex-col gap-4 sm:mt-10 sm:flex-row sm:flex-wrap sm:items-center sm:gap-8">
+        <p class="mt-4 max-w-md text-base text-fg/85 sm:mt-6 sm:text-lg">One-to-one coaching at your home, outdoors or in the gym, {hours}. Your first session is free.</p>
+        <div class="mt-6 flex flex-col gap-4 sm:mt-10 sm:flex-row sm:flex-wrap sm:items-center sm:gap-8">
           <a href="/book-a-trial" class="btn">Book a free trial <Icon name="arrow" /></a>
-          <a href={site.whatsappUrl} class="link">WhatsApp us</a>
+          <a href={site.whatsappUrl} class="link hidden sm:inline">WhatsApp us</a>
         </div>
       </div>
 
@@ -87,11 +92,11 @@ const website = { '@context': 'https://schema.org', '@type': 'WebSite', name: si
         </figure>
       </div>
 
-      <dl class="relative z-10 grid max-w-2xl gap-x-6 gap-y-5 border-t border-line pt-5 pb-10 sm:grid-cols-[repeat(3,auto)] sm:justify-start sm:gap-x-10 sm:gap-y-6 sm:pt-6 lg:mt-14 lg:self-start lg:pb-16">
-        {facts.map(([k, v]) => (
-          <div>
+      <dl class="relative z-10 grid max-w-2xl grid-cols-2 gap-x-4 gap-y-4 border-t border-line pt-4 pb-8 sm:grid-cols-[repeat(3,auto)] sm:justify-start sm:gap-x-10 sm:pt-6 sm:pb-10 lg:mt-14 lg:self-start lg:pb-16">
+        {facts.map(([k, v, note], i) => (
+          <div class:list={[i === 0 && 'col-span-2 sm:col-span-1']}>
             <dt class="eyebrow text-muted">{k}</dt>
-            <dd class="mt-1 text-xl font-extrabold uppercase font-stretch-[75%]">{v}</dd>
+            <dd class="mt-1 text-base leading-tight font-extrabold uppercase font-stretch-[75%] sm:text-xl">{v}{note && <span class="mt-1 block text-xs font-semibold normal-case text-muted font-stretch-normal">{note}</span>}</dd>
           </div>
         ))}
       </dl>
@@ -103,8 +108,9 @@ const website = { '@context': 'https://schema.org', '@type': 'WebSite', name: si
     <div class="mx-auto max-w-7xl px-4 py-8 sm:px-6">
       <div class="flex items-center justify-between gap-4">
         <h2 class="eyebrow text-muted">What clients say</h2>
-        <a href="#reviews" class="eyebrow -my-2 flex items-center gap-2 py-2 text-green hover:text-fg">All reviews <Icon name="arrow" class="size-4" /></a>
+        <a href="#reviews" class="eyebrow -my-3.5 flex items-center gap-2 py-3.5 text-green hover:text-fg">All reviews <Icon name="arrow" class="size-4" /></a>
       </div>
+      <SwipeHint text={`${proof.length} reviews`} class="mt-2" />
       <ul class="swipe mt-4 md:grid-cols-3">
         {proof.map((t) => (
           <li class="flex flex-col justify-between gap-3 border-l-4 border-green bg-ink p-5">
@@ -170,23 +176,24 @@ const website = { '@context': 'https://schema.org', '@type': 'WebSite', name: si
 
   <!-- Services -->
   <section id="services">
-    <div class="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:py-32">
+    <div class="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-20 lg:py-32">
       <div class="flex flex-wrap items-end justify-between gap-6">
         <h2 class={h2}>Six ways<br />to train</h2>
         <p class="max-w-sm text-lg text-fg/70">Every programme is one-to-one and built around your goal, your level and your week.</p>
       </div>
-      <div class="mt-12"><ServiceGrid /></div>
+      <div class="mt-8 md:mt-12"><ServiceGrid /></div>
     </div>
   </section>
 
   <!-- Who we train -->
   <section class="border-t border-line">
-    <div class="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:py-32">
+    <div class="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-20 lg:py-32">
       <div class="flex flex-wrap items-end justify-between gap-6">
         <h2 class={h2}>Built for<br />your life</h2>
         <p class="max-w-sm text-lg text-fg/70">However busy, new or competitive you are, your programme starts where you are.</p>
       </div>
-      <ul class="swipe reveal mt-12 md:grid-cols-2">
+      <SwipeHint text={`${people.length} profiles`} class="mt-8 mb-4" />
+      <ul class="swipe reveal md:mt-12 md:grid-cols-2">
         {people.map(([title, text, href, cta, img]) => (
           <li>
             <a href={href} class="group relative isolate flex min-h-96 flex-col justify-end overflow-hidden p-6 sm:p-8">
@@ -205,7 +212,7 @@ const website = { '@context': 'https://schema.org', '@type': 'WebSite', name: si
 
   <!-- Price: one price per session -->
   <section id="packages" class="border-t border-line">
-    <div class="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:py-32">
+    <div class="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-20 lg:py-32">
       <div class="flex flex-wrap items-end justify-between gap-6">
         <h2 class={h2}>One clear price.<br /><span class="text-muted">Per session.</span></h2>
         <p class="max-w-sm text-lg text-fg/70">Every session is one-to-one coaching at your home, outdoors or in the gym.</p>
@@ -232,9 +239,9 @@ const website = { '@context': 'https://schema.org', '@type': 'WebSite', name: si
   <section class="bg-green text-ink" aria-label="Muscularity Fitness in numbers">
     <dl class="mx-auto grid max-w-7xl grid-cols-2 lg:grid-cols-4">
       {stats.map(([n, suffix, text]) => (
-        <div class="flex flex-col-reverse gap-2 border-ink/20 px-4 py-10 odd:border-r sm:px-6 lg:border-r lg:last:border-r-0">
+        <div class="flex flex-col-reverse gap-2 border-ink/20 px-4 py-6 odd:border-r sm:px-6 sm:py-10 lg:border-r lg:last:border-r-0">
           <dt class="text-sm font-bold uppercase tracking-wide">{text}</dt>
-          <dd class="display text-7xl sm:text-8xl"><span class="count" style={`--n:${n}`} aria-hidden="true"></span><span class="sr-only">{n}</span>{suffix}</dd>
+          <dd class="display text-6xl sm:text-8xl"><span class="count" style={`--n:${n}`} aria-hidden="true"></span><span class="sr-only">{n}</span>{suffix}</dd>
         </div>
       ))}
     </dl>
@@ -242,8 +249,8 @@ const website = { '@context': 'https://schema.org', '@type': 'WebSite', name: si
 
   <!-- Founder -->
   <section class="bg-surface">
-    <div class="mx-auto grid max-w-7xl items-center gap-10 px-4 py-20 sm:px-6 sm:gap-16 lg:grid-cols-2 lg:py-32">
-      <div class="reveal relative mx-auto w-full max-w-md">
+    <div class="mx-auto grid max-w-7xl items-center gap-10 px-4 py-16 sm:px-6 sm:py-20 sm:gap-16 lg:grid-cols-2 lg:py-32">
+      <div class="reveal relative mx-auto w-full max-w-[18rem] sm:max-w-md">
         <div class="absolute inset-0 translate-x-3 translate-y-3 bg-green sm:translate-x-5 sm:translate-y-5 [clip-path:polygon(12%_0,100%_0,88%_100%,0_100%)]"></div>
         <Image src={founder} alt={`${f.name}, founder of ${site.name}, on a bodybuilding stage`} widths={[480, 667]} sizes="(min-width: 1024px) 28rem, 90vw" class="relative aspect-[4/5] w-full object-cover [clip-path:polygon(12%_0,100%_0,88%_100%,0_100%)]" />
       </div>
@@ -258,16 +265,22 @@ const website = { '@context': 'https://schema.org', '@type': 'WebSite', name: si
   </section>
 
   <!-- Testimonials -->
-  <section id="reviews" class="py-24 lg:py-32">
-    <div class="mx-auto flex max-w-7xl flex-wrap items-end justify-between gap-6 px-4 sm:px-6">
+  <!-- Long reviews show 4 lines + "Read more", so one long review doesn't make every card tall -->
+  <section id="reviews" class="py-16 sm:py-20 lg:py-32">
+    <div class="mx-auto flex max-w-7xl flex-wrap items-end justify-between gap-x-6 gap-y-4 px-4 sm:px-6">
       <h2 class={h2}>In their words</h2>
-      <p class="text-fg/60">Swipe for more <Icon name="arrow" class="inline size-4" /></p>
+      <p class="eyebrow flex items-center gap-2 text-muted">{site.testimonials.length} reviews · Swipe <Icon name="arrow" class="size-4" /></p>
     </div>
-    <ul class="mt-12 flex snap-x snap-mandatory scroll-px-(--pad) gap-4 overflow-x-auto px-(--pad) pb-6 [--pad:1rem] sm:[--pad:max(1.5rem,calc((100vw_-_80rem)/2_+_1.5rem))]">
-      {site.testimonials.map((t) => (
-        <li class="flex w-[85vw] max-w-md shrink-0 snap-start flex-col gap-6 border border-line bg-surface p-6 sm:p-8">
+    <ul class="mt-8 flex snap-x snap-mandatory scroll-px-(--pad) gap-4 overflow-x-auto px-(--pad) pb-6 [--pad:1rem] sm:[--pad:max(1.5rem,calc((100vw_-_80rem)/2_+_1.5rem))] md:mt-12">
+      {site.testimonials.map((t, i) => (
+        <li class="group flex w-[85vw] max-w-md shrink-0 snap-start flex-col gap-6 border border-line bg-surface p-6 sm:p-8">
           <p class="display text-[clamp(1.75rem,8.5vw,2.25rem)] text-green">“{t.highlight}”</p>
-          <blockquote class="text-fg/80">{t.text}</blockquote>
+          {t.text.length > 200 ? (
+            <div>
+              <blockquote id={`review-${i}`} class="line-clamp-4 text-fg/80 group-data-open:line-clamp-none">{t.text}</blockquote>
+              <button type="button" data-more aria-expanded="false" aria-controls={`review-${i}`} class="link mt-3 py-0.5 text-sm"><span class="group-data-open:hidden">Read more</span><span class="hidden group-data-open:inline">Show less</span></button>
+            </div>
+          ) : <blockquote class="text-fg/80">{t.text}</blockquote>}
           <p class="mt-auto flex items-center gap-3 border-t border-line pt-5">
             <span class="grid size-11 place-items-center rounded-full bg-green text-sm font-black text-ink" aria-hidden="true">{t.name.split(' ').map((w) => w[0]).join('')}</span>
             <span class="eyebrow">{t.name}</span>
@@ -279,7 +292,7 @@ const website = { '@context': 'https://schema.org', '@type': 'WebSite', name: si
 
   <!-- Older adults: a short teaser + the client videos; the full text is on /older-adults -->
   <section class="bg-surface">
-    <div class="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:py-28">
+    <div class="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-20 lg:py-28">
       <div class="flex flex-wrap items-end justify-between gap-6">
         <div>
           <p class="eyebrow text-green">Training for older adults</p>
@@ -287,7 +300,7 @@ const website = { '@context': 'https://schema.org', '@type': 'WebSite', name: si
         </div>
         <p class="max-w-sm text-lg text-fg/70">Our specialised training helps older adults improve strength, mobility, balance, and confidence through safe, personalised coaching.</p>
       </div>
-      <div class="mt-12"><ClientVideos /></div>
+      <div class="mt-8 md:mt-12"><ClientVideos /></div>
       <div class="mt-10 flex flex-wrap items-center gap-x-8 gap-y-4">
         <a href="/book-a-trial" class="btn">Book a free trial <Icon name="arrow" /></a>
         <a href="/older-adults" class="link">How we train older adults</a>
@@ -297,7 +310,7 @@ const website = { '@context': 'https://schema.org', '@type': 'WebSite', name: si
 
   <!-- BMI -->
   <section class="bg-paper text-ink">
-    <div class="mx-auto grid max-w-7xl items-center gap-14 px-4 py-24 sm:px-6 lg:grid-cols-2 lg:py-32">
+    <div class="mx-auto grid max-w-7xl items-center gap-10 px-4 py-16 sm:px-6 sm:py-20 lg:grid-cols-2 lg:gap-14 lg:py-32">
       <div>
         <p class={label}>Free tool</p>
         <h2 class={`${h2} mt-4`}>Check your BMI</h2>
@@ -320,7 +333,7 @@ const website = { '@context': 'https://schema.org', '@type': 'WebSite', name: si
               <div class="absolute -top-2 left-0 h-7 w-1.5 -translate-x-1/2 bg-ink"></div>
             </div>
           </div>
-          <p class="relative mt-2 h-4 text-xs font-semibold text-ink/60"><span class="absolute left-0">15</span><span class="absolute left-[14%] text-ink">Healthy 18.5 – 24.9</span><span class="absolute right-0">40</span></p>
+          <p class="relative mt-2 h-5 text-sm font-semibold text-ink/60"><span class="absolute left-0">15</span><span class="absolute left-[14%] text-ink">Healthy 18.5 – 24.9</span><span class="absolute right-0">40</span></p>
           <output class="mt-5 block text-2xl font-extrabold"></output>
           <a href="/book-a-trial" class="link mt-4 hidden group-data-[done]:inline-block">Get your plan: book a free trial</a>
         </div>
@@ -329,7 +342,7 @@ const website = { '@context': 'https://schema.org', '@type': 'WebSite', name: si
   </section>
 
   <!-- FAQ -->
-  <section class="mx-auto grid max-w-7xl gap-12 px-4 py-24 sm:px-6 lg:grid-cols-[1fr_1.6fr] lg:py-32">
+  <section class="mx-auto grid max-w-7xl gap-10 px-4 py-16 sm:px-6 sm:py-20 lg:grid-cols-[1fr_1.6fr] lg:gap-12 lg:py-32">
     <div>
       <h2 class="display text-[clamp(3rem,6vw,5.5rem)]">Questions, answered</h2>
       <p class="mt-6 text-lg text-fg/70">Anything else? <a href={site.whatsappUrl} class="underline decoration-green decoration-2 underline-offset-4 hover:text-green">Ask us on WhatsApp</a>.</p>
@@ -339,12 +352,13 @@ const website = { '@context': 'https://schema.org', '@type': 'WebSite', name: si
 
   <!-- Blog -->
   <section class="border-t border-line">
-    <div class="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:py-24">
+    <div class="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-20 lg:py-24">
       <div class="flex flex-wrap items-end justify-between gap-6">
         <h2 class="display text-[clamp(2.5rem,5vw,4.5rem)]">From the blog</h2>
         <a href="/blog" class="link">All articles</a>
       </div>
-      <ul class="swipe reveal mt-12 md:grid-cols-3 md:gap-10">
+      <SwipeHint text={`${posts.length} articles`} class="mt-8 mb-4" />
+      <ul class="swipe reveal md:mt-12 md:grid-cols-3 md:gap-10">
         {posts.map((p) => (
           <li>
             <a href={`/blog/${p.id}`} class="group block">
@@ -369,7 +383,16 @@ const website = { '@context': 'https://schema.org', '@type': 'WebSite', name: si
     const bmi = Number(data.get('w')) / (m * m);
     const zone = bmi < 18.5 ? 'underweight' : bmi < 25 ? 'in the healthy range' : bmi < 30 ? 'overweight' : 'in the obese range';
     form.style.setProperty('--bmi', `${Math.min(100, Math.max(0, ((bmi - 15) / 25) * 100))}%`);
-    form.querySelector('output')!.textContent = `Your BMI is ${bmi.toFixed(1)}: ${zone}.`;
+    const output = form.querySelector('output')!;
+    output.textContent = `Your BMI is ${bmi.toFixed(1)}: ${zone}.`;
     form.dataset.done = '';
+    // Phones: close the keyboard and bring the result into view
+    (document.activeElement as HTMLElement | null)?.blur();
+    output.scrollIntoView({ block: 'nearest' });
   });
+
+  // Reviews: "Read more" shows the whole text
+  for (const button of document.querySelectorAll<HTMLButtonElement>('[data-more]')) {
+    button.addEventListener('click', () => button.setAttribute('aria-expanded', String(button.closest('li')!.toggleAttribute('data-open'))));
+  }
 </script>

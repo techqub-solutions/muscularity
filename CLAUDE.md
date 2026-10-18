@@ -25,7 +25,8 @@ When something is confirmed, move it from OPEN to CONFIRMED.
 - Every page uses `layouts/Base.astro` with `title` (the keyword only; ` | Muscularity Fitness` is added for you) and `description`.
 - Motion: CSS first, only transform/opacity, reduced motion always respected. GSAP only on the homepage.
 - Design system (use it, don't invent new styles): `btn` = green slash button, `link` = underlined action, `display` = condensed headline, `eyebrow` = small label, `prose` = Markdown text, `reveal` = rise on scroll, `swipe` = swipe row on phones / grid from md (put `reveal` on the row), `count` = number counts up (`style="--n: 22"`). Shapes are cut at the logo's angle (clip-path / skew).
-- Components: `PageHero` (inner-page top + breadcrumbs), `ServiceGrid`, `ClientVideos` (the `site.json` videos), `Faq` (+ schema), `WaForm` (form → WhatsApp message), `Icon`.
+- Components: `PageHero` (inner-page top + breadcrumbs), `ServiceGrid`, `ClientVideos` (the `site.json` videos), `Faq` (+ schema), `WaForm` (form → WhatsApp message), `SwipeHint` ("6 programmes · Swipe →" above a `swipe` row, phones only), `Icon`.
+- Phones: the Call · WhatsApp · Free trial bar (`#quick-actions` in `Footer.astro`) hides while a text field has focus and clears the iPhone home indicator (`viewport-fit=cover` + safe-area padding). Tap targets at least 44 px.
 - Client videos: `public/videos/clients/`, listed in `site.json` `videos`. 720 px wide, H.264, faststart, with a `.webp` poster (commands in `README.md`).
 - Photos in `src/assets/photos/` are **placeholders** (old theme stock, licence unknown). Replace them all before launch.
 - Home hero = "out of bounds": the photo in a slanted frame + the same people cut out (`hero-cutout.png`, same size as the photo) on top, so they step out of the frame. Never put a cut-out on a different photo (light won't match). Cut-outs are made locally with `rembg` (Python, model `isnet-general-use`).
