@@ -57,17 +57,20 @@ const business = {
     <Font cssVariable="--font-archivo" preload />
     <script is:inline type="application/ld+json" set:html={JSON.stringify(business)} />
   </head>
-  <body class="bg-ink pb-[calc(4rem+env(safe-area-inset-bottom))] text-fg antialiased md:pb-0">
+  <body class="bg-ink pb-[calc(4rem+env(safe-area-inset-bottom))] text-fg antialiased md:not-short:pb-0">
     <a href="#main" class="btn sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-60">Skip to content</a>
+    <!-- Offer bar: tablets and up only. On phones the hero and the bottom bar already say the first session is free. -->
     {Astro.url.pathname !== '/book-a-trial' && (
-      <a href="/book-a-trial" class="flex flex-wrap items-center justify-center gap-x-2 bg-green px-3 py-2 text-center text-xs font-black uppercase tracking-wider text-ink transition hover:bg-fg sm:tracking-[0.18em]">
+      <a href="/book-a-trial" class="hidden flex-wrap items-center justify-center gap-x-2 bg-green px-3 py-2 text-center text-xs font-black uppercase tracking-[0.18em] text-ink transition hover:bg-fg sm:flex short:hidden">
         <span>Your first session is free</span>
-        <span aria-hidden="true" class="max-[359px]:hidden">·</span>
+        <span aria-hidden="true">·</span>
         <span>Book now →</span>
       </a>
     )}
     <Header />
     <main id="main"><slot /></main>
     <Footer />
+    <!-- iOS Safari only shows :active tap feedback when the page listens for touches -->
+    <script is:inline>document.addEventListener('touchstart', () => {}, { passive: true });</script>
   </body>
 </html>

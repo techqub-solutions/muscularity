@@ -27,20 +27,20 @@ const values = [
   ['Continuous improvement', 'We keep learning the latest training research and techniques.'],
   ['Health and wellness', 'Fitness is a balanced lifestyle: strong body, strong mind.'],
 ];
-const h2 = 'display text-[clamp(2.75rem,6vw,5rem)]';
+const h2 = 'display rise-lines text-[clamp(2.75rem,6vw,5rem)]'; // each line in <span><span>, rises in on scroll
 ---
 
 <Base title="About Us: Abu Dhabi Personal Training" description="Muscularity Fitness is a personal training company in Abu Dhabi, founded in 2024. Six disciplines, one-to-one coaching, at your home, outdoors or in the gym.">
   <PageHero title="About us" image={photo} crumbs={[['About us', '/about-us']]} intro="We transform lives through fitness: one-to-one coaching that builds a strong body and a positive mindset, for every level." />
 
-  <section class="mx-auto grid max-w-7xl gap-16 px-4 py-24 sm:px-6 lg:grid-cols-2 lg:py-32">
+  <section class="mx-auto grid max-w-7xl gap-8 px-4 py-12 sm:gap-16 sm:px-6 sm:py-24 lg:grid-cols-2 lg:py-32">
     <div>
-      <h2 class={h2}>Why Muscularity</h2>
+      <h2 class={h2}><span><span>Why Muscularity</span></span></h2>
       <p class="mt-6 max-w-lg text-lg text-fg/75">Fitness is a journey, and we guide you every step of the way, pushing past your limits toward results that last.</p>
     </div>
-    <ul class="grid gap-3 sm:grid-cols-2">
+    <ul class="stagger grid gap-3 sm:grid-cols-2">
       {why.map(([title, text]) => (
-        <li class="reveal border-t-4 border-green bg-surface p-6">
+        <li class="border-t-4 border-green bg-surface p-5 sm:p-6">
           <h3 class="text-xl font-extrabold uppercase font-stretch-[75%]">{title}</h3>
           <p class="mt-2 text-fg/70">{text}</p>
         </li>
@@ -49,22 +49,23 @@ const h2 = 'display text-[clamp(2.75rem,6vw,5rem)]';
   </section>
 
   <section class="bg-paper text-ink">
-    <div class="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:py-32">
+    <div class="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-24 lg:py-32">
       <p class="eyebrow text-ink/60">How we work</p>
-      <h2 class={`${h2} mt-4`}>Six steps. One plan: yours.</h2>
-      <ol class="mt-14 grid gap-x-10 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
+      <h2 class={`${h2} mt-4`}><span><span>Six steps.</span></span> <span><span style="--i:1">One plan: yours.</span></span></h2>
+      <!-- Phones: two columns, so the six steps take about half the height -->
+      <ol class="stagger mt-8 grid grid-cols-2 gap-x-4 gap-y-8 sm:mt-14 sm:gap-x-10 sm:gap-y-10 lg:grid-cols-3">
         {how.map(([title, text], i) => (
-          <li class="reveal border-t-2 border-ink pt-5">
-            <span class="display text-5xl text-ink/25" aria-hidden="true">0{i + 1}</span>
-            <h3 class="mt-3 text-2xl font-extrabold uppercase font-stretch-[75%]">{title}</h3>
-            <p class="mt-2 text-ink/70">{text}</p>
+          <li class="border-t-2 border-ink pt-4 sm:pt-5">
+            <span class="display text-4xl text-green sm:text-5xl" aria-hidden="true">0{i + 1}</span>
+            <h3 class="mt-2 text-lg leading-tight font-extrabold uppercase font-stretch-[75%] sm:mt-3 sm:text-2xl">{title}</h3>
+            <p class="mt-2 text-sm text-ink/70 sm:text-base">{text}</p>
           </li>
         ))}
       </ol>
     </div>
   </section>
 
-  <section class="mx-auto grid max-w-7xl gap-12 px-4 py-24 sm:px-6 lg:grid-cols-2 lg:py-32">
+  <section class="mx-auto grid max-w-7xl gap-8 px-4 py-12 sm:gap-12 sm:px-6 sm:py-24 lg:grid-cols-2 lg:py-32">
     <div class="reveal border-l-4 border-green pl-6">
       <p class="eyebrow text-green">Mission</p>
       <p class="mt-4 text-2xl leading-snug font-bold">To inspire and empower people to lead healthier, more active lives through high-quality programmes, personal coaching and a supportive community.</p>
@@ -76,12 +77,12 @@ const h2 = 'display text-[clamp(2.75rem,6vw,5rem)]';
   </section>
 
   <section class="border-t border-line">
-    <div class="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:py-32">
-      <h2 class={h2}>What we stand for</h2>
-      <ul class="mt-12 divide-y divide-line border-y border-line">
+    <div class="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-24 lg:py-32">
+      <h2 class={h2}><span><span>What we</span></span> <span><span style="--i:1">stand for</span></span></h2>
+      <ul class="mt-8 divide-y sm:mt-12 divide-line border-y border-line">
         {values.map(([title, text]) => (
-          <li class="grid gap-2 py-6 md:grid-cols-[1fr_1.4fr] md:items-baseline">
-            <h3 class="display text-3xl sm:text-4xl">{title}</h3>
+          <li class="grid gap-2 py-5 sm:py-6 md:grid-cols-[1fr_1.4fr] md:items-baseline">
+            <h3 class="display text-2xl sm:text-4xl">{title}</h3>
             <p class="text-lg text-fg/70">{text}</p>
           </li>
         ))}
@@ -90,8 +91,8 @@ const h2 = 'display text-[clamp(2.75rem,6vw,5rem)]';
   </section>
 
   <section class="bg-surface">
-    <div class="mx-auto flex max-w-7xl flex-col items-center gap-10 px-4 py-20 sm:px-6 md:flex-row">
-      <Image src={founder} alt={`${site.founder.name}, founder`} widths={[240, 480]} sizes="12rem" class="size-48 shrink-0 object-cover [clip-path:polygon(12%_0,100%_0,88%_100%,0_100%)]" />
+    <div class="mx-auto flex max-w-7xl flex-col items-center gap-8 px-4 py-12 sm:gap-10 sm:px-6 sm:py-20 md:flex-row">
+      <div class="slash relative size-40 shrink-0 overflow-hidden [clip-path:polygon(12%_0,100%_0,88%_100%,0_100%)] sm:size-48"><Image src={founder} alt={`${site.founder.name}, founder`} widths={[240, 480]} sizes="12rem" class="size-full object-cover" /></div>
       <div>
         <p class="eyebrow text-green">Founder</p>
         <h2 class="display mt-3 text-5xl">{site.founder.name}</h2>

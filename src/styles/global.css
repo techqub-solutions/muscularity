@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+/* Short screens (phones held sideways): `short:` */
+@custom-variant short (@media (max-height: 500px));
+
 /* Brand tokens (PLAN.md §2). Green buttons always use black text. */
 @theme {
   --color-ink: #0b0d0c;
@@ -14,11 +17,13 @@
   --animate-marquee: marquee 40s linear infinite;
   --animate-pop: pop 1.1s var(--ease-out-expo) 0.3s both;
   --animate-pulse-soft: pulse-soft 3s ease-out infinite;
+  --animate-fade-up: fade-up 0.6s var(--ease-out-expo) both;
 
   @keyframes rise { from { translate: 0 105%; } }
   @keyframes pop { from { opacity: 0; translate: 0 8%; } }
   @keyframes pulse-soft { 0% { opacity: 0.5; } 70%, 100% { opacity: 0; scale: 1.12 1.5; } }
   @keyframes marquee { to { translate: -50%; } }
+  @keyframes fade-up { from { opacity: 0; translate: 0 0.75rem; } }
 }
 
 @theme inline {
@@ -29,7 +34,10 @@
   :focus-visible { outline: 2px solid var(--color-green); outline-offset: 3px; }
   html { scroll-behavior: smooth; }
   /* viewport-fit=cover: keep text out of the iPhone notch in landscape */
-  body { overflow-x: hidden; padding-left: env(safe-area-inset-left); padding-right: env(safe-area-inset-right); }
+  /* Nothing may widen the page: on phones a wider page zooms out and pans sideways. `clip` (not hidden) keeps html and body
+     from becoming scroll containers, which would break the sticky header and the scroll animations. */
+  html, body { overflow-x: clip; }
+  body { padding-left: env(safe-area-inset-left); padding-right: env(safe-area-inset-right); }
   img, video, svg, canvas { display: block; max-width: 100%; }
   a, button, input, select, textarea { -webkit-tap-highlight-color: transparent; }
 }
@@ -80,22 +88,97 @@
   & > :first-child { @apply mt-0; }
 }
 
-/* Phones: a swipe row that runs to the screen edge, next card peeking in. From md up: a grid (add md:grid-cols-N).
-   Put `reveal` on the row itself, not on the cards inside it. */
+/* Phones: a swipe row that runs to the screen edge, next card peeking in, no scrollbar (a SwipeHint says it scrolls).
+   From md up: a grid (add md:grid-cols-N). Add `stagger` for the cards to slide in. */
 @utility swipe {
   @apply -mx-4 flex snap-x snap-mandatory scroll-px-4 gap-3 overflow-x-auto px-4 pb-4 sm:-mx-6 sm:scroll-px-6 sm:px-6 md:mx-0 md:grid md:overflow-visible md:p-0;
+  scrollbar-width: none;
+  &::-webkit-scrollbar { display: none; }
   & > * { @apply w-[min(80vw,22rem)] shrink-0 snap-start md:w-auto; }
 }
+
+/* A row or grid whose items come in one after another as it scrolls into view: they rise in a grid, and slide in from the
+   right in a swipe row on phones (the row clips them; in a grid they would push past the screen edge) */
+@utility stagger {
+  @supports (animation-timeline: view()) {
+    view-timeline-name: --stagger;
+    & > * { animation: card-in linear both; }
+    & > :where(*) { animation-timeline: --stagger; animation-range: entry calc(var(--i, 0) * 8%) entry calc(55% + var(--i, 0) * 8%); }
+    /* Swipe rows: move what is inside each card slot, never the slot itself. A moving snap slot makes the row snap along
+       with it, and once the cards settle the first one is left cut off at the screen edge. */
+    &:is(.swipe, .snap-x) > * { animation: none; }
+    &:is(.swipe, .snap-x) > * > * { animation: card-in linear both; }
+    @media (width < 48rem) { &:is(.swipe, .snap-x) > * > * { animation-name: card-in-x; } }
+    &:is(.swipe, .snap-x) > * > :where(*) { animation-timeline: --stagger; animation-range: entry calc(var(--i, 0) * 8%) entry calc(55% + var(--i, 0) * 8%); }
+    & > :nth-child(2) { --i: 1; }
+    & > :nth-child(3) { --i: 2; }
+    & > :nth-child(4) { --i: 3; }
+    & > :nth-child(5) { --i: 4; }
+    & > :nth-child(n + 6) { --i: 5; }
+    /* Photos inside (`slash`) follow the row: inside a swipe row their own view timeline would never move */
+    & .slash::after { animation-timeline: --stagger; animation-range: entry calc(10% + var(--i, 0) * 8%) entry calc(75% + var(--i, 0) * 8%); }
+  }
+}
+@keyframes card-in { from { opacity: 0; translate: 0 2rem; } }
+@keyframes card-in-x { from { opacity: 0; translate: 3rem 0; } }
+
+/* Scroll-driven animations: the timeline and range always go in a separate `&:where(*)` rule (same element, same specificity,
+   later, so it wins). In one rule the build's CSS minifier folds the timeline into the `animation` shorthand, which browsers
+   reject, and the whole animation is lost (that is why `reveal` and `count` never ran on the live site before 18 Oct 2026). */
 
 /* Rise into view on scroll. Browsers without scroll timelines just show the content. */
 @utility reveal {
   @supports (animation-timeline: view()) {
     animation: reveal linear both;
-    animation-timeline: view();
-    animation-range: entry 0% entry 35%;
+    &:where(*) { animation-timeline: view(); animation-range: entry 0% entry 35%; }
   }
 }
 @keyframes reveal { from { opacity: 0; translate: 0 2.5rem; } }
+
+/* Heading whose lines rise out of a mask as it scrolls in (SectionHead). Markup: <h2 class="rise-lines"><span><span style="--i:0">line</span></span>… */
+@utility rise-lines {
+  & > span { display: block; overflow: hidden; }
+  & > span > span { display: block; }
+  @supports (animation-timeline: view()) {
+    view-timeline-name: --lines;
+    & > span > span { animation: rise linear both; }
+    & > span > span:where(*) { animation-timeline: --lines; animation-range: entry calc(var(--i, 0) * 15%) entry calc(70% + var(--i, 0) * 15%); }
+  }
+}
+
+/* Photos: a green slab at the logo's angle slides off to reveal them. `slash` = as it scrolls into view,
+   `slash-load` = right after the page loads (photos at the top). Goes on a positioned wrapper that clips (relative + overflow-hidden
+   or a clip-path). The slab rests off to the side, so with reduced motion or no scroll timelines nothing covers the photo. */
+@utility slash {
+  &::after { content: ''; position: absolute; inset: 0 -50%; z-index: 20; pointer-events: none; background: var(--color-green); transform: translateX(120%) skewX(-18deg); }
+  @supports (animation-timeline: view()) {
+    view-timeline-name: --slash;
+    &::after { animation: slash-off linear backwards; }
+    &:where(*)::after { animation-timeline: --slash; animation-range: entry 0% entry 80%; }
+  }
+}
+@utility slash-load {
+  &::after { content: ''; position: absolute; inset: 0 -50%; z-index: 20; pointer-events: none; background: var(--color-green); transform: translateX(120%) skewX(-18deg); animation: slash-off 1s var(--ease-out-expo) 0.2s backwards; }
+}
+@keyframes slash-off { from { transform: translateX(0) skewX(-18deg); } }
+
+/* Moves an element by --drift-x / --drift (default 0 / 15 %) while the first screen scrolls away: a light parallax for the home hero */
+@utility drift {
+  @supports (animation-timeline: scroll()) {
+    animation: drift linear both;
+    &:where(*) { animation-timeline: scroll(root); animation-range: 0 100vh; }
+  }
+}
+@keyframes drift { to { translate: var(--drift-x, 0) var(--drift, 15%); } }
+
+/* "Swipe →" arrow: nudges right twice as its row scrolls into view */
+@utility nudge {
+  @supports (animation-timeline: view()) {
+    animation: nudge linear both;
+    &:where(*) { animation-timeline: view(); animation-range: entry 100% cover 70%; }
+  }
+}
+@keyframes nudge { 0%, 50%, 100% { translate: 0; } 25%, 75% { translate: 6px; } }
 
 /* Numbers count up on scroll: <span class="count" style="--n: 22">. Without support they just show the number. */
 @property --n { syntax: '<integer>'; inherits: false; initial-value: 0; }
@@ -104,8 +187,7 @@
   &::after { content: counter(n); }
   @supports (animation-timeline: view()) {
     animation: count linear both;
-    animation-timeline: view();
-    animation-range: entry 20% cover 40%;
+    &:where(*) { animation-timeline: view(); animation-range: entry 20% cover 40%; }
   }
 }
 @keyframes count { from { --n: 0; } }
@@ -117,14 +199,30 @@
 }
 @keyframes page-in { from { opacity: 0; translate: 0 16px; } }
 
+/* Mobile menu: links come in one after another each time it opens (each link sets --i) */
+#menu:popover-open nav > * { animation: fade-in-right 0.5s var(--ease-out-expo) both; animation-delay: calc(var(--i, 0) * 35ms + 120ms); }
+@keyframes fade-in-right { from { opacity: 0; translate: 1.5rem 0; } }
+
 /* Phones: hide the Call · WhatsApp · Free trial bar while typing, so it never sits on the field above the keyboard */
 body:has(:is(input:not([type=radio], [type=checkbox]), textarea, select):focus) #quick-actions { display: none; }
+
+/* Home: the bar slides up only once the hero "Book a free trial" button (#hero-cta) has scrolled away, so the first screen
+   has one main button. Other pages have no #hero-cta: the timeline stays inactive and the bar just shows. */
+@supports (timeline-scope: --a) and (animation-timeline: view()) {
+  body { timeline-scope: --hero-cta; }
+  #hero-cta { view-timeline: --hero-cta block; }
+  #quick-actions { animation: bar-in linear both; }
+  #quick-actions:where(*) { animation-timeline: --hero-cta; animation-range: exit 0% exit 100%; }
+}
+@keyframes bar-in { from { translate: 0 100%; } }
 
 @media (max-width: 640px) {
   .btn {
     width: 100%;
     justify-content: center;
   }
+  /* Full-width slanted buttons: pull the slab in by its slant (≈8 px) so its corners line up with the text column */
+  .btn::before { inset-inline: 0.5rem; }
 
   .display,
   .eyebrow {

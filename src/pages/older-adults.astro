@@ -18,7 +18,7 @@ const notes = [
   'Every session is adapted to your ability, with focus on technique and safety.',
 ];
 const price = `AED ${site.price.amount} / session`;
-const h2 = 'display text-[clamp(2.75rem,6vw,5rem)]';
+const h2 = 'display rise-lines text-[clamp(2.75rem,6vw,5rem)]'; // each line in <span><span>, rises in on scroll
 const schema = {
   '@context': 'https://schema.org',
   '@type': 'Service',
@@ -38,18 +38,18 @@ const schema = {
     </div>
   </PageHero>
 
-  <section class="mx-auto grid max-w-7xl gap-12 px-4 py-20 sm:px-6 lg:grid-cols-[1fr_1.2fr] lg:py-28">
+  <section class="mx-auto grid max-w-7xl gap-10 px-4 py-12 sm:gap-12 sm:px-6 sm:py-20 lg:grid-cols-[1fr_1.2fr] lg:py-28">
     <div>
-      <h2 class={h2}>Stay strong.<br />Stay balanced.<br />Stay independent.</h2>
+      <h2 class={h2}><span><span>Stay strong.</span></span> <span><span style="--i:1">Stay balanced.</span></span> <span><span style="--i:2">Stay independent.</span></span></h2>
       <p class="mt-8 text-lg text-fg/80">As we age, maintaining muscle strength and mobility becomes increasingly important for everyday activities and independence. Our experienced trainers use controlled, age-appropriate exercises designed around each client’s abilities, fitness level, and individual needs.</p>
       <ul class="mt-8 grid gap-3 text-lg">
         {notes.map((n) => <li class="flex gap-3"><Icon name="check" class="mt-1 size-5 shrink-0 text-green" />{n}</li>)}
       </ul>
       <p class="mt-8 text-fg/70">Age should never be a barrier to becoming stronger and more active. With the right training and guidance, you can continue moving better, feeling stronger, and enjoying an active lifestyle at every stage of life.</p>
     </div>
-    <ul class="grid content-start gap-3 sm:grid-cols-2">
+    <ul class="stagger grid content-start gap-3 sm:grid-cols-2">
       {focus.map(([title, text]) => (
-        <li class="reveal border-t-4 border-green bg-surface p-6">
+        <li class="border-t-4 border-green bg-surface p-5 sm:p-6">
           <h3 class="text-xl font-extrabold uppercase font-stretch-[75%]">{title}</h3>
           <p class="mt-2 text-fg/70">{text}</p>
         </li>
@@ -59,9 +59,9 @@ const schema = {
 
   {site.videos.length > 0 && (
     <section class="border-t border-line">
-      <div class="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:py-28">
-        <h2 class={h2}>Client videos</h2>
-        <div class="mt-12"><ClientVideos /></div>
+      <div class="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-20 lg:py-28">
+        <h2 class={h2}><span><span>Client videos</span></span></h2>
+        <div class="mt-8 sm:mt-12"><ClientVideos /></div>
       </div>
     </section>
   )}

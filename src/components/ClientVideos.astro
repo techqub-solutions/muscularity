@@ -1,19 +1,27 @@
 ---
 // The client videos from site.json: a swipe row on phones, three columns from md up. Nothing loads until play.
-// Phones: narrower cards (9:16 at full card width was 533 px tall), so the next video peeks in.
+// Phones: narrower cards (so the next video peeks in) and the smaller `small` file. A branded play button sits over the
+// poster; the browser's own controls appear once a video plays (without JS they are there from the start).
 import site from '../content/site.json';
+import Icon from './Icon.astro';
 import SwipeHint from './SwipeHint.astro';
 ---
 
 {site.videos.length > 0 && (
   <>
     <SwipeHint text={`${site.videos.length} client videos`} class="mb-4" />
-    <ul class="swipe reveal md:grid-cols-3">
+    <ul class="swipe stagger md:grid-cols-3">
       {site.videos.map((v) => (
         <li class="max-md:w-[min(62vw,16rem)]!">
-          <video controls playsinline preload="none" poster={v.poster} aria-label={v.title} class="aspect-[9/16] w-full bg-ink object-cover [clip-path:polygon(0_0,calc(100%-2.5rem)_0,100%_2.5rem,100%_100%,0_100%)]">
-            <source src={v.src} type="video/mp4" />
-          </video>
+          <div class="slash relative overflow-hidden [clip-path:polygon(0_0,calc(100%-2.5rem)_0,100%_2.5rem,100%_100%,0_100%)]">
+            <video data-client controls playsinline preload="none" poster={v.poster} aria-label={v.title} class="aspect-[9/16] w-full bg-ink object-cover">
+              {v.small && <source src={v.small} type="video/mp4" media="(max-width: 767px)" />}
+              <source src={v.src} type="video/mp4" />
+            </video>
+            <button type="button" data-play hidden aria-label={`Play: ${v.title}`} class="group absolute inset-0 z-10 flex items-end justify-start bg-linear-to-t from-ink/70 via-transparent p-4">
+              <span class="relative isolate flex items-center gap-2 px-5 py-3 text-sm font-bold uppercase tracking-wide text-ink transition-transform duration-200 before:absolute before:inset-0 before:-z-10 before:-skew-x-18 before:bg-green group-hover:scale-105 group-active:scale-95"><Icon name="play" class="size-4 fill-current" />Play</span>
+            </button>
+          </div>
           <p class="mt-5 flex items-center justify-between gap-3">
             <span class="eyebrow text-green">Client review</span>
             <span class="bg-green px-2 py-1 text-xs font-bold uppercase text-ink">Results</span>
@@ -25,3 +33,19 @@ import SwipeHint from './SwipeHint.astro';
     </ul>
   </>
 )}
+
+<script>
+  // Play button over the poster; controls once playing; only one video plays at a time
+  const videos = [...document.querySelectorAll<HTMLVideoElement>('video[data-client]')];
+  for (const video of videos) {
+    const button = video.parentElement!.querySelector<HTMLButtonElement>('[data-play]')!;
+    video.controls = false;
+    button.hidden = false;
+    button.addEventListener('click', () => video.play());
+    video.addEventListener('play', () => {
+      button.hidden = true;
+      video.controls = true;
+      for (const other of videos) if (other !== video) other.pause();
+    });
+  }
+</script>

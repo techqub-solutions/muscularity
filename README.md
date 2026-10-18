@@ -48,6 +48,8 @@ Phone clips are far too big as they come (one was 58 MB). Before adding a clip:
 ffmpeg -i IN.MP4 -vf "scale=720:-2" -c:v libx264 -preset slow -crf 26 -pix_fmt yuv420p -an -movflags +faststart public/videos/clients/NAME.MP4
 # Poster: one good frame (here at 3 s), shown until the visitor presses play
 ffmpeg -ss 3 -i public/videos/clients/NAME.MP4 -frames:v 1 -c:v libwebp -quality 72 public/videos/clients/NAME.webp
+# Phone file (site.json "small"): 480 px, about 2 MB for 40 s. Use "-an" instead of the -c:a part if the clip has no sound.
+ffmpeg -i public/videos/clients/NAME.MP4 -vf "scale='min(480,iw)':-2" -c:v libx264 -preset slow -crf 30 -maxrate 450k -bufsize 900k -pix_fmt yuv420p -c:a aac -b:a 64k -ac 1 -movflags +faststart public/videos/clients/NAME-sm.mp4
 ```
 
 Aim for under 8 MB per clip. Only publish clips of clients who agreed in writing.

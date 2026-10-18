@@ -12,14 +12,14 @@ const posts = await getCollection('blog');
 <Base title="Fitness Blog: Training Tips" description="Training guides from Muscularity Fitness: cardio, strength training and healthy habits, from personal trainers in Abu Dhabi.">
   <PageHero title="Blog" image={photo} crumbs={[['Blog', '/blog']]} intro="Practical guides on training, recovery and healthy habits from our coaches." />
 
-  <section class="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:py-28">
-    <ul class="grid gap-x-8 gap-y-14 md:grid-cols-2 lg:grid-cols-3">
+  <section class="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-20 lg:py-28">
+    <ul class="grid gap-x-8 gap-y-12 md:grid-cols-2 lg:grid-cols-3">
       {posts.map((p) => (
         <li class="reveal">
-          <a href={`/blog/${p.id}`} class="group block">
-            <div class="overflow-hidden"><Image src={p.data.image} alt="" widths={[400, 800]} sizes="(min-width: 1024px) 30vw, (min-width: 768px) 45vw, 90vw" class="aspect-[3/2] w-full object-cover transition duration-700 ease-out-expo group-hover:scale-105" /></div>
+          <a href={`/blog/${p.id}`} class="group block transition-transform duration-200 active:scale-[0.98]">
+            <div class="slash relative overflow-hidden"><Image src={p.data.image} alt="" widths={[400, 800]} sizes="(min-width: 1024px) 30vw, (min-width: 768px) 45vw, 90vw" class="aspect-[3/2] w-full object-cover transition duration-700 ease-out-expo group-hover:scale-105 group-active:scale-105" /></div>
             <p class="eyebrow mt-5 text-muted">{Math.max(1, Math.round((p.body ?? '').split(/\s+/).length / 200))} min read</p>
-            <h2 class="mt-2 text-2xl font-bold leading-snug transition-colors group-hover:text-green">{p.data.title}</h2>
+            <h2 class="mt-2 text-2xl font-bold leading-snug transition-colors group-hover:text-green group-active:text-green">{p.data.title}</h2>
             <p class="mt-3 text-fg/70">{p.data.description}</p>
             <span class="eyebrow mt-5 flex items-center gap-2 text-green">Read <Icon name="arrow" class="size-4 transition group-hover:translate-x-1" /></span>
           </a>

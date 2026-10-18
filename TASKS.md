@@ -250,22 +250,78 @@ Checked in the browser preview only, not yet on real phones (section 8).
 - [x] After sending: the "Didn't open? Tap here" line scrolls into view
 - [x] `/contact-us`: the whole Call and Email cards are tappable
 
-**5. Service pages**
-- [ ] Price line in the hero on phones: AED 165 / session, may vary by location, first session free (the price card now comes after the whole article)
+Sections 5–8 (service price, video sizes, landscape, real phones) moved into "Mobile redesign" below.
 
-**6. Speed on mobile data**
-- [ ] Phone versions of the client videos: about 540 px wide, 1–2 MB each (now 4.1, 5.3 and 7.9 MB)
-- [ ] Already listed under "Live site checks": smaller image widths + AVIF, the font-swap layout shift, LCP on a real phone
+## Mobile redesign (fresh audit 18 Oct 2026)
 
-**7. Landscape phones (812 × 375)**
-- [ ] The large floating WhatsApp button (desktop, from 768 px) covers content on a landscape phone. On short screens (`max-height: 500px`) keep the bottom bar instead
-- [ ] Hero headline lines are ~108 px tall, a third of the screen: cap the size on short screens and hide the offer bar there
+Looked at the site as a first-time visitor on a 390 × 844 phone (iPhone 14/15 size), production build, with the browser pane visible so the
+animations really ran: every home section and 8 inner pages. The old plan was not used as a starting point.
+Home today: 14.4 screens (12,117 px). Goal: about 10–11 screens, nothing out of line, and something moving in every section.
 
-**8. Real phones (the preview can't test these; replaces the real-phone part of the Phase 5 accessibility item)**
-- [ ] iPhone Safari (a 667 px one and a 6.1"), Android Chrome, Samsung Internet
-- [ ] Instagram in-app browser (Instagram is the only social account, so many visitors arrive there): menu, bottom bar, WhatsApp form, video play, `tel:` links
-- [ ] Android "large text" (about 130 %): no clipped headings or buttons
-- [ ] Lighthouse mobile on the Vercel preview after the changes, compared with the 15 Oct scores
+What a visitor notices:
+- **Out of line:** every full-width slanted green button sticks out 8 px past the text on both sides; the booking card's green shadow runs to 6 px from the screen edge
+- **Too big:** price (1,110 px for one number), founder (1,040), "How it works" (1,268), older adults (1,323), footer (1,082)
+- **Repeats:** the same client quotes appear in the strip under the hero, in "In their words" and in the founder section; two photo carousels back to back ("Six ways to train", "Built for your life"); three "free trial" calls to action on the first screen (offer bar, hero button, bottom bar)
+- **Flat:** on a phone only the hero headline, the marquee and some card rows move. Photo zoom and arrow nudges are hover-only, so touch screens never see them; inner pages have no animation at all; the menu fades as a whole, so page text shows through it halfway
+- **Unfinished touches:** raw browser controls on the client videos (tiny play icon); inner-page photos hidden under an 85 % black layer; `/about-founder` opens on the photo alone (name and breadcrumbs below it)
+
+**Done 18 Oct 2026 (A–D, browser preview only):** home 14.4 → 11.0 screens at 390 × 844 (18.2 → 13.9 on a 667 px phone); no page wider than
+the screen at 320 / 375 / 390 px, even while things animate; every tap target 44 px or more. Big find: on the live site **no scroll animation ever
+ran** (scroll reveals, number count-ups): the build's CSS minifier folds `animation-timeline` into the `animation` shorthand, browsers reject it and
+drop the rule. Fixed for all of them (rule in `CLAUDE.md`). Not yet checked on real phones (E).
+
+**A. Alignment and polish (no content change)**
+- [x] Slanted buttons stay inside the text column on phones (the slab is pulled in by its slant, `global.css`)
+- [x] Booking card: green shadow 6 px on phones, card pulled in so the shadow ends on the column edge
+- [x] Green footer band: "Every day, 6 AM – 11 PM" never breaks
+- [x] One heading size, one label and one spacing rule for every home section: new `SectionHead` component
+- [x] Menu shows mark + name like the header, at the same spot (X where the menu icon was)
+- [x] Scrollbars hidden under swipe rows on phones
+- [x] `/about-founder`: breadcrumbs and name first, then the photo
+- [x] Inner-page heroes on phones: the photo is a slanted band under the text (form pages keep the dark background, `band={false}`)
+- [x] Blog posts: the breadcrumb stays on one line; a long title ends in "…"
+- [x] Client videos: green "Play" button over the poster; browser controls only once playing; one video plays at a time
+
+**B. Motion on phones (CSS first, transform and opacity only, everything off with reduced motion)**
+- [x] Section headings: each line rises out of a mask as it scrolls in (`rise-lines`)
+- [x] Swipe rows: cards slide in from the right one after another on phones; grids rise in one after another (`stagger`)
+- [x] Photos: a green slab at the logo angle slides off to reveal them (`slash` on scroll, `slash-load` at the top of inner pages)
+- [x] Tap feedback: cards, chips, tiles, FAQ rows, footer links press in (`active:`), plus a touch listener so iPhones show it
+- [x] Menu: solid panel slides in from the right, links follow one by one
+- [x] Bottom bar slides up once the hero "Book a free trial" button has scrolled away (home page)
+- [x] Hero parallax: the green slab slides sideways and the photo + cut-out rise a little (together: moving the cut-out alone would show the people twice)
+- [x] FAQ answers, "Read more" text and the BMI result fade in
+- [x] Inner pages: breadcrumbs, title and intro fade in on load
+- [x] "Swipe →" arrow nudges twice as its row scrolls in
+- [x] Price (165) and founder years (22) count up
+- Scroll-linked effects run in Chrome / Android and Safari 26+; older iPhones show everything, without that motion
+
+**C. Home page: tighter, nothing said twice (14.4 → 11.0 screens at 390 × 844)**
+- [x] Offer bar hidden on phones (and on phones held sideways); still shown from tablets up
+- [x] Reviews: one carousel right after the hero ("Client reviews", 5 cards, 4 lines + "Read more"); the old quote strip, the later "In their words" section and the founder-section quote are gone
+- [x] How it works: booking card + the 3 steps as one compact row
+- [x] "Built for your life": 2 × 2 compact photo tiles on phones (title only), 4 cards with text from lg
+- [x] Price: one card (price, "may vary by location", 4 ticks, button, WhatsApp line)
+- [x] Numbers banner removed; "22+ years" is in the founder card
+- [x] Founder: compact card on phones (small photo beside the name)
+- [x] Older adults: heading on 2 lines ("Stay strong. Stay independent."), shorter intro
+- [x] BMI: compact card
+- [x] FAQ: tighter rows
+- [x] Green footer band 451 → 361 px; footer 1,082 → 861 px (logo beside the tagline, Call / WhatsApp / Email as 3 buttons)
+- [ ] Try: hero photo first with the headline overlapping it. Not tried: the current hero now fits the first screen with one button
+
+**D. Inner pages and other screens**
+- [x] Service pages: "AED 165 / session · may vary by location · first session free" in the hero below 1024 px
+- [x] `/about-us`: the six steps in two columns on phones; tighter sections (now 6.5 screens at 390 × 844)
+- [x] Landscape phones: bottom bar instead of the floating WhatsApp button on short screens (`short:` variant), headline capped at 60 px, no offer bar
+- [x] Phone-size client videos (`site.json` `small`): 2.7, 2.3 and 1.5 MB (were 4.1, 7.9 and 5.3 MB)
+- [x] Hero sections use `overflow-clip`: with `overflow-hidden` the scroll animations inside froze
+- [ ] Already listed under "Live site checks": smaller image widths + AVIF, the font-swap layout shift
+
+**E. Check**
+- [x] Phone audit after the changes: 24 pages at 320 / 375 / 390 px and 667 px tall, landscape 844 × 390, desktop 1280 × 800
+- [ ] Real phones: iPhone Safari (a small one and a 6.1"), Android Chrome, Samsung Internet, the Instagram in-app browser; Android "large text" at 130 %
+- [ ] Lighthouse mobile on the Vercel preview, compared with the 15 Oct scores
 
 ## Phase 6: launch
 
