@@ -44,9 +44,9 @@ const schema = {
         )}
       </ol>
     </nav>
-    {eyebrow && <p class="eyebrow mt-8 animate-fade-up text-green [animation-delay:80ms] sm:mt-14">{eyebrow}</p>}
-    <h1 class:list={['display max-w-5xl animate-fade-up [animation-delay:150ms]', title.length > 30 ? 'text-[clamp(2.5rem,5.5vw,5rem)]' : 'text-[clamp(3rem,8vw,7rem)]', eyebrow ? 'mt-4' : 'mt-8 sm:mt-14']}>{title}{titleEnd && <>{' '}<span class="mt-3 block text-[0.42em] tracking-normal text-green font-stretch-[85%] [word-spacing:0.1em]">{titleEnd}</span></>}</h1>
-    {intro && <p class="mt-6 max-w-2xl animate-fade-up text-lg text-fg/80 [animation-delay:220ms] sm:text-xl">{intro}</p>}
+    {eyebrow && <p class="eyebrow mt-8 animate-fade-up text-green [animation-delay:120ms] sm:mt-14">{eyebrow}</p>}
+    <h1 class:list={['display max-w-5xl animate-fade-up [animation-delay:240ms]', title.length > 30 ? 'text-[clamp(2.5rem,5.5vw,5rem)]' : 'text-[clamp(3rem,8vw,7rem)]', eyebrow ? 'mt-4' : 'mt-8 sm:mt-14']}>{title}{titleEnd && <>{' '}<span class="mt-3 block text-[0.42em] tracking-normal text-green font-stretch-[85%] [word-spacing:0.1em]">{titleEnd}</span></>}</h1>
+    {intro && <p class="mt-6 max-w-2xl animate-fade-up text-lg text-fg/80 [animation-delay:360ms] sm:text-xl">{intro}</p>}
     <slot />
   </div>
   <script is:inline type="application/ld+json" set:html={JSON.stringify(schema)} />

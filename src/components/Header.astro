@@ -47,7 +47,7 @@ const current = (href: string) => ((href === '/' ? path === '/' : path.startsWit
 
   <!-- Mobile menu: native popover. Never give #menu a display class. A solid panel slides in from the right and the links
        follow one by one (global.css; off with reduced motion). Book, Call and WhatsApp stay pinned at the bottom. -->
-  <div id="menu" popover class="m-0 h-dvh max-h-none w-full max-w-none overflow-y-auto overscroll-contain bg-ink px-4 pt-2.5 pb-0 text-fg sm:px-6 transition-[translate,overlay,display] transition-discrete duration-500 ease-out-expo not-open:translate-x-full starting:open:translate-x-full">
+  <div id="menu" popover class="m-0 h-dvh max-h-none w-full max-w-none overflow-y-auto overscroll-contain bg-ink px-4 pt-2.5 pb-0 text-fg sm:px-6 transition-[translate,overlay,display] transition-discrete duration-700 ease-out-expo not-open:translate-x-full starting:open:translate-x-full">
     <div class="flex items-center justify-between">
       <span class="flex items-center gap-3 py-1">
         <Image src={mark} alt="" height={36} densities={[1, 2]} loading="eager" />
